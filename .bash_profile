@@ -9,6 +9,65 @@ export TERM="xterm-256color"
 
 source $HOME/.bashrc
 
+# *************************************
+# **********************************************
+# Start SOURCE: geerlingguy
+# **********************************************
+# Use colors.
+# export CLICOLOR=1
+# export LSCOLORS=ExFxCxDxBxegedabagacad
+
+# # Custom $PATH with extra locations.
+# export PATH=/usr/local/bin:/usr/local/sbin:$HOME/bin:$PATH
+
+# # Syntax-highlight code for copying and pasting.
+# # Requires highlight (`brew install highlight`).
+# function pretty() {
+#   pbpaste | highlight --syntax=$1 -O rtf | pbcopy
+# }
+
+# # Git upstream branch syncer.
+# # Usage: gsync master (checks out master, pull upstream, push origin).
+# function gsync() {
+#   if [[ ! "$1" ]] ; then
+#       echo "You must supply a branch."
+#       return 0
+#   fi
+
+#   BRANCHES=$(git branch --list $1)
+#   if [ ! "$BRANCHES" ] ; then
+#      echo "Branch $1 does not exist."
+#      return 0
+#   fi
+
+#   git checkout "$1" && \
+#   git pull upstream "$1" && \
+#   git push origin "$1"
+# }
+
+# # Super useful Docker container oneshots.
+# # Usage: dockrun, or dockrun [centos7|fedora24|debian8|ubuntu1404|etc.]
+# dockrun() {
+#   docker run -it geerlingguy/docker-"${1:-ubuntu1604}"-ansible /bin/bash
+# }
+
+# # Enter a running Docker container.
+# function denter() {
+#   if [[ ! "$1" ]] ; then
+#       echo "You must supply a container ID or name."
+#       return 0
+#   fi
+
+#   docker exec -it $1 bash
+#   return 0
+# }
+
+# # Use rbenv.
+# if [ -f /usr/local/bin/rbenv ]; then
+#   eval "$(rbenv init -)"
+# fi
+# ********************************
+
 # Path to the bash it configuration
 export BASH_IT=$HOME/.bash_it
 
@@ -29,8 +88,13 @@ export SCM_CHECK=true
 # Don't check mail when opening terminal.
 unset MAILCHECK
 
+# Tab complete sudo commands
+complete -cf sudo
+
 # Load Bash It
-source $BASH_IT/bash_it.sh
+if [ -e $BASH_IT/bash_it.sh ]; then
+  source $BASH_IT/bash_it.sh
+fi
 
 # Case-insensitive globbing (used in pathname expansion)
 shopt -s nocaseglob
@@ -131,3 +195,25 @@ for i in ~/bash.functions.d/*.sh; do
   test -x $i && . $i
 done
 unset i
+
+################################################################
+# NOTE: New stuff
+# check the window size after each command and, if necessary,
+# update the values of LINES and COLUMNS.
+shopt -s checkwinsize
+
+# # Fix vim colors inside tmux
+# if [ -n $TMUX ]; then
+#   alias vim="TERM=screen-256color vim"
+# fi
+
+# # Put bash in vim mode
+# set -o vi
+
+# # Set default editor to vim
+# export EDITOR=vim
+
+# dircolors
+if [ -e ~/.dircolors ]; then
+  eval `dircolors -b ~/.dircolors`
+fi
