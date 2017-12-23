@@ -125,3 +125,9 @@ for file in ~/.{bash_prompt,aliases,functions,path,dockerfunc,extra,exports}; do
 	fi
 done
 unset file
+
+# load custom aliases if they exist
+for i in ~/bash.functions.d/*.sh; do
+  test -x $i && . $i
+done
+unset i
