@@ -19,6 +19,8 @@
     ".tox/": "explorerExcludedFiles",
     "tests/.cache/": "explorerExcludedFiles",
     "tests/__pycache__/": "explorerExcludedFiles",
-    "playbook.retry": "explorerExcludedFiles"
+    "playbook.retry": "explorerExcludedFiles",
+    ".cache.sh": "explorerExcludedFiles",
+    "system/.custom": "explorerExcludedFiles"
   }
 }
