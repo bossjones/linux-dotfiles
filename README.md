@@ -8,3 +8,12 @@ linux dotfiles setup ( currently tested with ubuntu, near future fedora, coreOS 
 - https://github.com/blacktop/dotfiles
 - https://dotfiles.github.io/
 - https://github.com/bndabbs/dotfiles
+- https://github.com/webpro/dotfiles
+
+
+
+# LOOK AT THIS ONE
+
+- https://github.com/webpro/dotfiles
+
+
