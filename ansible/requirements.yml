@@ -7,3 +7,8 @@
 
 - name: radamanth.node-nvm-ansible
   src: radamanth.node-nvm-ansible
+
+- src: https://github.com/picotrading/ansible-ulimit
+  version: master
+  name: ulimit
+
