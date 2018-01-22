@@ -2,6 +2,8 @@
 - hosts: all
   become: yes
   become_method: sudo
+  environment:
+    SHELL: /bin/bash
   vars:
     ulimit_config:
       - domain: '*'
