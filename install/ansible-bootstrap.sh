@@ -65,6 +65,11 @@ else
       #   - role: ulimit
       #   - role: sysctl-performance
       - role: zzet.rbenv
+        rbenv_extra_depends: /home/test/.dotfiles/ruby/default-gems
+        rbenv_extra_depends:
+        - libjemalloc1
+        - libjemalloc-dev
+        - ctags
         rbenv:
           env: user
           version: v1.1.1
