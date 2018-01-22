@@ -2,6 +2,7 @@
 - hosts: all
   become: yes
   become_method: sudo
+  # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
   environment:
     SHELL: /bin/bash
   vars:
