@@ -16,6 +16,12 @@ if is-macos ; then
   ansible-playbook main.yml --syntax-check && \
   ansible-playbook main.yml
 else
+# REQs for ruby
+#   $ sudo apt-get install python-software-properties
+#   $ sudo apt-add-repository ppa:brightbox/ruby-ng
+#   $ sudo apt-get update
+#   $ sudo apt-get install ruby2.1 ruby-switch
+#   $ sudo ruby-switch --set ruby2.1
   # linux
   export DEBIAN_FRONTEND=noninteractive
   sudo apt-get autoremove -y && \
@@ -66,16 +72,21 @@ else
           rubies:
           - version: 2.4.2
         rbenv_users:
-        - "{{ base_vars.USER }}"
+        - "test"
         rbenv_repo: "https://github.com/rbenv/rbenv.git"
         rbenv_plugins:
-          - { name: "rbenv-vars",         repo: "https://github.com/rbenv/rbenv-vars.git",         version: "v1.2.0" }
+          - { name: "rbenv-vars",         repo: "https://github.com/rbenv/rbenv-vars.git",         version: "master" }
           - { name: "ruby-build",         repo: "https://github.com/rbenv/ruby-build.git",         version: "master" }
-          - { name: "rbenv-default-gems", repo: "https://github.com/rbenv/rbenv-default-gems.git", version: "ead67889c91c53ad967f85f5a89d986fdb98f6fb" }
-          - { name: "rbenv-installer",    repo: "https://github.com/rbenv/rbenv-installer.git",    version: "bc21e7055dcc8f5f9bc66ce0c78cc9ae0c28cd7a" }
-          - { name: "rbenv-update",       repo: "https://github.com/rkh/rbenv-update.git",         version: "1961fa180280bb50b64cbbffe6a5df7cf70f5e50" }
-          - { name: "rbenv-whatis",       repo: "https://github.com/rkh/rbenv-whatis.git",         version: "v1.0.0" }
-          - { name: "rbenv-use",          repo: "https://github.com/rkh/rbenv-use.git",            version: "v1.0.0" }
+          - { name: "rbenv-default-gems", repo: "https://github.com/rbenv/rbenv-default-gems.git", version: "master" }
+          - { name: "rbenv-installer",    repo: "https://github.com/rbenv/rbenv-installer.git",    version: "master" }
+          - { name: "rbenv-update",       repo: "https://github.com/rkh/rbenv-update.git",         version: "master" }
+          - { name: "rbenv-whatis",       repo: "https://github.com/rkh/rbenv-whatis.git",         version: "master" }
+          - { name: "rbenv-use",          repo: "https://github.com/rkh/rbenv-use.git",            version: "master" }
+          - { name: "rbenv-ctags",        repo: "https://github.com/tpope/rbenv-ctags.git",        version: "master" }
+          # gem install gem-ctags
+          # gem ctags
+          - { name: "rbenv-each",        repo: "https://github.com/rbenv/rbenv-each.git",        version: "master" }
+          - { name: "rbenv-aliases",        repo: "https://github.com/tpope/rbenv-aliases.git",        version: "master" }
 
         rbenv_root: "{% if rbenv.env == 'system' %}/usr/local/rbenv{% else %}~/.rbenv{% endif %}"
 
