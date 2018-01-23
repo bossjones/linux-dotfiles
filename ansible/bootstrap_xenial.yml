@@ -42,9 +42,7 @@
         - { name: "rbenv-whatis",       repo: "https://github.com/rkh/rbenv-whatis.git",         version: "master" }
         - { name: "rbenv-use",          repo: "https://github.com/rkh/rbenv-use.git",            version: "master" }
         - { name: "rbenv-ctags",        repo: "https://github.com/tpope/rbenv-ctags.git",        version: "master" }
-        # gem install gem-ctags
-        # gem ctags
-        - { name: "rbenv-each",        repo: "https://github.com/rbenv/rbenv-each.git",        version: "master" }
-        - { name: "rbenv-aliases",        repo: "https://github.com/tpope/rbenv-aliases.git",        version: "master" }
+        - { name: "rbenv-each",         repo: "https://github.com/rbenv/rbenv-each.git",        version: "master" }
+        - { name: "rbenv-aliases",      repo: "https://github.com/tpope/rbenv-aliases.git",        version: "master" }
 
       rbenv_root: "{% if rbenv.env == 'system' %}/usr/local/rbenv{% else %}~/.rbenv{% endif %}"
