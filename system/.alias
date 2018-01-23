@@ -1,0 +1,143 @@
+# Shortcuts
+
+# alias reload="source ~/.bash_profile"
+# alias _="sudo"
+# alias g="git"
+# alias rr="rm -rf"
+
+# # Default options
+
+# alias rsync="rsync -vh"
+# alias json="json -c"
+# alias psgrep="psgrep -i"
+
+# is-executable hub && eval "$(hub alias -s)" # alias git=hub
+
+# # Global aliases
+
+# if $(is-supported "alias -g"); then
+#   alias -g G="| grep -i"
+#   alias -g H="| head"
+#   alias -g T="| tail"
+#   alias -g L="| less"
+# fi
+
+# # List declared aliases, functions, paths
+
+# alias aliases="alias | sed 's/=.*//'"
+# alias functions="declare -f | grep '^[a-z].* ()' | sed 's/{$//'"
+# alias paths='echo -e ${PATH//:/\\n}'
+
+# # Directory listing/traversal
+
+# LS_COLORS=`is-supported "ls --color" --color -G`
+# LS_TIMESTYLEISO=`is-supported "ls --time-style=long-iso" --time-style=long-iso`
+# LS_GROUPDIRSFIRST=`is-supported "ls --group-directories-first" --group-directories-first`
+
+# alias l="ls -lahA $LS_COLORS $LS_TIMESTYLEISO $LS_GROUPDIRSFIRST"
+# alias ll="ls -lA $LS_COLORS"
+# alias lt="ls -lhAtr $LS_COLORS $LS_TIMESTYLEISO $LS_GROUPDIRSFIRST"
+# alias ld="ls -ld $LS_COLORS */"
+# alias lpm="stat -c '%a %n' *"
+
+# unset LS_COLORS LS_TIMESTYLEISO LS_GROUPDIRSFIRST
+
+# alias ..="cd .."
+# alias ...="cd ../.."
+# alias ....="cd ../../.."
+# alias -- -="cd -"                  # Go to previous dir with -
+# alias cd.='cd $(readlink -f .)'    # Go to real dir (i.e. if current dir is linked)
+
+# alias tree="tree -A"
+# alias treed="tree -d"
+# alias tree1="tree -d -L 1"
+# alias tree2="tree -d -L 2"
+
+# # npm
+
+# alias ni="npm install"
+# alias nu="npm uninstall"
+# alias nup="npm update"
+# alias nri="rm -r node_modules && npm install"
+# alias ncd="npm-check -su"
+
+# # Network
+
+# alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
+# alias ipl="ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'"
+
+# # Request using GET, POST, etc. method
+
+# for METHOD in GET HEAD POST PUT DELETE TRACE OPTIONS; do
+#   alias "$METHOD"="lwp-request -m '$METHOD'"
+# done
+# unset METHOD
+
+# # Miscellaneous
+
+# alias hosts="sudo $EDITOR /etc/hosts"
+# alias his="historie"
+# alias quit="exit"
+# alias week="date +%V"
+# alias speedtest="wget -O /dev/null http://speed.transip.nl/100mb.bin"
+
+########################################
+# Git
+########################################
+
+alias __git_find_subcommand='__git_find_on_cmdline'
+alias g='git'
+alias ga='git add'
+alias gall='git add .'
+alias gb='git branch'
+alias gba='git branch -a'
+alias gc='git commit -v'
+alias gca='git commit -v -a'
+alias gci='git commit --interactive'
+alias gcl='git clone'
+alias gcm='git commit -v -m'
+alias gco='git checkout'
+alias gcount='git shortlog -sn'
+alias gcp='git cherry-pick'
+alias gd='git diff | /usr/local/bin/mvim -f'
+alias gdel='git branch -D'
+alias get='git'
+alias gexport='git archive --format zip --output'
+alias gg='git log --graph --pretty=format:'\''%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset'\'' --abbrev-commit --date=relative'
+alias gl='git pull'
+alias gll='git log --graph --pretty=oneline --abbrev-commit'
+alias gm='git merge'
+alias gmu='git fetch origin -v; git fetch upstream -v; git merge upstream/master'
+alias gp='git push'
+alias gpo='git push origin'
+alias gpp='git pull && git push'
+alias gpr='git pull --rebase'
+alias gs='git status'
+alias gsl='git shortlog -sn'
+alias gss='git status -s'
+alias gst='git status'
+alias gup='git fetch && git rebase'
+alias gus='git reset HEAD'
+alias gw='git whatchanged'
+
+
+########################################
+# Docker
+########################################
+
+alias docker_x11_socat='socat TCP-LISTEN:6000,reuseaddr,fork UNIX-CLIENT:\"$DISPLAY\"'
+alias docker_x11_jess_geary='docker run --rm --name geary -e DISPLAY=`ifconfig en0 | grep "inet "  | cut -d" " -f2`:0 jess/geary'
+alias docker_eclipse='docker run -it -e DISPLAY=`ifconfig en0 | grep "inet "  | cut -d" " -f2`:0 batmat/docker-eclipse'
+alias docker_xquartz='open -a XQuartz'
+
+
+########################################
+# Utility
+########################################
+alias my_ip='ifconfig en0 | grep "inet "  | cut -d" " -f2'
+
+
+########################################
+# Ruby
+########################################
+alias be='bundle exec'

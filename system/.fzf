@@ -1,0 +1,3 @@
+# TODO: Do we need to do something to make sure this isn't symlinked to ~/.fzf ?
+
+[[ -f ~/.fzf.bash ]] && source ~/.fzf.bash

@@ -1,0 +1,26 @@
+{
+  "files.exclude": {
+    ".vagrant": "explorerExcludedFiles",
+    ".DS_Store": "explorerExcludedFiles",
+    "**/.*.swp": "explorerExcludedFiles",
+    "**/.ropeproject": "explorerExcludedFiles",
+    "**/.cache": "explorerExcludedFiles",
+    "*.pyc": "explorerExcludedFiles",
+    "venv": "explorerExcludedFiles",
+    "docker-compose-*.yml": "explorerExcludedFiles",
+    ".cache": "explorerExcludedFiles",
+    ".molecule": "explorerExcludedFiles",
+    "venv/": "explorerExcludedFiles",
+    "__pycache__": "explorerExcludedFiles",
+    ".vscode/tags": "explorerExcludedFiles",
+    "*.retry": "explorerExcludedFiles",
+    ".cache/": "explorerExcludedFiles",
+    ".molecule/": "explorerExcludedFiles",
+    ".tox/": "explorerExcludedFiles",
+    "tests/.cache/": "explorerExcludedFiles",
+    "tests/__pycache__/": "explorerExcludedFiles",
+    "playbook.retry": "explorerExcludedFiles",
+    ".cache.sh": "explorerExcludedFiles",
+    "system/.custom": "explorerExcludedFiles"
+  }
+}

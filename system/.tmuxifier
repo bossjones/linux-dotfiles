@@ -1,0 +1,9 @@
+# tmuxifier setup
+# setup: git clone https://github.com/jimeh/tmuxifier.git ~/.tmuxifier
+
+# TODO: Should this be a folder check ?
+# INFO: https://www.gnu.org/software/bash/manual/html_node/Bash-Conditional-Expressions.html
+# -e: True if file exists.
+[[ -e "$HOME/.tmuxifier/bin" ]] && \
+export PATH="$HOME/.tmuxifier/bin:$PATH" && \
+eval "$(tmuxifier init -)"

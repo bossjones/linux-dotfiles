@@ -1,0 +1,9 @@
+# DISABLED # if [ -f "$DOTFILES_BREW_PREFIX_NVM/nvm.sh" ]; then
+# DISABLED #   export NVM_DIR=~/.nvm
+# DISABLED #   source "$DOTFILES_BREW_PREFIX_NVM/nvm.sh"
+# DISABLED # fi
+
+# INFO: https://www.gnu.org/software/bash/manual/html_node/Bash-Conditional-Expressions.html
+# -s: True if file exists and has a size greater than zero.
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" # This loads nvm
