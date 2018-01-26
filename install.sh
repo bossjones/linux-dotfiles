@@ -20,6 +20,8 @@ if is_ubuntu; then
   . "$DOTFILES_DIR/install/prereq-linux.sh"
 fi
 
+command-exists ansible && bash "$DOTFILES_DIR/ansible/provision.sh"
+
 # Update dotfiles itself first
 e_header "Update dotfiles itself first"
 
