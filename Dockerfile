@@ -1,12 +1,15 @@
 FROM ubuntu:xenial
 ENV TERM=xterm
 
+# make apt use ipv4 instead of ipv6 ( faster resolution )
+RUN sed -i "s@^#precedence ::ffff:0:0/96  100@precedence ::ffff:0:0/96  100@" /etc/gai.conf
+
 # SOURCE: https://github.com/rastasheep/ubuntu-sshd/blob/master/16.04/Dockerfile
 RUN apt-get update \
     && apt-get install -y \
     git-core curl wget bash vim \
     sudo \
-    && apt-get install procps file make patch autoconf bison build-essential libssl-dev libyaml-dev libreadline6-dev zlib1g-dev libncurses5-dev libffi-dev libgdbm3 libgdbm-dev -y \
+    && apt-get install language-pack-en-base procps file make patch autoconf bison build-essential libssl-dev libyaml-dev libreadline6-dev zlib1g-dev libncurses5-dev libffi-dev libgdbm3 libgdbm-dev -y \
     && \
     apt-get install -y openssh-server && \
     mkdir /var/run/sshd && \

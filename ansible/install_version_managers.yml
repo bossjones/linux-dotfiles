@@ -57,16 +57,6 @@
   # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
   environment:
     SHELL: /bin/bash
-  # vars:
-  #   ulimit_config:
-  #     - domain: '*'
-  #       type: soft
-  #       item: nofile
-  #       value: 64000
-  #     - domain: '*'
-  #       type: hard
-  #       item: nofile
-  #       value: 64000
   roles:
     - role: pablocrivella.nvm
       nvm_repo: "git://github.com/creationix/nvm.git"
@@ -90,6 +80,15 @@
         - yaml-lint
         - pathogen-pm
         - manga-scraper
+        - gtop
+        - historie
+        - nodemon
+        - npm
+        - release-it
+        - spot
+        - superstatic
+        - svgo
+        - underscore-cli
       nvm_users:
         - "test"
 
