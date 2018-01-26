@@ -11,9 +11,15 @@ DOTFILES_EXTRA_DIR="$HOME/.extra"
 
 PATH="$DOTFILES_DIR/bin:$PATH"
 
+. "$DOTFILES_DIR/install/utilities.sh"
+
+e_header "Update dotfiles itself first"
+
 # Update dotfiles itself first
 
 if is-executable git -a -d "$DOTFILES_DIR/.git"; then git --work-tree="$DOTFILES_DIR" --git-dir="$DOTFILES_DIR/.git" pull origin master; fi
+
+e_header "Bunch of symlinks"
 
 # Bunch of symlinks
 
@@ -23,6 +29,8 @@ ln -sfv "$DOTFILES_DIR/runcom/.gemrc" ~
 ln -sfv "$DOTFILES_DIR/git/.gitconfig" ~
 ln -sfv "$DOTFILES_DIR/git/.gitignore_global" ~
 
+e_header "Package managers & packages"
+
 # Package managers & packages
 
 . "$DOTFILES_DIR/install/brew.sh"
@@ -31,9 +39,13 @@ ln -sfv "$DOTFILES_DIR/git/.gitignore_global" ~
 . "$DOTFILES_DIR/install/brew-cask.sh"
 . "$DOTFILES_DIR/install/gem.sh"
 
+e_header "Run tests"
+
 # Run tests
 
 if is-executable bats; then bats test/*.bats; else echo "Skipped: tests (missing: bats)"; fi
+
+e_header "Install extra stuff"
 
 # Install extra stuff
 

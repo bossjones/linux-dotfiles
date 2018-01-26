@@ -11,6 +11,8 @@ DOTFILES_EXTRA_DIR="$HOME/.extra"
 
 PATH="$DOTFILES_DIR/bin:$PATH"
 
+. "$DOTFILES_DIR/runcom/.utilities"
+
 # Update dotfiles itself first
 
 if is-executable git -a -d "$DOTFILES_DIR/.git"; then git --work-tree="$DOTFILES_DIR" --git-dir="$DOTFILES_DIR/.git" pull origin master; fi
