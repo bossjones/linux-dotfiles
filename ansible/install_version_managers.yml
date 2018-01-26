@@ -112,11 +112,11 @@
         - "3.6.4"
         - "2.7.14"
       pyenv_virtualenvs:
-        - venv_name: "env352"
-          py_version: "3.5.2"
+        - venv_name: "env364"
+          py_version: "3.6.4"
 
-        - venv_name: "env2711"
-          py_version: "2.7.11"
+        - venv_name: "env2714"
+          py_version: "2.7.14"
   post_tasks:
 
     # Install plugins for pyenv
