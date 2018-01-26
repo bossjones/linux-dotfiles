@@ -12,3 +12,6 @@
   version: master
   name: ulimit
 
+- src: https://github.com/pablocrivella/ansible-role-nvm
+  version: master
+  name: pablocrivella.nvm
