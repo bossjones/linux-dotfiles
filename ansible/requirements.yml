@@ -15,3 +15,8 @@
 - src: https://github.com/pablocrivella/ansible-role-nvm
   version: master
   name: pablocrivella.nvm
+
+- src: https://github.com/avanov/ansible-galaxy-pyenv
+  version: master
+  name: avanov.pyenv
+

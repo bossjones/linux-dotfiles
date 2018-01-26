@@ -92,3 +92,28 @@
         - manga-scraper
       nvm_users:
         - "test"
+
+
+- hosts: localhost
+  tags:
+    - pyenv
+  become: yes
+  become_method: sudo
+  # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
+  environment:
+    SHELL: /bin/bash
+  roles:
+    - role: avanov.pyenv
+      pyenv_path: "/home/test/.pyenv"
+      pyenv_owner: "test"
+      pyenv_update_git_install: no
+      pyenv_enable_autocompletion: yes
+      pyenv_python_versions:
+        - "3.6.4"
+        - "2.7.14"
+      pyenv_virtualenvs:
+        - venv_name: "env352"
+          py_version: "3.5.2"
+
+        - venv_name: "env2711"
+          py_version: "2.7.11"
