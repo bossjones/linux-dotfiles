@@ -32,6 +32,9 @@ RUN set -xe \
 
 EXPOSE 22
 
+ENV LANG       en_US.UTF-8
+ENV LC_ALL     en_US.UTF-8
+
 # # Thanks to http://docs.docker.io/en/latest/examples/running_ssh_service/
 # RUN mkdir /var/run/sshd
 

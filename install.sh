@@ -11,11 +11,17 @@ DOTFILES_EXTRA_DIR="$HOME/.extra"
 
 PATH="$DOTFILES_DIR/bin:$PATH"
 
+# Soure utility functions
 . "$DOTFILES_DIR/install/utilities.sh"
 
-e_header "Update dotfiles itself first"
+# Ubuntu-only stuff. Abort if not Ubuntu.
+if is_ubuntu; then
+  e_header "Ubuntu-only stuff. Abort if not Ubuntu."
+  . "$DOTFILES_DIR/install/prereq-linux.sh"
+fi
 
 # Update dotfiles itself first
+e_header "Update dotfiles itself first"
 
 # if is-executable git -a -d "$DOTFILES_DIR/.git"; then git --work-tree="$DOTFILES_DIR" --git-dir="$DOTFILES_DIR/.git" pull origin master; fi
 
