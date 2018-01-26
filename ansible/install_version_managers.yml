@@ -97,8 +97,8 @@
 - hosts: localhost
   tags:
     - pyenv
-  become: yes
-  become_method: sudo
+  # become: yes
+  # become_method: sudo
   # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
   environment:
     SHELL: /bin/bash
@@ -125,30 +125,35 @@
         repo: https://github.com/pyenv/pyenv-virtualenvwrapper
         dest: "/home/test/.pyenv/plugins/pyenv-virtualenvwrapper"
         version: "master"
+        update: "{{ pyenv_update_git_install }}"
 
     - name: Clone pyenv-pip-rehash
       git:
         repo: https://github.com/pyenv/pyenv-pip-rehash
         dest: "/home/test/.pyenv/plugins/pyenv-pip-rehash"
         version: "master"
+        update: "{{ pyenv_update_git_install }}"
 
     - name: Clone pyenv-pip-migrate
       git:
         repo: https://github.com/pyenv/pyenv-pip-migrate
         dest: "/home/test/.pyenv/plugins/pyenv-pip-migrate"
         version: "master"
+        update: "{{ pyenv_update_git_install }}"
 
     - name: Clone pyenv-update
       git:
         repo: https://github.com/pyenv/pyenv-update
         dest: "/home/test/.pyenv/plugins/pyenv-update"
         version: "master"
+        update: "{{ pyenv_update_git_install }}"
 
     - name: Clone pyenv-doctor
       git:
         repo: https://github.com/pyenv/pyenv-doctor
         dest: "/home/test/.pyenv/plugins/pyenv-doctor"
         version: "master"
+        update: "{{ pyenv_update_git_install }}"
 
     # - name: Clone pyenv-ccache
     #   git:
@@ -161,3 +166,4 @@
         repo: https://github.com/jawshooah/pyenv-default-packages
         dest: "/home/test/.pyenv/plugins/pyenv-default-packages"
         version: "master"
+        update: "{{ pyenv_update_git_install }}"
