@@ -117,3 +117,47 @@
 
         - venv_name: "env2711"
           py_version: "2.7.11"
+  post_tasks:
+
+    # Install plugins for pyenv
+    - name: Clone pyenv-virtualenvwrapper
+      git:
+        repo: https://github.com/pyenv/pyenv-virtualenvwrapper
+        dest: "/home/test/.pyenv/plugins/pyenv-virtualenvwrapper"
+        version: "master"
+
+    - name: Clone pyenv-pip-rehash
+      git:
+        repo: https://github.com/pyenv/pyenv-pip-rehash
+        dest: "/home/test/.pyenv/plugins/pyenv-pip-rehash"
+        version: "master"
+
+    - name: Clone pyenv-pip-migrate
+      git:
+        repo: https://github.com/pyenv/pyenv-pip-migrate
+        dest: "/home/test/.pyenv/plugins/pyenv-pip-migrate"
+        version: "master"
+
+    - name: Clone pyenv-update
+      git:
+        repo: https://github.com/pyenv/pyenv-update
+        dest: "/home/test/.pyenv/plugins/pyenv-update"
+        version: "master"
+
+    - name: Clone pyenv-doctor
+      git:
+        repo: https://github.com/pyenv/pyenv-doctor
+        dest: "/home/test/.pyenv/plugins/pyenv-doctor"
+        version: "master"
+
+    # - name: Clone pyenv-ccache
+    #   git:
+    #     repo: https://github.com/pyenv/pyenv-ccache
+    #     dest: "/home/test/.pyenv/plugins/pyenv-ccache"
+    #     version: "master"
+
+    - name: Clone pyenv-default-packages
+      git:
+        repo: https://github.com/jawshooah/pyenv-default-packages
+        dest: "/home/test/.pyenv/plugins/pyenv-default-packages"
+        version: "master"
