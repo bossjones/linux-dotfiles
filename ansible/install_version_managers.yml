@@ -8,6 +8,8 @@
   environment:
     SHELL: /bin/bash
   vars:
+    bossjones__user: vagrant
+    bossjones__group: vagrant
     ulimit_config:
       - domain: '*'
         type: soft
@@ -20,7 +22,7 @@
   roles:
     - role: ulimit
     - role: zzet.rbenv
-      default_gems_file: /home/test/.dotfiles/ruby/default-gems
+      default_gems_file: "/home/{{ bossjones__user }}/.dotfiles/ruby/default-gems"
       rbenv_extra_depends:
       - libjemalloc1
       - libjemalloc-dev
@@ -32,7 +34,7 @@
         rubies:
         - version: 2.4.2
       rbenv_users:
-      - "test"
+      - "{{ bossjones__user }}"
       rbenv_repo: "https://github.com/rbenv/rbenv.git"
       rbenv_plugins:
         - { name: "rbenv-vars",         repo: "https://github.com/rbenv/rbenv-vars.git",         version: "master" }
@@ -54,13 +56,16 @@
     - nvm
   become: yes
   become_method: sudo
+  vars:
+    bossjones__user: vagrant
+    bossjones__group: vagrant
   # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
   environment:
     SHELL: /bin/bash
   roles:
     - role: pablocrivella.nvm
       nvm_repo: "git://github.com/creationix/nvm.git"
-      nvm_root: "/home/test/.nvm"
+      nvm_root: "/home/{{ bossjones__user }}/.nvm"
       nvm_env: user
       nvm_version: v0.33.1
       nvm_default_node_version: stable
@@ -90,12 +95,15 @@
         - svgo
         - underscore-cli
       nvm_users:
-        - "test"
+        - "{{ bossjones__user }}"
 
 
 - hosts: localhost
   tags:
     - pyenv
+  vars:
+    bossjones__user: vagrant
+    bossjones__group: vagrant
   # become: yes
   # become_method: sudo
   # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
@@ -103,8 +111,8 @@
     SHELL: /bin/bash
   roles:
     - role: avanov.pyenv
-      pyenv_path: "/home/test/.pyenv"
-      pyenv_owner: "test"
+      pyenv_path: "/home/{{ bossjones__user }}/.pyenv"
+      pyenv_owner: "{{ bossjones__user }}"
       pyenv_update_git_install: no
       pyenv_enable_autocompletion: yes
       pyenv_python_versions:
@@ -122,47 +130,47 @@
     - name: Clone pyenv-virtualenvwrapper
       git:
         repo: https://github.com/pyenv/pyenv-virtualenvwrapper
-        dest: "/home/test/.pyenv/plugins/pyenv-virtualenvwrapper"
+        dest: "/home/{{ bossjones__user }}/.pyenv/plugins/pyenv-virtualenvwrapper"
         version: "master"
         update: "{{ pyenv_update_git_install }}"
 
     - name: Clone pyenv-pip-rehash
       git:
         repo: https://github.com/pyenv/pyenv-pip-rehash
-        dest: "/home/test/.pyenv/plugins/pyenv-pip-rehash"
+        dest: "/home/{{ bossjones__user }}/.pyenv/plugins/pyenv-pip-rehash"
         version: "master"
         update: "{{ pyenv_update_git_install }}"
 
     - name: Clone pyenv-pip-migrate
       git:
         repo: https://github.com/pyenv/pyenv-pip-migrate
-        dest: "/home/test/.pyenv/plugins/pyenv-pip-migrate"
+        dest: "/home/{{ bossjones__user }}/.pyenv/plugins/pyenv-pip-migrate"
         version: "master"
         update: "{{ pyenv_update_git_install }}"
 
     - name: Clone pyenv-update
       git:
         repo: https://github.com/pyenv/pyenv-update
-        dest: "/home/test/.pyenv/plugins/pyenv-update"
+        dest: "/home/{{ bossjones__user }}/.pyenv/plugins/pyenv-update"
         version: "master"
         update: "{{ pyenv_update_git_install }}"
 
     - name: Clone pyenv-doctor
       git:
         repo: https://github.com/pyenv/pyenv-doctor
-        dest: "/home/test/.pyenv/plugins/pyenv-doctor"
+        dest: "/home/{{ bossjones__user }}/.pyenv/plugins/pyenv-doctor"
         version: "master"
         update: "{{ pyenv_update_git_install }}"
 
     # - name: Clone pyenv-ccache
     #   git:
     #     repo: https://github.com/pyenv/pyenv-ccache
-    #     dest: "/home/test/.pyenv/plugins/pyenv-ccache"
+    #     dest: "/home/{{ bossjones__user }}/.pyenv/plugins/pyenv-ccache"
     #     version: "master"
 
     - name: Clone pyenv-default-packages
       git:
         repo: https://github.com/jawshooah/pyenv-default-packages
-        dest: "/home/test/.pyenv/plugins/pyenv-default-packages"
+        dest: "/home/{{ bossjones__user }}/.pyenv/plugins/pyenv-default-packages"
         version: "master"
         update: "{{ pyenv_update_git_install }}"
