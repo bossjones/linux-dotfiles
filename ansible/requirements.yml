@@ -6,7 +6,7 @@
   name: zzet.rbenv
   version: 3.3.6
 
-- src: https://github.com/radamanth/node-nvm-ansible/releases
+- src: https://github.com/radamanth/node-nvm-ansible
   name: radamanth.node-nvm-ansible
   version: 1.0.4
 
