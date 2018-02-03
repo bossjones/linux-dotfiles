@@ -176,6 +176,18 @@
         version: "master"
         update: "{{ pyenv_update_git_install }}"
 
+- hosts: localhost
+  tags:
+    - motd
+  vars:
+    bossjones__user: vagrant
+    bossjones__group: vagrant
+  become: yes
+  become_method: sudo
+  environment:
+    SHELL: /bin/bash
+  roles:
+    - role: motd
 
 ####################################################################################################
 # COMPILE TMUX SETUP
