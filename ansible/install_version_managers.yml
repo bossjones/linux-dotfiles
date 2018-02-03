@@ -234,6 +234,7 @@
                 make check &&
                 make install
                 chdir=/usr/local/src/utf8proc
+      register: utf8proc_compiled
       become: yes
       become_user: root
 
@@ -322,7 +323,7 @@
 
     - role: nass600.powerline
       powerline_package_name: "powerline-status"
-      powerline_version: "0.2.4"
+      powerline_version: "2.6"
 
       powerline_extra_segments:
         - {name: powerline-gitstatus, version: "1.2.1"}
