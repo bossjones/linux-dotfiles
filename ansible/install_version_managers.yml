@@ -297,7 +297,7 @@
     bossjones__user: vagrant
     bossjones__group: vagrant
   become: yes
-  become_user: vagrant
+  # become_user: vagrant
   # become: yes
   # become_method: sudo
   # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
@@ -309,26 +309,31 @@
     - name: Cloning fonts
       git:
         repo=https://github.com/powerline/fonts
-        dest=~/.config/powerlinefonts
+        dest="/home/{{bossjones__user}}/powerlinefonts"
         accept_hostkey=yes
       register: fontCloned
-      become: no
+      become: yes
+      become_user: vagrant
 
     - name: Install Fonts
-      shell: ~/.config/powerlinefonts/install.sh chdir=~/.config/powerlinefonts
+      shell: /home/{{bossjones__user}}/powerlinefonts/install.sh chdir=/home/{{bossjones__user}}/powerlinefonts
       when: fontCloned|success
-      become: no
+      become: yes
+      become_user: vagrant
 
-    - name: "Create directory: ~/.config/powerline"
+    - name: "Create directory: /home/{{bossjones__user}}/powerline"
       file:
         path: "/home/{{bossjones__user}}/.config/powerline"
         state: directory
         owner: "{{ bossjones__user }}"
+      become: yes
+      become_user: vagrant
 
     - name: "touch /home/{{bossjones__user}}/.powerline"
       shell: >
         touch /home/{{bossjones__user}}/.powerline
-      become: no
+      become: yes
+      become_user: vagrant
 
   roles:
     # NOTE: BROKEN AND NOT WORKING
