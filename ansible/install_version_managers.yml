@@ -204,7 +204,7 @@
     SHELL: /bin/bash
   tasks:
     - name: Install Debian packages tmux prereqs
-      apt: pkg={{item}} state=present update_cache=yes
+      apt: pkg={{item}} state=latest update_cache=yes
       with_items:
         - libevent-dev
         - libncurses-dev
