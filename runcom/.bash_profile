@@ -33,7 +33,7 @@ DOTFILES_CACHE="$DOTFILES_DIR/.cache.sh"
 # rdebugrc
 # SOURCE: https://github.com/skwp/dotfiles/tree/master/ruby
 
-for DOTFILE in "$DOTFILES_DIR"/system/.{function,function_*,path,env,alias,completion,grep,prompt_bash_it,nvm,rbenv,rdebugrc,pyenv,cheatrc,powerline,agignore,custom}; do
+for DOTFILE in "$DOTFILES_DIR"/system/.{function,function_*,path,env,alias,completion,grep,prompt_bash_it,nvm,rbenv,rdebugrc,irbrc,rspec,pryrc,pyenv,pdbrc,pdbrc.py,ptpython,pythonrc,cheatrc,powerline,agignore,custom}; do
   [ -f "$DOTFILE" ] && . "$DOTFILE"
 done
 
