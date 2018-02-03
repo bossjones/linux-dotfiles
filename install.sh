@@ -38,6 +38,17 @@ ln -sfv "$DOTFILES_DIR/runcom/.gemrc" ~
 ln -sfv "$DOTFILES_DIR/git/.gitconfig" ~
 ln -sfv "$DOTFILES_DIR/git/.gitignore_global" ~
 
+# Secondary round
+
+ln -sfv "$DOTFILES_DIR/runcom/.irbrc" ~
+ln -sfv "$DOTFILES_DIR/runcom/.rspec" ~
+ln -sfv "$DOTFILES_DIR/runcom/.pryrc" ~
+ln -sfv "$DOTFILES_DIR/runcom/.pdbrc" ~
+ln -sfv "$DOTFILES_DIR/runcom/.pdbrc.py" ~
+ln -sfv "$DOTFILES_DIR/runcom/.ptpython" ~
+ln -sfv "$DOTFILES_DIR/runcom/.pythonrc" ~
+ln -sfv "$DOTFILES_DIR/runcom/.agignore" ~
+
 e_header "Package managers & packages"
 
 # Package managers & packages
