@@ -230,7 +230,6 @@
 
     - name: Compile and install utf8proc
       shell: |
-        ./configure --prefix={{tmux_path}} &&
                 make &&
                 make check &&
                 make install
