@@ -294,6 +294,12 @@
       when: fontCloned|success
       become: no
 
+    - name: "Create directory: ~/.config/powerline"
+      file:
+        path: "~/.config/powerline"
+        state: directory
+        owner: "{{ bossjones__user }}"
+
   roles:
     # NOTE: BROKEN AND NOT WORKING
     # - role: mjanser.powerline
