@@ -235,10 +235,8 @@
                 make check &&
                 make install
                 chdir=/usr/local/src/utf8proc
-
       become: yes
       become_user: root
-      when: wanted_version_installed.rc == 1
 
     - name: Checking installed version of tmux
       shell: /usr/bin/test "$({{tmux_path}}bin/tmux -V 2> /dev/null)" = {{ tmux_version }}
