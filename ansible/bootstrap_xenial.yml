@@ -8,7 +8,6 @@
   vars:
     bossjones__user: vagrant
     bossjones__group: vagrant
-  vars:
     ulimit_config:
       - domain: '*'
         type: soft
