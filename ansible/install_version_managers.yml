@@ -314,7 +314,8 @@
         owner: "{{ bossjones__user }}"
 
     - name: "touch /home/{{bossjones__user}}/.powerline"
-      shell: touch /home/{{bossjones__user}}/.powerline
+      shell: >
+        touch /home/{{bossjones__user}}/.powerline
       become: no
 
   roles:
