@@ -1,0 +1,4 @@
+# -e: True if file exists.
+[[ -e /etc/bash_powerline.sh ]] && \
+source /etc/bash_powerline.sh
+

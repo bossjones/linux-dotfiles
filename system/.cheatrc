@@ -1,0 +1,3 @@
+# Cheatrc is not a real concept, but we need a way to keep environment variables linked to a specific program
+
+export CHEATCOLORS=true

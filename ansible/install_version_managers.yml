@@ -175,3 +175,172 @@
         dest: "/home/{{ bossjones__user }}/.pyenv/plugins/pyenv-default-packages"
         version: "master"
         update: "{{ pyenv_update_git_install }}"
+
+
+####################################################################################################
+# POWERLINE SETUP
+####################################################################################################
+- hosts: localhost
+  tags:
+    - powerline
+  vars:
+    bossjones__user: vagrant
+    bossjones__group: vagrant
+  become: yes
+  become_user: vagrant
+  # become: yes
+  # become_method: sudo
+  # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
+  environment:
+    SHELL: /bin/bash
+  pre_tasks:
+
+    # SOURCE: https://github.com/veggiemonk/ansible-dotfiles/blob/master/tasks/fonts.yml
+    - name: Cloning fonts
+      git:
+        repo=https://github.com/powerline/fonts
+        dest=~/.config/powerlinefonts
+        accept_hostkey=yes
+      register: fontCloned
+      become: no
+
+    - name: Install Fonts
+      shell: ~/.config/powerlinefonts/install.sh chdir=~/.config/powerlinefonts
+      when: fontCloned|success
+      become: no
+
+  roles:
+    - role: mjanser.powerline
+      powerline_default_top_theme: powerline
+      powerline_shell_vcs_branch: yes
+      powerline_users:
+        - "{{bossjones__user}}"
+
+####################################################################################################
+# CHEATSHEETS SETUP
+####################################################################################################
+- hosts: localhost
+  tags:
+    - cheat
+  vars:
+    bossjones__user: vagrant
+    bossjones__group: vagrant
+    cheatsheet_update: yes
+  become: yes
+  become_user: vagrant
+  # become_method: sudo
+  # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
+  environment:
+    SHELL: /bin/bash
+  tasks:
+    - name: Clone pyenv-doctor
+      git:
+        repo: https://github.com/bossjones/boss-cheatsheets
+        dest: "/home/{{ bossjones__user }}/.cheat"
+        version: "master"
+        update: "{{ cheatsheet_update }}"
+
+####################################################################################################
+# BASH-IT SETUP
+####################################################################################################
+- hosts: localhost
+  tags:
+    - bash_it
+  vars:
+    bossjones__user: vagrant
+    bossjones__group: vagrant
+    cheatsheet_update: yes
+    boss__bash_it_theme: "powerline-plain"
+    boss__bash_it_repository: https://github.com/Bash-it/bash-it.git
+    boss__bash_it_version: master
+    boss__bash_it_aliases:
+      - general
+    boss__bash_it_plugins:
+      - base
+      - history
+    boss__bash_it_completions:
+      - git
+  become: yes
+  become_user: vagrant
+  # become_method: sudo
+  # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
+  environment:
+    SHELL: /bin/bash
+  tasks:
+    # TODO: have bash_it run before this shell script
+    - name: clone bash_it
+      git: repo="{{boss__bash_it_repository}}"
+          dest="/home/{{bossjones__user}/.bash_it"
+          update=no
+          depth=1
+      become: "{{bossjones__user}"
+      become_user: "{{bossjones__user}"
+
+    - name: Register home directory for {{ bossjones__user }}
+      shell: >
+        getent passwd {{ bossjones__user }} | cut -d: -f6
+      changed_when: false
+      register: linux_user_home
+
+    - name: Register current login shell for {{ bossjones__user }}
+      shell: >
+        getent passwd {{ bossjones__user }} | cut -d: -f7
+      changed_when: false
+      register: linux_user_shell
+
+    - name: Set facts
+      set_fact:
+        boss__bash_it_user_home: "{{ linux_user_home.stdout }}"
+        boss__bash_it_user_shell: "{{ linux_user_shell.stdout }}"
+
+    - name: assert home directory is detected
+      assert: { that: boss__bash_it_user_home != "" }
+
+    - name: assert current shell is detected
+      assert: { that: boss__bash_it_user_shell != "" }
+
+    - name: "clone bash_it for {{ bossjones__user }}"
+      git:
+        repo: "{{ boss__bash_it_repository }}"
+        dest: "{{ boss__bash_it_user_home }}/.bash_it"
+        version: "{{ boss__bash_it_version }}"
+      become: "{{ bossjones__user }}"
+
+    - name: "change shell to bash for {{ bossjones__user }}"
+      command: "chsh -s /bin/bash {{ bossjones__user }}"
+      become_user: root
+      when: boss__bash_it_user_shell != "/bin/bash"
+
+    - name: "initialize bash_it directories for {{ bossjones__user }}"
+      file:
+        path: "{{ boss__bash_it_user_home }}/.bash_it/{{ item }}/enabled"
+        state: directory
+        owner: "{{ bossjones__user }}"
+      with_items:
+        - "plugins"
+        - "aliases"
+        - "completion"
+
+    - name: "install bash_it plugins for {{ bossjones__user }}"
+      file:
+        src: "{{ boss__bash_it_user_home }}/.bash_it/plugins/available/{{ item }}.plugin.bash"
+        dest: "{{ boss__bash_it_user_home }}/.bash_it/plugins/enabled/{{ item }}.plugin.bash"
+        state: link
+        owner: "{{ bossjones__user }}"
+      with_items: '{{ boss__bash_it_plugins }}'
+
+    - name: "install bash_it aliases for {{ bossjones__user }}"
+      file:
+        src: "{{ boss__bash_it_user_home }}/.bash_it/aliases/available/{{ item }}.aliases.bash"
+        dest: "{{ boss__bash_it_user_home }}/.bash_it/aliases/enabled/{{ item }}.aliases.bash"
+        state: link
+        owner: "{{ bossjones__user }}"
+      with_items: '{{ boss__bash_it_aliases }}'
+
+    - name: "install bash_it completions for {{ bossjones__user }}"
+      file:
+        src: "{{ boss__bash_it_user_home }}/.bash_it/completion/available/{{ item }}.completion.bash"
+        dest: "{{ boss__bash_it_user_home }}/.bash_it/completion/enabled/{{ item }}.completion.bash"
+        state: link
+        owner: "{{ bossjones__user }}"
+      with_items: '{{ boss__bash_it_completions }}'
