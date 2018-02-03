@@ -21,6 +21,7 @@
     - lm_sensors
     - curl
     - libcurl*
+    - tk8.4-dev
 
 - name: install | copy template to /etc
   become: yes
