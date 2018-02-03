@@ -94,6 +94,7 @@
         - superstatic
         - svgo
         - underscore-cli
+        - diff-so-fancy
       nvm_users:
         - "{{ bossjones__user }}"
 
