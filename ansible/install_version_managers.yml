@@ -178,6 +178,91 @@
 
 
 ####################################################################################################
+# COMPILE TMUX SETUP
+####################################################################################################
+- hosts: localhost
+  tags:
+    - tmux
+  vars:
+    bossjones__user: vagrant
+    bossjones__group: vagrant
+    cheatsheet_update: yes
+    tmux_version: "2.6"
+    tmux_install_method: "source"
+    tmux_path: "/usr/local/"
+    tmux_tmp_dir: "/tmp/"
+    tmux_playbook_version: "0.0.1"
+    tmux_file_tag: "tmux-{{tmux_version}}"
+    tmux_file_name: "{{tmux_file_tag}}.tar.gz"
+    tmux_base_url: "https://github.com/tmux/tmux/releases/download/{{tmux_version}}/"
+    tmux_tarball_url: "{{tmux_base_url}}{{tmux_file_name}}"
+  become: yes
+  become_user: vagrant
+  # become_method: sudo
+  # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
+  environment:
+    SHELL: /bin/bash
+  tasks:
+    - name: Install Debian packages tmux prereqs
+      apt: pkg={{item}} state=present update_cache=yes
+      with_items:
+        - libevent-dev
+        - libncurses-dev
+        - pkg-config
+        - wget
+        - curl
+        - make
+        - gcc
+        - autoconf
+        - automake
+        - libtool
+      when: ansible_os_family == "Debian"
+
+    - name: Clone utf8proc
+      git:
+        repo: https://github.com/JuliaLang/utf8proc
+        dest: "/usr/local/src/utf8proc"
+        version: "master"
+
+    - name: Compile and install utf8proc
+      shell: |
+        ./configure --prefix={{tmux_path}} &&
+                make &&
+                make check &&
+                make install
+                chdir=/usr/local/src/utf8proc
+      become: yes
+      when: wanted_version_installed.rc == 1
+
+    - name: Checking installed version of tmux
+      shell: /usr/bin/test "$({{tmux_path}}bin/tmux -V 2> /dev/null)" = {{ tmux_version }}
+      register: wanted_version_installed
+      ignore_errors: True
+      changed_when: "wanted_version_installed.rc == 1"
+
+    - name: Download tmux {{tmux_version}}
+      get_url: url={{tmux_tarball_url}} dest={{tmux_tmp_dir}}{{tmux_file_name}} timeout=120
+      when: wanted_version_installed.rc == 1
+
+    - name: Unpack tmux {{tmux_version}}
+      command: tar -xzf {{tmux_file_name}} chdir={{tmux_tmp_dir}}
+      when: wanted_version_installed.rc == 1
+
+    - name: Compile and install tmux {{tmux_version}}
+      shell: |
+        export LDFLAGS="-lresolv ${LDFLAGS}"
+        ./configure --prefix={{tmux_path}} --enable-utf8proc &&
+                make &&
+                make install
+                chdir={{tmux_tmp_dir}}{{tmux_file_tag}}
+      become: yes
+      when: wanted_version_installed.rc == 1
+
+    - name: Register remote PATH File
+      shell: "echo $PATH"
+      register: tmux_path_out
+
+####################################################################################################
 # POWERLINE SETUP
 ####################################################################################################
 - hosts: localhost
@@ -219,7 +304,7 @@
 
     - role: nass600.powerline
       powerline_package_name: "powerline-status"
-      powerline_version: ""
+      powerline_version: "0.2.4"
 
       powerline_extra_segments:
         - {name: powerline-gitstatus, version: "1.2.1"}
