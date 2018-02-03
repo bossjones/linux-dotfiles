@@ -217,12 +217,16 @@
         - automake
         - libtool
       when: ansible_os_family == "Debian"
+      become: yes
+      become_user: root
 
     - name: Clone utf8proc
       git:
         repo: https://github.com/JuliaLang/utf8proc
         dest: "/usr/local/src/utf8proc"
         version: "master"
+      become: yes
+      become_user: root
 
     - name: Compile and install utf8proc
       shell: |
@@ -231,7 +235,9 @@
                 make check &&
                 make install
                 chdir=/usr/local/src/utf8proc
+
       become: yes
+      become_user: root
       when: wanted_version_installed.rc == 1
 
     - name: Checking installed version of tmux
@@ -239,14 +245,20 @@
       register: wanted_version_installed
       ignore_errors: True
       changed_when: "wanted_version_installed.rc == 1"
+      become: yes
+      become_user: root
 
     - name: Download tmux {{tmux_version}}
       get_url: url={{tmux_tarball_url}} dest={{tmux_tmp_dir}}{{tmux_file_name}} timeout=120
       when: wanted_version_installed.rc == 1
+      become: yes
+      become_user: root
 
     - name: Unpack tmux {{tmux_version}}
       command: tar -xzf {{tmux_file_name}} chdir={{tmux_tmp_dir}}
       when: wanted_version_installed.rc == 1
+      become: yes
+      become_user: root
 
     - name: Compile and install tmux {{tmux_version}}
       shell: |
@@ -256,11 +268,14 @@
                 make install
                 chdir={{tmux_tmp_dir}}{{tmux_file_tag}}
       become: yes
+      become_user: root
       when: wanted_version_installed.rc == 1
 
     - name: Register remote PATH File
       shell: "echo $PATH"
       register: tmux_path_out
+      become: yes
+      become_user: root
 
 ####################################################################################################
 # POWERLINE SETUP
