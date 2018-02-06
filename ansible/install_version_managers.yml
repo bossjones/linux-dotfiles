@@ -95,6 +95,7 @@
         - svgo
         - underscore-cli
         - diff-so-fancy
+        - docker-enter
       nvm_users:
         - "{{ bossjones__user }}"
 
