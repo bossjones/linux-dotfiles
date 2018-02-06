@@ -9,16 +9,16 @@ root: ~/
 # Runs before everything. Use it to start daemons etc.
 pre: |
      _IS_RUNNING=$(ps aux | grep 'ssh -N behancecompute-stage-jump-tunnel' | tail -1 |wc -l)
-     if [ "${_IS_RUNNING}" != 1 ]; 
-     then 
-         ssh -N behancecompute-stage-jump-tunnel &; 
-     fi 
+     if [ "${_IS_RUNNING}" != 1 ];
+     then
+         ssh -N behancecompute-stage-jump-tunnel &;
+     fi
 
 # start scarlett
 # pre: cd ~/dev/bossjones/scarlett-ansible; make vagrant-up; sleep 35
 
 # Runs in each window and pane before window/pane specific commands. Useful for setting up interpreter versions.
-pre_window: rbenv shell 2.1.7 && workon aws-tools && source ~/.aws/stage.sh
+pre_window: rbenv shell 2.4.2 && workon aws-tools && source ~/.aws/stage.sh
 
 # Pass command line options to tmux. Useful for specifying a different tmux.conf.
 # tmux_options: -f ~/.tmux.mac.conf

@@ -14,7 +14,7 @@ root: ~/dev/behanceops/anaconda-master
 
 # Runs in each window and pane before window/pane specific commands. Useful for setting up interpreter versions.
 pre_window:
-  - rbenv shell 2.1.7
+  - rbenv shell 2.4.2
   - export SNAKE_USER=centos;
   - export SNAKE_KEY=~/.ssh/cloudops-beh-app-stage.pem;
   - export _MAIN_DIR=~/dev/behanceops/anaconda-master;
