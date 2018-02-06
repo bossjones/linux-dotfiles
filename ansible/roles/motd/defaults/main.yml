@@ -4,5 +4,5 @@ motd: |
     This server is configured via Ansible.
     Do not change configuration settings directly.
 
-env_path: "/usr/bin/env"
 # env_path: "/bin/env" # fedora
+boss__motd_path_to_bin_env: "/usr/bin/env"
