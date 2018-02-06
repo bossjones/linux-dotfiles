@@ -176,6 +176,40 @@
         version: "master"
         update: "{{ pyenv_update_git_install }}"
 
+# Install pyenv module so we can use it
+- hosts: localhost
+  tags:
+    - pyenv_module
+  vars:
+    bossjones__user: vagrant
+    bossjones__group: vagrant
+    pyenv_root: "~/.pyenv"
+  become: yes
+  become_user: vagrant
+  environment:
+    SHELL: /bin/bash
+  roles:
+    - role: suzuki-shunsuke.pyenv-module
+
+  post_tasks:
+    # use pip module with executable option
+    - name: install powerline-status
+      pip:
+        name: "{{item}}"
+        executable: "{{pyenv_root}}/versions/2.7.14/bin/pip"
+      with_items:
+        - cheat
+        - powerline-status
+
+    # use pip module with executable option
+    - name: install powerline-status
+      pip:
+        name: "{{item}}"
+        executable: "{{pyenv_root}}/versions/3.6.4/bin/pip"
+      with_items:
+        - cheat
+        - powerline-status
+
 - hosts: localhost
   tags:
     - motd
