@@ -201,6 +201,8 @@
       with_items:
         - cheat
         - powerline-status
+        - ipython
+        - pdbpp
 
     # use pip module with executable option
     - name: install powerline-status
@@ -210,6 +212,8 @@
       with_items:
         - cheat
         - powerline-status
+        - ipython
+        - pdbpp
 
 - hosts: localhost
   tags:
