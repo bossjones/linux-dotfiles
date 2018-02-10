@@ -3,55 +3,15 @@
 name: anaconda-stage
 root: ~/dev/behanceops/anaconda-master
 
-# Optional. tmux socket
-# socket_name: foo
-
-# Runs before everything. Use it to start daemons etc.
-# pre: sudo /etc/rc.d/mysqld start
-
-pre: export SNAKE_USER=centos; export SNAKE_KEY=~/.ssh/cloudops-beh-app-stage.pem; export _MAIN_DIR=~/dev/behanceops/anaconda-master; export _BUILD_DIR=~/dev/behanceops/anaconda-master/apps/behance/build; export _BUILD_ENV_DIR=~/dev/behanceops/anaconda-master/apps/behance/build-env
-
 # Runs in each window and pane before window/pane specific commands. Useful for setting up interpreter versions.
-pre_window: rbenv shell 2.4.2
-
-# Pass command line options to tmux. Useful for specifying a different tmux.conf.
-# tmux_options: -f ~/.tmux.mac.conf
-
-post: tmux -CC attach
-
-# Change the command to call tmux.  This can be used by derivatives/wrappers like byobu.
-# tmux_command: byobu
-
-# Specifies (by name or index) which window will be selected on project startup. If not set, the first window is used.
-# startup_window: logs
+pre_window: eval "$(rbenv init -)"; rbenv shell 2.4.2
 
 windows:
   - anaconda:
       layout: main-vertical
       panes:
+        - export SNAKE_USER=centos; export SNAKE_KEY=~/.ssh/cloudops-beh-app-stage.pem; export _MAIN_DIR=~/dev/behanceops/anaconda-master; export _BUILD_DIR=~/dev/behanceops/anaconda-master/apps/behance/build; export _BUILD_ENV_DIR=~/dev/behanceops/anaconda-master/apps/behance/build-env
         - workon anaconda-virtualenv && echo -e "\n"; screenfetch
         - source ~/.aws/stage.sh && workon aws-tools
         - htop
         - env | grep "SNAKE" && env | grep "_DIR"
-
-
-
-
-# hive-sh4
-# cd $_MAIN_DIR && ./bin/snake vpc create -p hive-$PRODUCT_SHORTNAME -t stage
-# cd $_BUILD_ENV_DIR && ./create-persistent-resources.py -p hive-$PRODUCT_SHORTNAME -t stage -r us-east-1 -m devops-behance@adobe.com
-# cd $_BUILD_DIR && ./build.py -p hive-$PRODUCT_SHORTNAME -t stage -r us-east-1 -b master
-# cd $_BUILD_DIR && ./build.py -p pyve-$PRODUCT_SHORTNAME -t stage -r us-east-1 -b master -s
-# cd $_BUILD_ENV_DIR && ./create-app-stack.py -p hive-$PRODUCT_SHORTNAME -t stage -r us-east-1
-
-# cd $_MAIN_DIR && ./bin/snake cassandra create -p hive-$PRODUCT_SHORTNAME -t stage -r us-east-1
-# cd $_BUILD_DIR && fab -i $SNAKE_KEY --set product=hive-$PRODUCT_SHORTNAME,tier=stage,region=us-east-1,clusters=cassandra,side=a cstar_restart_hard
-
-# ansible atlanta -a "tail /homedir/myfile" -f 10
-# fab -H 52.91.200.60,52.87.205.192,184.72.77.73,184.72.77.141,54.227.199.242,54.227.199.14,54.237.234.210,107.21.82.39 log:log_file="/var/log/chef-client.log"
-
-#
-# cd $_BUILD_DIR && ./build.py -p pyve-$PRODUCT_SHORTNAME -t $TIER -r us-east-1 -b $PYVE_BRANCH -s && \
-# cd $_BUILD_DIR && ./build.py -p hive-$PRODUCT_SHORTNAME -t $TIER -r us-east-1 -b $HIVE_BRANCH && \
-# cd $_BUILD_DIR && fab build_all --set product=hive-$PRODUCT_SHORTNAME,tier=$TIER,region=us-east-1 -P && \
-# cd $_BUILD_DIR && ./dd-event.py -p hive-$PRODUCT_SHORTNAME -t $TIER -r us-east-1 -b $HIVE_BRANCH -u "$BUILD_USER"

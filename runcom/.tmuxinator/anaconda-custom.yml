@@ -3,17 +3,9 @@
 name: anaconda
 root: ~/dev/behanceops/anaconda-master
 
-# Optional. tmux socket
-# socket_name: foo
-
-# Runs before everything. Use it to start daemons etc.
-# pre: sudo /etc/rc.d/mysqld start
-
-# start scarlett
-# pre: cd ~/dev/bossjones/scarlett-ansible; make vagrant-up; sleep 35
-
 # Runs in each window and pane before window/pane specific commands. Useful for setting up interpreter versions.
 pre_window:
+  - eval "$(rbenv init -)";
   - rbenv shell 2.4.2
   - export SNAKE_USER=centos;
   - export SNAKE_KEY=~/.ssh/cloudops-beh-app-stage.pem;
@@ -21,27 +13,6 @@ pre_window:
   - export _BUILD_DIR=~/dev/behanceops/anaconda-master/apps/behance/build;
   - export _BUILD_ENV_DIR=~/dev/behanceops/anaconda-master/apps/behance/build-env
   - export BUILD_USER=bossjones
-# export PRODUCT_SHORTNAME=4
-# export PYVE_BRANCH=master
-# export HIVE_BRANCH=master
-# export TIER=prod
-# export SNAKE_USER=centos
-# export SNAKE_KEY=~/.ssh/cloudops-beh-app-$TIER.pem
-# export _MAIN_DIR=~/dev/behanceops/anaconda-master
-# export _BUILD_DIR=~/dev/behanceops/anaconda-master/apps/behance/build
-# export _BUILD_ENV_DIR=~/dev/behanceops/anaconda-master/apps/behance/build-env
-
-
-# Pass command line options to tmux. Useful for specifying a different tmux.conf.
-# tmux_options: -f ~/.tmux.mac.conf
-
-post: tmux -CC attach
-
-# Change the command to call tmux.  This can be used by derivatives/wrappers like byobu.
-# tmux_command: byobu
-
-# Specifies (by name or index) which window will be selected on project startup. If not set, the first window is used.
-# startup_window: logs
 
 windows:
   - anaconda:

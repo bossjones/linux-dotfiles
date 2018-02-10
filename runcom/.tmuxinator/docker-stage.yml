@@ -13,12 +13,10 @@ pre: docker-machine start dev
 # pre: cd ~/dev/bossjones/scarlett-ansible; make vagrant-up; sleep 35
 
 # Runs in each window and pane before window/pane specific commands. Useful for setting up interpreter versions.
-pre_window: rbenv shell 2.4.2 && eval $(docker-machine env dev)
+pre_window: eval "$(rbenv init -)"; rbenv shell 2.4.2; . /usr/local/opt/dvm/dvm.sh; . $DVM_DIR/bash_completion; eval $(docker-machine env dev)
 
 # Pass command line options to tmux. Useful for specifying a different tmux.conf.
 # tmux_options: -f ~/.tmux.mac.conf
-
-post: tmux -CC attach
 
 # Change the command to call tmux.  This can be used by derivatives/wrappers like byobu.
 # tmux_command: byobu

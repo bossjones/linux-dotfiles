@@ -3,22 +3,7 @@
 name: monitor
 root: ~/
 
-# Optional. tmux socket
-# socket_name: foo
-
-# Runs before everything. Use it to start daemons etc.
-# pre: sudo /etc/rc.d/mysqld start
-
-# start scarlett
-pre: who
-
-# Runs in each window and pane before window/pane specific commands. Useful for setting up interpreter versions.
-pre_window: rbenv shell 2.4.2
-
-# Pass command line options to tmux. Useful for specifying a different tmux.conf.
-# tmux_options: -f ~/.tmux.mac.conf
-
-post: tmux -CC attach || tmux -CC
+pre_window: eval "$(rbenv init -)"; rbenv shell 2.4.2; . /usr/local/opt/dvm/dvm.sh; . $DVM_DIR/bash_completion
 
 windows:
   - neofetch:
