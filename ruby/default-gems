@@ -10,3 +10,4 @@ hirb
 gem-ctags
 travis
 excon
+pry-doc

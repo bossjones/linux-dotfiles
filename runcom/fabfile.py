@@ -18,6 +18,7 @@ PWD = path.dirname(__file__)
 VENV_DIR = path.join(PWD, '.env')
 DEV_ENV_DIR = path.join(PWD, '.denv')
 
+# pylint: disable=E1601
 
 def travis_status():
     git_dirs = local("find . -name 'boss*' -maxdepth 1 -type d -print ", capture=True)

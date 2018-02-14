@@ -99,6 +99,9 @@
       nvm_users:
         - "{{ bossjones__user }}"
 
+# FIXME: Think about doing this to make it more idempotent!!
+# - set_fact:
+#   role_ruby_done: true
 
 - hosts: localhost
   tags:
