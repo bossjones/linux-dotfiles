@@ -1,0 +1,27 @@
+# Path to the bash it configuration
+export BASH_IT=$HOME/.bash_it
+
+# Lock and Load a custom theme file
+# location /.bash_it/themes/
+export BASH_IT_THEME='powerline-plain'
+
+# Your place for hosting Git repos. I use this for private repos.
+export GIT_HOSTING='git@github.com'
+
+# Set my editor and git editor
+export EDITOR="vim"
+export GIT_EDITOR='vim'
+
+# Set this to false to turn off version control status checking within the prompt for all themes
+export SCM_CHECK=true
+
+# Don't check mail when opening terminal.
+unset MAILCHECK
+
+# Tab complete sudo commands
+complete -cf sudo
+
+# Load Bash It
+if [ -e $BASH_IT/bash_it.sh ]; then
+  source $BASH_IT/bash_it.sh
+fi

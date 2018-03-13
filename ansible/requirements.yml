@@ -2,13 +2,43 @@
 # - name: timezone
 #   src: yatesr.timezone
 
-- name: zzet.rbenv
-  src: zzet.rbenv
+- src: https://github.com/zzet/ansible-rbenv-role
+  name: zzet.rbenv
+  version: 3.3.6
 
-- name: radamanth.node-nvm-ansible
-  src: radamanth.node-nvm-ansible
+- src: https://github.com/radamanth/node-nvm-ansible
+  name: radamanth.node-nvm-ansible
+  version: 1.0.4
 
+# committed on Apr 27, 2015
 - src: https://github.com/picotrading/ansible-ulimit
-  version: master
+  version: 22b1f6514204607c9b6028c3369cea31e9935d67
   name: ulimit
 
+- src: https://github.com/pablocrivella/ansible-role-nvm
+  version: ca9c429ca388eb36daad9195354012158aa61e94
+  name: pablocrivella.nvm
+
+- src: https://github.com/avanov/ansible-galaxy-pyenv
+  version: 15eb904383967119290ce60d4ec1135cbac49fc0
+  name: avanov.pyenv
+
+# Used this with oh-my-fedora, need to verify it actually works still
+- src: https://github.com/mjanser/ansible-role-powerline
+  version: c57b346fcda941424dbc14ef56afdbc1f808998d
+  name: mjanser.powerline
+
+# More modern, might want to try this instead
+- src: https://github.com/nass600/ansible-role-powerline
+  version: 31f6a1cdd90a4e9f7fe702cc1fd6a50a1fc73429
+  name: nass600.powerline
+
+# Worth checking out if the one above doesn't work
+- src: https://github.com/tvieira/ansible-powerline-fonts
+  version: da4b86e83ae69b083b60bad80904e51750a2c9ca
+  name: tvieira.powerline-fonts
+
+# After you call this role, you can use this module.
+- src: https://github.com/suzuki-shunsuke/ansible-pyenv-module
+  version: ab05ad3fe39fdc1f9905abf429eded353b7c0fd7
+  name: suzuki-shunsuke.pyenv-module

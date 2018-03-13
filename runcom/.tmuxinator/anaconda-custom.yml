@@ -1,0 +1,43 @@
+# ~/.tmuxinator/scarlett.yml
+
+name: anaconda
+root: ~/dev/behanceops/anaconda-master
+
+# Runs in each window and pane before window/pane specific commands. Useful for setting up interpreter versions.
+pre_window:
+  - eval "$(rbenv init -)";
+  - rbenv shell 2.4.2
+  - export SNAKE_USER=centos;
+  - export SNAKE_KEY=~/.ssh/cloudops-beh-app-stage.pem;
+  - export _MAIN_DIR=~/dev/behanceops/anaconda-master;
+  - export _BUILD_DIR=~/dev/behanceops/anaconda-master/apps/behance/build;
+  - export _BUILD_ENV_DIR=~/dev/behanceops/anaconda-master/apps/behance/build-env
+  - export BUILD_USER=bossjones
+
+windows:
+  - anaconda:
+      layout: 9fa4,223x75,0,0{118x75,0,0[118x52,0,0{59x52,0,0,8,58x52,60,0,13},118x22,0,53,12],104x75,119,0[104x16,119,0,1,104x15,119,17,9,104x22,119,33,2,104x19,119,56,3]}
+      panes:
+        - main:
+          - cd ~/dev/behanceops/anaconda-master
+          - workon anaconda-virtualenv
+        - build:
+          - cd ~/dev/behanceops/anaconda-master/apps/behance/build
+          - workon anaconda-virtualenv
+        - player:
+          - workon aws-tools
+          - source ~/.aws/stage.sh
+          - jungle ec2 ls
+          - echo "three pane"
+        - listener:
+          - cd ~/dev/behanceops/anaconda-master/apps/behance/build
+          - echo "four pane"
+        - emitter:
+          - cd ~/dev/behanceops/anaconda-master/apps/behance/build
+          - echo "five pane"
+        - logs:
+          - cd ~/dev/behanceops/anaconda-master/apps/behance/build
+          - echo "seveth pane"
+        - service:
+          - cd ~/dev/behanceops/anaconda-master/apps/behance/build
+          - echo "six pane"

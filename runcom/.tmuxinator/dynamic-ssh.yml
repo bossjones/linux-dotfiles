@@ -1,0 +1,13 @@
+# ~/.tmuxinator/dynamic-ssh.yml
+
+name: dynamic-ssh
+root: ~
+
+windows:
+  - win1:
+      layout: tiled
+      panes:
+        <% @args.each_with_index do |machine, idx|  %>
+        - pane<%= idx + 1 %>:
+          - ssh <your-ssh-user>@<%= machine %>
+        <% end %>

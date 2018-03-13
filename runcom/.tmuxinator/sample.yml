@@ -1,0 +1,19 @@
+# ~/.tmuxinator/sample.yml
+
+name: sample
+root: ~/dev
+
+# Runs in each window and pane before window/pane specific commands. Useful for setting up interpreter versions.
+pre_window: eval "$(rbenv init -)"; rbenv shell 2.4.2;
+
+
+windows:
+  - editor:
+      layout: main-vertical
+      panes:
+        - sleep 3s
+        - screenfetch
+        - htop
+        - matrix
+        - iftop
+        - jnettop

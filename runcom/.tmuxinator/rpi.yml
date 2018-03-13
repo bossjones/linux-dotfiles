@@ -1,0 +1,23 @@
+# ~/.tmuxinator/rpi.yml
+
+name: rpi
+root: ~/
+
+pre_window: eval "$(rbenv init -)"; rbenv shell 2.4.2; . /usr/local/opt/dvm/dvm.sh; . $DVM_DIR/bash_completion
+
+windows:
+  - rpi_lab:
+      layout: tiled
+      panes:
+        # - scarlettjenkins:
+        #   - autossh -M 0 -o "ServerAliveInterval 240" -o "ServerAliveCountMax 2" -o "PasswordAuthentication no" -o "IdentitiesOnly yes" -o "LogLevel FATAL" -i ~/.ssh/vagrant_id_rsa pirate@scarlett-jenkins.local
+        - scarlettcluster1:
+          - autossh -M 0 -o "ServerAliveInterval 240" -o "ServerAliveCountMax 2" -o "PasswordAuthentication no" -o "IdentitiesOnly yes" -o "LogLevel FATAL" -i ~/.ssh/vagrant_id_rsa pirate@scarlett-cluster1.local
+        - scarlettcluster2:
+          - autossh -M 0 -o "ServerAliveInterval 240" -o "ServerAliveCountMax 2" -o "PasswordAuthentication no" -o "IdentitiesOnly yes" -o "LogLevel FATAL" -i ~/.ssh/vagrant_id_rsa pirate@scarlett-cluster2.local
+        - scarlettcluster3:
+          - autossh -M 0 -o "ServerAliveInterval 240" -o "ServerAliveCountMax 2" -o "PasswordAuthentication no" -o "IdentitiesOnly yes" -o "LogLevel FATAL" -i ~/.ssh/vagrant_id_rsa pirate@scarlett-cluster3.local
+        - scarlettcluster4:
+          - autossh -M 0 -o "ServerAliveInterval 240" -o "ServerAliveCountMax 2" -o "PasswordAuthentication no" -o "IdentitiesOnly yes" -o "LogLevel FATAL" -i ~/.ssh/vagrant_id_rsa pirate@scarlett-cluster4.local
+        - scarlettids:
+          - autossh -M 0 -o "ServerAliveInterval 240" -o "ServerAliveCountMax 2" -o "PasswordAuthentication no" -o "IdentitiesOnly yes" -o "LogLevel FATAL" -i ~/.ssh/vagrant_id_rsa pirate@scarlett-ids.local
