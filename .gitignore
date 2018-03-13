@@ -26,3 +26,5 @@ playbook.retry
 
 .cache.sh
 system/.custom
+.vscode
+.vscode/
