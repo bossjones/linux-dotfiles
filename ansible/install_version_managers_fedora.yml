@@ -1,0 +1,544 @@
+# -*- coding: utf-8 -*-
+---
+##############################################################################
+# ansible-playbook install_version_managers_fedora.yml --extra-vars "bossjones__user=developer bossjones__group=developer"
+##############################################################################
+- hosts: localhost
+  tags:
+    - rbenv
+  become: yes
+  become_method: sudo
+  # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
+  environment:
+    SHELL: /bin/bash
+  vars_prompt:
+    - name: "bossjones__user"
+      prompt: "User we want to run as."
+      private: no
+    - name: "bossjones__group"
+      prompt: "Group we want to run as."
+      private: no
+  vars:
+    bossjones__user: vagrant
+    bossjones__group: vagrant
+    ulimit_config:
+      - domain: '*'
+        type: soft
+        item: nofile
+        value: 64000
+      - domain: '*'
+        type: hard
+        item: nofile
+        value: 64000
+  roles:
+    - role: ulimit
+    - role: zzet.rbenv
+      default_gems_file: "/home/{{ bossjones__user }}/.dotfiles/ruby/default-gems"
+      rbenv_extra_depends:
+      - libjemalloc1
+      - libjemalloc-dev
+      - ctags
+      rbenv:
+        env: user
+        version: v1.1.1
+        default_ruby: 2.4.2
+        rubies:
+        - version: 2.4.2
+      rbenv_users:
+      - "{{ bossjones__user }}"
+      rbenv_repo: "https://github.com/rbenv/rbenv.git"
+      rbenv_plugins:
+        - { name: "rbenv-vars",         repo: "https://github.com/rbenv/rbenv-vars.git",         version: "master" }
+        - { name: "ruby-build",         repo: "https://github.com/rbenv/ruby-build.git",         version: "master" }
+        - { name: "rbenv-default-gems", repo: "https://github.com/rbenv/rbenv-default-gems.git", version: "master" }
+        - { name: "rbenv-installer",    repo: "https://github.com/rbenv/rbenv-installer.git",    version: "master" }
+        - { name: "rbenv-update",       repo: "https://github.com/rkh/rbenv-update.git",         version: "master" }
+        - { name: "rbenv-whatis",       repo: "https://github.com/rkh/rbenv-whatis.git",         version: "master" }
+        - { name: "rbenv-use",          repo: "https://github.com/rkh/rbenv-use.git",            version: "master" }
+        - { name: "rbenv-ctags",        repo: "https://github.com/tpope/rbenv-ctags.git",        version: "master" }
+        - { name: "rbenv-each",         repo: "https://github.com/rbenv/rbenv-each.git",         version: "master" }
+        - { name: "rbenv-aliases",      repo: "https://github.com/tpope/rbenv-aliases.git",      version: "master" }
+
+      rbenv_root: "{% if rbenv.env == 'system' %}/usr/local/rbenv{% else %}~/.rbenv{% endif %}"
+
+
+- hosts: localhost
+  tags:
+    - nvm
+  become: yes
+  become_method: sudo
+  vars:
+    bossjones__user: vagrant
+    bossjones__group: vagrant
+  # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
+  environment:
+    SHELL: /bin/bash
+  roles:
+    - role: pablocrivella.nvm
+      nvm_repo: "git://github.com/creationix/nvm.git"
+      nvm_root: "/home/{{ bossjones__user }}/.nvm"
+      nvm_env: user
+      nvm_version: v0.33.1
+      nvm_default_node_version: stable
+      nvm_node_versions:
+        - stable
+      nvm_global_packages:
+        - vtop
+        - whereami
+        - figlet-cli
+        - get-port-cli
+        - getmac
+        - mediumcli
+        - speed-test
+        - spoof
+        - tldr
+        - wireless-tools
+        - yaml-lint
+        - pathogen-pm
+        - manga-scraper
+        - gtop
+        - historie
+        - nodemon
+        - npm
+        - release-it
+        - spot
+        - superstatic
+        - svgo
+        - underscore-cli
+        - diff-so-fancy
+        - docker-enter
+      nvm_users:
+        - "{{ bossjones__user }}"
+
+# FIXME: Think about doing this to make it more idempotent!!
+# - set_fact:
+#   role_ruby_done: true
+
+- hosts: localhost
+  tags:
+    - pyenv
+  vars:
+    bossjones__user: vagrant
+    bossjones__group: vagrant
+  # become: yes
+  # become_method: sudo
+  # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
+  environment:
+    SHELL: /bin/bash
+  roles:
+    - role: avanov.pyenv
+      pyenv_path: "/home/{{ bossjones__user }}/.pyenv"
+      pyenv_owner: "{{ bossjones__user }}"
+      pyenv_update_git_install: no
+      pyenv_enable_autocompletion: yes
+      pyenv_python_versions:
+        - "3.6.4"
+        - "2.7.14"
+      pyenv_virtualenvs:
+        - venv_name: "env364"
+          py_version: "3.6.4"
+
+        - venv_name: "env2714"
+          py_version: "2.7.14"
+  post_tasks:
+
+    # Install plugins for pyenv
+    - name: Clone pyenv-virtualenvwrapper
+      git:
+        repo: https://github.com/pyenv/pyenv-virtualenvwrapper
+        dest: "/home/{{ bossjones__user }}/.pyenv/plugins/pyenv-virtualenvwrapper"
+        version: "master"
+        update: "{{ pyenv_update_git_install }}"
+
+    - name: Clone pyenv-pip-rehash
+      git:
+        repo: https://github.com/pyenv/pyenv-pip-rehash
+        dest: "/home/{{ bossjones__user }}/.pyenv/plugins/pyenv-pip-rehash"
+        version: "master"
+        update: "{{ pyenv_update_git_install }}"
+
+    - name: Clone pyenv-pip-migrate
+      git:
+        repo: https://github.com/pyenv/pyenv-pip-migrate
+        dest: "/home/{{ bossjones__user }}/.pyenv/plugins/pyenv-pip-migrate"
+        version: "master"
+        update: "{{ pyenv_update_git_install }}"
+
+    - name: Clone pyenv-update
+      git:
+        repo: https://github.com/pyenv/pyenv-update
+        dest: "/home/{{ bossjones__user }}/.pyenv/plugins/pyenv-update"
+        version: "master"
+        update: "{{ pyenv_update_git_install }}"
+
+    - name: Clone pyenv-doctor
+      git:
+        repo: https://github.com/pyenv/pyenv-doctor
+        dest: "/home/{{ bossjones__user }}/.pyenv/plugins/pyenv-doctor"
+        version: "master"
+        update: "{{ pyenv_update_git_install }}"
+
+    # - name: Clone pyenv-ccache
+    #   git:
+    #     repo: https://github.com/pyenv/pyenv-ccache
+    #     dest: "/home/{{ bossjones__user }}/.pyenv/plugins/pyenv-ccache"
+    #     version: "master"
+
+    - name: Clone pyenv-default-packages
+      git:
+        repo: https://github.com/jawshooah/pyenv-default-packages
+        dest: "/home/{{ bossjones__user }}/.pyenv/plugins/pyenv-default-packages"
+        version: "master"
+        update: "{{ pyenv_update_git_install }}"
+
+# Install pyenv module so we can use it
+- hosts: localhost
+  tags:
+    - pyenv_module
+  vars:
+    bossjones__user: vagrant
+    bossjones__group: vagrant
+    pyenv_root: "~/.pyenv"
+  become: yes
+  become_user: vagrant
+  environment:
+    SHELL: /bin/bash
+  roles:
+    - role: suzuki-shunsuke.pyenv-module
+
+  post_tasks:
+    # use pip module with executable option
+    - name: install powerline-status
+      pip:
+        name: "{{item}}"
+        executable: "{{pyenv_root}}/versions/2.7.14/bin/pip"
+      with_items:
+        - cheat
+        - powerline-status
+        - ipython
+        - pdbpp
+
+    # use pip module with executable option
+    - name: install powerline-status
+      pip:
+        name: "{{item}}"
+        executable: "{{pyenv_root}}/versions/3.6.4/bin/pip"
+      with_items:
+        - cheat
+        - powerline-status
+        - ipython
+        - pdbpp
+
+- hosts: localhost
+  tags:
+    - motd
+  vars:
+    bossjones__user: vagrant
+    bossjones__group: vagrant
+  become: yes
+  become_method: sudo
+  environment:
+    SHELL: /bin/bash
+  roles:
+    - role: motd
+
+####################################################################################################
+# COMPILE TMUX SETUP
+####################################################################################################
+- hosts: localhost
+  tags:
+    - tmux
+  vars:
+    bossjones__user: vagrant
+    bossjones__group: vagrant
+    cheatsheet_update: yes
+    tmux_version: "2.6"
+    tmux_install_method: "source"
+    tmux_path: "/usr/local/"
+    tmux_tmp_dir: "/tmp/"
+    tmux_playbook_version: "0.0.1"
+    tmux_file_tag: "tmux-{{tmux_version}}"
+    tmux_file_name: "{{tmux_file_tag}}.tar.gz"
+    tmux_base_url: "https://github.com/tmux/tmux/releases/download/{{tmux_version}}/"
+    tmux_tarball_url: "{{tmux_base_url}}{{tmux_file_name}}"
+  become: yes
+  become_user: vagrant
+  # become_method: sudo
+  # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
+  environment:
+    SHELL: /bin/bash
+  tasks:
+    - name: Install Debian packages tmux prereqs
+      apt: pkg={{item}} state=latest update_cache=yes
+      with_items:
+        - libevent-dev
+        - libncurses-dev
+        - pkg-config
+        - wget
+        - curl
+        - make
+        - gcc
+        - autoconf
+        - automake
+        - libtool
+      when: ansible_os_family == "Debian"
+      become: yes
+      become_user: root
+
+    - name: Clone utf8proc
+      git:
+        repo: https://github.com/JuliaLang/utf8proc
+        dest: "/usr/local/src/utf8proc"
+        version: "master"
+      become: yes
+      become_user: root
+
+    - name: Compile and install utf8proc
+      shell: |
+                make &&
+                make check &&
+                make install
+                chdir=/usr/local/src/utf8proc
+      register: utf8proc_compiled
+      become: yes
+      become_user: root
+
+    - name: Checking installed version of tmux
+      shell: /usr/bin/test "$({{tmux_path}}bin/tmux -V 2> /dev/null)" = {{ tmux_version }}
+      register: wanted_version_installed
+      ignore_errors: True
+      changed_when: "wanted_version_installed.rc == 1"
+      become: yes
+      become_user: root
+
+    - name: Download tmux {{tmux_version}}
+      get_url: url={{tmux_tarball_url}} dest={{tmux_tmp_dir}}{{tmux_file_name}} timeout=120
+      when: wanted_version_installed.rc == 1
+      become: yes
+      become_user: root
+
+    - name: Unpack tmux {{tmux_version}}
+      command: tar -xzf {{tmux_file_name}} chdir={{tmux_tmp_dir}}
+      when: wanted_version_installed.rc == 1
+      become: yes
+      become_user: root
+
+    - name: Compile and install tmux {{tmux_version}}
+      shell: |
+        export LDFLAGS="-lresolv ${LDFLAGS}"
+        ./configure --prefix={{tmux_path}} --enable-utf8proc &&
+                make &&
+                make install
+                chdir={{tmux_tmp_dir}}{{tmux_file_tag}}
+      become: yes
+      become_user: root
+      when: wanted_version_installed.rc == 1
+
+    - name: Register remote PATH File
+      shell: "echo $PATH"
+      register: tmux_path_out
+      become: yes
+      become_user: root
+
+####################################################################################################
+# POWERLINE SETUP
+####################################################################################################
+- hosts: localhost
+  tags:
+    - powerline
+  vars:
+    bossjones__user: vagrant
+    bossjones__group: vagrant
+  become: yes
+  # become_user: vagrant
+  # become: yes
+  # become_method: sudo
+  # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
+  environment:
+    SHELL: /bin/bash
+  pre_tasks:
+
+    # SOURCE: https://github.com/veggiemonk/ansible-dotfiles/blob/master/tasks/fonts.yml
+    - name: Cloning fonts
+      git:
+        repo=https://github.com/powerline/fonts
+        dest="/home/{{bossjones__user}}/powerlinefonts"
+        accept_hostkey=yes
+      register: fontCloned
+      become: yes
+      become_user: vagrant
+
+    - name: Install Fonts
+      shell: /home/{{bossjones__user}}/powerlinefonts/install.sh chdir=/home/{{bossjones__user}}/powerlinefonts
+      when: fontCloned|success
+      become: yes
+      become_user: vagrant
+
+    - name: "Create directory: /home/{{bossjones__user}}/powerline"
+      file:
+        path: "/home/{{bossjones__user}}/.config/powerline"
+        state: directory
+        owner: "{{ bossjones__user }}"
+      become: yes
+      become_user: vagrant
+
+    - name: "touch /home/{{bossjones__user}}/.powerline"
+      shell: >
+        touch /home/{{bossjones__user}}/.powerline
+      become: yes
+      become_user: vagrant
+
+  roles:
+    # NOTE: BROKEN AND NOT WORKING
+    # - role: mjanser.powerline
+    #   powerline_default_top_theme: powerline
+    #   powerline_shell_vcs_branch: yes
+    #   powerline_users:
+    #     - "{{bossjones__user}}}"
+
+    - role: nass600.powerline
+      powerline_package_name: "powerline-status"
+      powerline_version: "2.6"
+
+      powerline_extra_segments:
+        - {name: powerline-gitstatus, version: "1.2.1"}
+
+      powerline_daemon_destination: "/home/{{bossjones__user}}/.powerline"
+
+      powerline_config_dir: "/home/{{bossjones__user}}/.config/powerline"
+      powerline_config_shell_colorscheme: "default"
+      powerline_config_shell_theme: "default"
+      powerline_config_vim_colorscheme: "default"
+      powerline_config_vim_theme: "default"
+
+      powerline_fonts_repo: "git://github.com/powerline/fonts.git"
+      powerline_fonts_dir: "{{ powerline_config_dir }}/fonts"
+
+####################################################################################################
+# CHEATSHEETS SETUP
+####################################################################################################
+- hosts: localhost
+  tags:
+    - cheat
+  vars:
+    bossjones__user: vagrant
+    bossjones__group: vagrant
+    cheatsheet_update: yes
+  become: yes
+  become_user: vagrant
+  # become_method: sudo
+  # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
+  environment:
+    SHELL: /bin/bash
+  tasks:
+    - name: Clone pyenv-doctor
+      git:
+        repo: https://github.com/bossjones/boss-cheatsheets
+        dest: "/home/{{ bossjones__user }}/.cheat"
+        version: "master"
+        update: "{{ cheatsheet_update }}"
+
+####################################################################################################
+# BASH-IT SETUP
+####################################################################################################
+- hosts: localhost
+  tags:
+    - bash_it
+  vars:
+    bossjones__user: vagrant
+    bossjones__group: vagrant
+    cheatsheet_update: yes
+    boss__bash_it_theme: "powerline-plain"
+    boss__bash_it_repository: https://github.com/Bash-it/bash-it.git
+    boss__bash_it_version: master
+    boss__bash_it_aliases:
+      - general
+    boss__bash_it_plugins:
+      - base
+      - history
+    boss__bash_it_completions:
+      - git
+  become: yes
+  become_user: vagrant
+  # become_method: sudo
+  # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
+  environment:
+    SHELL: /bin/bash
+  tasks:
+    # TODO: have bash_it run before this shell script
+    - name: clone bash_it
+      git: repo="{{boss__bash_it_repository}}"
+          dest="/home/{{bossjones__user}}/.bash_it"
+          update=no
+          depth=1
+      become: "{{bossjones__user}}"
+      become_user: "{{bossjones__user}}"
+
+    - name: Register home directory for {{ bossjones__user }}
+      shell: >
+        getent passwd {{ bossjones__user }} | cut -d: -f6
+      changed_when: false
+      register: linux_user_home
+
+    - name: Register current login shell for {{ bossjones__user }}
+      shell: >
+        getent passwd {{ bossjones__user }} | cut -d: -f7
+      changed_when: false
+      register: linux_user_shell
+
+    - name: Set facts
+      set_fact:
+        boss__bash_it_user_home: "{{ linux_user_home.stdout }}"
+        boss__bash_it_user_shell: "{{ linux_user_shell.stdout }}"
+
+    - name: assert home directory is detected
+      assert: { that: boss__bash_it_user_home != "" }
+
+    - name: assert current shell is detected
+      assert: { that: boss__bash_it_user_shell != "" }
+
+    - name: "clone bash_it for {{ bossjones__user }}"
+      git:
+        repo: "{{ boss__bash_it_repository }}"
+        dest: "{{ boss__bash_it_user_home }}/.bash_it"
+        version: "{{ boss__bash_it_version }}"
+      become: "{{ bossjones__user }}"
+
+    - name: "change shell to bash for {{ bossjones__user }}"
+      command: "chsh -s /bin/bash {{ bossjones__user }}"
+      become_user: root
+      when: boss__bash_it_user_shell != "/bin/bash"
+
+    - name: "initialize bash_it directories for {{ bossjones__user }}"
+      file:
+        path: "{{ boss__bash_it_user_home }}/.bash_it/{{ item }}/enabled"
+        state: directory
+        owner: "{{ bossjones__user }}"
+      with_items:
+        - "plugins"
+        - "aliases"
+        - "completion"
+
+    - name: "install bash_it plugins for {{ bossjones__user }}"
+      file:
+        src: "{{ boss__bash_it_user_home }}/.bash_it/plugins/available/{{ item }}.plugin.bash"
+        dest: "{{ boss__bash_it_user_home }}/.bash_it/plugins/enabled/{{ item }}.plugin.bash"
+        state: link
+        owner: "{{ bossjones__user }}"
+      with_items: '{{ boss__bash_it_plugins }}'
+
+    - name: "install bash_it aliases for {{ bossjones__user }}"
+      file:
+        src: "{{ boss__bash_it_user_home }}/.bash_it/aliases/available/{{ item }}.aliases.bash"
+        dest: "{{ boss__bash_it_user_home }}/.bash_it/aliases/enabled/{{ item }}.aliases.bash"
+        state: link
+        owner: "{{ bossjones__user }}"
+      with_items: '{{ boss__bash_it_aliases }}'
+
+    - name: "install bash_it completions for {{ bossjones__user }}"
+      file:
+        src: "{{ boss__bash_it_user_home }}/.bash_it/completion/available/{{ item }}.completion.bash"
+        dest: "{{ boss__bash_it_user_home }}/.bash_it/completion/enabled/{{ item }}.completion.bash"
+        state: link
+        owner: "{{ bossjones__user }}"
+      with_items: '{{ boss__bash_it_completions }}'

@@ -22,5 +22,11 @@ fi
 
 # TODO: Add variable files for different machines
 # ansible-playbook install_version_managers.yml --skip-tags="nvm"
-ansible-playbook install_version_managers.yml
+if [[ $unamestr == "Darwin" ]]; then
+  echo "OS X: Needs to be implemented"
+elif [[ $unamestr == "Linux"  && -f $(which apt-get) ]]; then
+  ansible-playbook install_version_managers.yml
+elif [[ $unamestr == "Linux"  && -f $(which dnf) ]]; then
+    echo "Fedora: Needs to be implemented"
+fi
 popd
