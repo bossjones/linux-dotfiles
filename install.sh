@@ -59,6 +59,24 @@ e_header "Package managers & packages"
 . "$DOTFILES_DIR/install/brew-cask.sh"
 . "$DOTFILES_DIR/install/gem.sh"
 
+# Fonts
+unamestr=$(uname)
+
+e_header "Install fonts"
+
+if [[ $unamestr == "Linux"  && -f $(which dnf) ]]; then
+  mkdir ~/.local/share/fonts/
+  cp -rv $DOTFILES_DIR/fonts/* ~/.local/share/fonts/
+  fc-cache -v
+fi
+
+e_header "Copy folders into .config"
+
+if [[ $unamestr == "Linux"  && -f $(which dnf) ]]; then
+  cp -rvf "$DOTFILES_DIR/runcom/.config/gtk-3.0" ~/.config/
+  cp -rvf "$DOTFILES_DIR/runcom/.config/powerline" ~/.config/
+fi
+
 e_header "Run tests"
 
 # Run tests
