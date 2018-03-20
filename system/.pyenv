@@ -1,6 +1,6 @@
 export PYENV_ROOT="$HOME/.pyenv"
 
-export PYENV_VERSION=2.7.14
+export PYENV_VERSION=3.5.2
 
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
