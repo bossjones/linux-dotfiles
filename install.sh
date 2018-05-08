@@ -70,12 +70,12 @@ if [[ $unamestr == "Linux"  && -f $(which dnf) ]]; then
   fc-cache -v
 fi
 
-e_header "Copy folders into .config"
+# e_header "Copy folders into .config"
 
-if [[ $unamestr == "Linux"  && -f $(which dnf) ]]; then
-  cp -rvf "$DOTFILES_DIR/runcom/.config/gtk-3.0" ~/.config/
-  cp -rvf "$DOTFILES_DIR/runcom/.config/powerline" ~/.config/
-fi
+# if [[ $unamestr == "Linux"  && -f $(which dnf) ]]; then
+#   cp -rvf "$DOTFILES_DIR/runcom/.config/gtk-3.0" ~/.config/
+#   cp -rvf "$DOTFILES_DIR/runcom/.config/powerline" ~/.config/
+# fi
 
 e_header "Run tests"
 

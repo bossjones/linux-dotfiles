@@ -4,13 +4,6 @@
 # ansible-playbook install_version_managers_fedora.yml --extra-vars "bossjones__user=developer bossjones__group=developer"
 ##############################################################################
 - hosts: localhost
-  tags:
-    - rbenv
-  become: yes
-  become_method: sudo
-  # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
-  environment:
-    SHELL: /bin/bash
   vars_prompt:
     - name: "bossjones__user"
       prompt: "User we want to run as."
@@ -18,9 +11,16 @@
     - name: "bossjones__group"
       prompt: "Group we want to run as."
       private: no
+  tags:
+    - rbenv
+  become: yes
+  become_method: sudo
+  # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
+  environment:
+    SHELL: /bin/bash
   vars:
-    bossjones__user: vagrant
-    bossjones__group: vagrant
+    bossjones__user: "{{boss__user}}"
+    bossjones__group: "{{boss_group}}"
     ulimit_config:
       - domain: '*'
         type: soft
@@ -34,6 +34,7 @@
     - role: ulimit
     - role: zzet.rbenv
       default_gems_file: "/home/{{ bossjones__user }}/.dotfiles/ruby/default-gems"
+      # TODO: These values need to be changed
       rbenv_extra_depends:
       - libjemalloc1
       - libjemalloc-dev
@@ -63,13 +64,20 @@
 
 
 - hosts: localhost
+  vars_prompt:
+    - name: "bossjones__user"
+      prompt: "User we want to run as."
+      private: no
+    - name: "bossjones__group"
+      prompt: "Group we want to run as."
+      private: no
   tags:
     - nvm
   become: yes
   become_method: sudo
   vars:
-    bossjones__user: vagrant
-    bossjones__group: vagrant
+    bossjones__user: "{{boss__user}}"
+    bossjones__group: "{{boss_group}}"
   # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
   environment:
     SHELL: /bin/bash
@@ -110,16 +118,16 @@
       nvm_users:
         - "{{ bossjones__user }}"
 
-# FIXME: Think about doing this to make it more idempotent!!
-# - set_fact:
-#   role_ruby_done: true
-
 - hosts: localhost
+  vars_prompt:
+    - name: "bossjones__user"
+      prompt: "User we want to run as."
+      private: no
+    - name: "bossjones__group"
+      prompt: "Group we want to run as."
+      private: no
   tags:
     - pyenv
-  vars:
-    bossjones__user: vagrant
-    bossjones__group: vagrant
   # become: yes
   # become_method: sudo
   # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
@@ -178,12 +186,6 @@
         version: "master"
         update: "{{ pyenv_update_git_install }}"
 
-    # - name: Clone pyenv-ccache
-    #   git:
-    #     repo: https://github.com/pyenv/pyenv-ccache
-    #     dest: "/home/{{ bossjones__user }}/.pyenv/plugins/pyenv-ccache"
-    #     version: "master"
-
     - name: Clone pyenv-default-packages
       git:
         repo: https://github.com/jawshooah/pyenv-default-packages
@@ -193,14 +195,19 @@
 
 # Install pyenv module so we can use it
 - hosts: localhost
+  vars_prompt:
+    - name: "bossjones__user"
+      prompt: "User we want to run as."
+      private: no
+    - name: "bossjones__group"
+      prompt: "Group we want to run as."
+      private: no
   tags:
     - pyenv_module
   vars:
-    bossjones__user: vagrant
-    bossjones__group: vagrant
     pyenv_root: "~/.pyenv"
   become: yes
-  become_user: vagrant
+  become_user: "{{bossjones__user}}"
   environment:
     SHELL: /bin/bash
   roles:
@@ -230,11 +237,15 @@
         - pdbpp
 
 - hosts: localhost
+  vars_prompt:
+    - name: "bossjones__user"
+      prompt: "User we want to run as."
+      private: no
+    - name: "bossjones__group"
+      prompt: "Group we want to run as."
+      private: no
   tags:
     - motd
-  vars:
-    bossjones__user: vagrant
-    bossjones__group: vagrant
   become: yes
   become_method: sudo
   environment:
@@ -246,11 +257,16 @@
 # COMPILE TMUX SETUP
 ####################################################################################################
 - hosts: localhost
+  vars_prompt:
+    - name: "bossjones__user"
+      prompt: "User we want to run as."
+      private: no
+    - name: "bossjones__group"
+      prompt: "Group we want to run as."
+      private: no
   tags:
     - tmux
   vars:
-    bossjones__user: vagrant
-    bossjones__group: vagrant
     cheatsheet_update: yes
     tmux_version: "2.6"
     tmux_install_method: "source"
@@ -262,14 +278,14 @@
     tmux_base_url: "https://github.com/tmux/tmux/releases/download/{{tmux_version}}/"
     tmux_tarball_url: "{{tmux_base_url}}{{tmux_file_name}}"
   become: yes
-  become_user: vagrant
+  become_user: "{{bossjones__user}}"
   # become_method: sudo
   # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
   environment:
     SHELL: /bin/bash
   tasks:
     - name: Install Debian packages tmux prereqs
-      apt: pkg={{item}} state=latest update_cache=yes
+      apt: pkg={{item}} state=present update_cache=yes
       with_items:
         - libevent-dev
         - libncurses-dev
@@ -302,6 +318,7 @@
       register: utf8proc_compiled
       become: yes
       become_user: root
+      when: ansible_os_family == "Debian"
 
     - name: Checking installed version of tmux
       shell: /usr/bin/test "$({{tmux_path}}bin/tmux -V 2> /dev/null)" = {{ tmux_version }}
@@ -310,16 +327,17 @@
       changed_when: "wanted_version_installed.rc == 1"
       become: yes
       become_user: root
+      when: ansible_os_family == "Debian"
 
     - name: Download tmux {{tmux_version}}
       get_url: url={{tmux_tarball_url}} dest={{tmux_tmp_dir}}{{tmux_file_name}} timeout=120
-      when: wanted_version_installed.rc == 1
+      when: wanted_version_installed.rc == 1 and ansible_os_family == "Debian"
       become: yes
       become_user: root
 
     - name: Unpack tmux {{tmux_version}}
       command: tar -xzf {{tmux_file_name}} chdir={{tmux_tmp_dir}}
-      when: wanted_version_installed.rc == 1
+      when: wanted_version_installed.rc == 1 and ansible_os_family == "Debian"
       become: yes
       become_user: root
 
@@ -332,25 +350,30 @@
                 chdir={{tmux_tmp_dir}}{{tmux_file_tag}}
       become: yes
       become_user: root
-      when: wanted_version_installed.rc == 1
+      when: wanted_version_installed.rc == 1 and ansible_os_family == "Debian"
 
     - name: Register remote PATH File
       shell: "echo $PATH"
       register: tmux_path_out
       become: yes
       become_user: root
+      when: ansible_os_family == "Debian"
 
 ####################################################################################################
 # POWERLINE SETUP
 ####################################################################################################
 - hosts: localhost
+  vars_prompt:
+    - name: "bossjones__user"
+      prompt: "User we want to run as."
+      private: no
+    - name: "bossjones__group"
+      prompt: "Group we want to run as."
+      private: no
   tags:
     - powerline
-  vars:
-    bossjones__user: vagrant
-    bossjones__group: vagrant
   become: yes
-  # become_user: vagrant
+  # become_user: "{{bossjones__user}}"
   # become: yes
   # become_method: sudo
   # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
@@ -366,13 +389,13 @@
         accept_hostkey=yes
       register: fontCloned
       become: yes
-      become_user: vagrant
+      become_user: "{{bossjones__user}}"
 
     - name: Install Fonts
       shell: /home/{{bossjones__user}}/powerlinefonts/install.sh chdir=/home/{{bossjones__user}}/powerlinefonts
       when: fontCloned|success
       become: yes
-      become_user: vagrant
+      become_user: "{{bossjones__user}}"
 
     - name: "Create directory: /home/{{bossjones__user}}/powerline"
       file:
@@ -380,13 +403,13 @@
         state: directory
         owner: "{{ bossjones__user }}"
       become: yes
-      become_user: vagrant
+      become_user: "{{bossjones__user}}"
 
     - name: "touch /home/{{bossjones__user}}/.powerline"
       shell: >
         touch /home/{{bossjones__user}}/.powerline
       become: yes
-      become_user: vagrant
+      become_user: "{{bossjones__user}}"
 
   roles:
     # NOTE: BROKEN AND NOT WORKING
@@ -418,14 +441,21 @@
 # CHEATSHEETS SETUP
 ####################################################################################################
 - hosts: localhost
+  vars_prompt:
+    - name: "bossjones__user"
+      prompt: "User we want to run as."
+      private: no
+    - name: "bossjones__group"
+      prompt: "Group we want to run as."
+      private: no
   tags:
     - cheat
   vars:
-    bossjones__user: vagrant
-    bossjones__group: vagrant
+    bossjones__user: "{{boss__user}}"
+    bossjones__group: "{{boss_group}}"
     cheatsheet_update: yes
   become: yes
-  become_user: vagrant
+  become_user: "{{bossjones__user}}"
   # become_method: sudo
   # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
   environment:
@@ -442,11 +472,18 @@
 # BASH-IT SETUP
 ####################################################################################################
 - hosts: localhost
+  vars_prompt:
+    - name: "bossjones__user"
+      prompt: "User we want to run as."
+      private: no
+    - name: "bossjones__group"
+      prompt: "Group we want to run as."
+      private: no
   tags:
     - bash_it
   vars:
-    bossjones__user: vagrant
-    bossjones__group: vagrant
+    bossjones__user: "{{boss__user}}"
+    bossjones__group: "{{boss_group}}"
     cheatsheet_update: yes
     boss__bash_it_theme: "powerline-plain"
     boss__bash_it_repository: https://github.com/Bash-it/bash-it.git
@@ -459,7 +496,7 @@
     boss__bash_it_completions:
       - git
   become: yes
-  become_user: vagrant
+  become_user: "{{bossjones__user}}"
   # become_method: sudo
   # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
   environment:
