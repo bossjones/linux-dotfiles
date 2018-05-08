@@ -1,0 +1,1 @@
+[ -s "$HOME/.cargo" ] && export PATH="$HOME/.cargo/bin:$PATH"

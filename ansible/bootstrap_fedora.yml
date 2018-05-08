@@ -1,0 +1,93 @@
+---
+##############################################################################
+# ansible-playbook bootstrap_fedora.yml --extra-vars "bossjones__user=developer bossjones__group=developer"
+##############################################################################
+- hosts: all
+  become: yes
+  become_method: sudo
+  # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
+  environment:
+    SHELL: /bin/bash
+  vars_prompt:
+    - name: "bossjones__user"
+      prompt: "User we want to run as."
+      private: no
+    - name: "bossjones__group"
+      prompt: "Group we want to run as."
+      private: no
+  vars:
+    folders_to_backup:
+      # XDG_CONFIG_HOME
+      - '.config'
+      # XDG_CACHE_HOME
+      - '.cache'
+      # XDG_DATA_HOME
+      - '.local/share'
+      - .bashrc
+      - .bash_profile
+      - .vim
+      - .profile
+
+    ulimit_config:
+      - domain: '*'
+        type: soft
+        item: nofile
+        value: 64000
+      - domain: '*'
+        type: hard
+        item: nofile
+        value: 64000
+  pre_tasks:
+    # Note: We use the raw command here because we aren't sure if ansible is installed by this point?
+    # CMD: dnf -y update
+    - name: upgrade all packages
+      dnf:
+        name: "*"
+        state: latest
+
+    - name: install deps pkgs
+      dnf:
+        name: "{{item}}"
+        state: present
+      with_items:
+        - systemd
+        - tree
+        - ansible
+        - sudo
+        - which
+        - python3-devel
+        - python2-dnf
+        - git
+        - tmux
+
+    - name: install deps pkgs
+      dnf:
+        name: "{{item}}"
+        state: absent
+      with_items:
+        - vim-minimal
+        - openssl-devel
+
+    - name: install compat-openssl10-devel
+      dnf:
+        name: "{{item}}"
+        state: present
+      with_items:
+        - compat-openssl10-devel
+
+    - name: Create Backups folder
+      file:
+        path: "/home/{{ bossjones__user }}/backup"
+        state: directory
+      tags:
+        - folders_to_backup
+
+    - name : Compress sites folders_to_backup
+      command   : "tar -zcvf /home/{{ bossjones__user }}/backup/{{ item }}.tar.gz /home/{{ bossjones__user }}/{{ item }}"
+      with_items: folders_to_backup
+      tags:
+        - folders_to_backup
+
+
+  roles:
+    - role: ulimit

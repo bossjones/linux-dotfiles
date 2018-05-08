@@ -3,6 +3,41 @@
 ##############################################################################
 # ansible-playbook install_version_managers_fedora.yml --extra-vars "bossjones__user=developer bossjones__group=developer"
 ##############################################################################
+
+- hosts: localhost
+  vars_prompt:
+    - name: "bossjones__user"
+      prompt: "User we want to run as."
+      private: no
+    - name: "bossjones__group"
+      prompt: "Group we want to run as."
+      private: no
+  tags:
+    - devel-tools
+  become: yes
+  become_method: sudo
+  # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
+  environment:
+    SHELL: /bin/bash
+  vars:
+    bossjones__user: "{{boss__user}}"
+    bossjones__group: "{{boss_group}}"
+  tasks:
+    - name: install development tools
+      dnf:
+        name: "{{item}}"
+        state: present
+      with_items:
+        - zlib-devel
+        - bzip2
+        - bzip2-devel
+        - readline-devel
+        - sqlite
+        - sqlite-devel
+        - xz
+        - xz-devel
+        - '@Development tools'
+
 - hosts: localhost
   vars_prompt:
     - name: "bossjones__user"
@@ -21,24 +56,15 @@
   vars:
     bossjones__user: "{{boss__user}}"
     bossjones__group: "{{boss_group}}"
-    ulimit_config:
-      - domain: '*'
-        type: soft
-        item: nofile
-        value: 64000
-      - domain: '*'
-        type: hard
-        item: nofile
-        value: 64000
   roles:
-    - role: ulimit
     - role: zzet.rbenv
       default_gems_file: "/home/{{ bossjones__user }}/.dotfiles/ruby/default-gems"
       # TODO: These values need to be changed
       rbenv_extra_depends:
-      - libjemalloc1
-      - libjemalloc-dev
+      - libvmmalloc-devel
+      - jemalloc-devel
       - ctags
+      - ctags-etags
       rbenv:
         env: user
         version: v1.1.1
@@ -96,23 +122,13 @@
         - figlet-cli
         - get-port-cli
         - getmac
-        - mediumcli
         - speed-test
         - spoof
-        - tldr
         - wireless-tools
         - yaml-lint
         - pathogen-pm
-        - manga-scraper
         - gtop
-        - historie
-        - nodemon
         - npm
-        - release-it
-        - spot
-        - superstatic
-        - svgo
-        - underscore-cli
         - diff-so-fancy
         - docker-enter
       nvm_users:
@@ -142,12 +158,16 @@
       pyenv_python_versions:
         - "3.6.4"
         - "2.7.14"
+        - "3.5.2"
       pyenv_virtualenvs:
         - venv_name: "env364"
           py_version: "3.6.4"
 
         - venv_name: "env2714"
           py_version: "2.7.14"
+
+        - venv_name: "env352"
+          py_version: "3.5.2"
   post_tasks:
 
     # Install plugins for pyenv
@@ -236,6 +256,17 @@
         - ipython
         - pdbpp
 
+    # use pip module with executable option
+    - name: install powerline-status
+      pip:
+        name: "{{item}}"
+        executable: "{{pyenv_root}}/versions/3.5.2/bin/pip"
+      with_items:
+        - cheat
+        - powerline-status
+        - ipython
+        - pdbpp
+
 - hosts: localhost
   vars_prompt:
     - name: "bossjones__user"
@@ -252,112 +283,6 @@
     SHELL: /bin/bash
   roles:
     - role: motd
-
-####################################################################################################
-# COMPILE TMUX SETUP
-####################################################################################################
-- hosts: localhost
-  vars_prompt:
-    - name: "bossjones__user"
-      prompt: "User we want to run as."
-      private: no
-    - name: "bossjones__group"
-      prompt: "Group we want to run as."
-      private: no
-  tags:
-    - tmux
-  vars:
-    cheatsheet_update: yes
-    tmux_version: "2.6"
-    tmux_install_method: "source"
-    tmux_path: "/usr/local/"
-    tmux_tmp_dir: "/tmp/"
-    tmux_playbook_version: "0.0.1"
-    tmux_file_tag: "tmux-{{tmux_version}}"
-    tmux_file_name: "{{tmux_file_tag}}.tar.gz"
-    tmux_base_url: "https://github.com/tmux/tmux/releases/download/{{tmux_version}}/"
-    tmux_tarball_url: "{{tmux_base_url}}{{tmux_file_name}}"
-  become: yes
-  become_user: "{{bossjones__user}}"
-  # become_method: sudo
-  # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
-  environment:
-    SHELL: /bin/bash
-  tasks:
-    - name: Install Debian packages tmux prereqs
-      apt: pkg={{item}} state=present update_cache=yes
-      with_items:
-        - libevent-dev
-        - libncurses-dev
-        - pkg-config
-        - wget
-        - curl
-        - make
-        - gcc
-        - autoconf
-        - automake
-        - libtool
-      when: ansible_os_family == "Debian"
-      become: yes
-      become_user: root
-
-    - name: Clone utf8proc
-      git:
-        repo: https://github.com/JuliaLang/utf8proc
-        dest: "/usr/local/src/utf8proc"
-        version: "master"
-      become: yes
-      become_user: root
-
-    - name: Compile and install utf8proc
-      shell: |
-                make &&
-                make check &&
-                make install
-                chdir=/usr/local/src/utf8proc
-      register: utf8proc_compiled
-      become: yes
-      become_user: root
-      when: ansible_os_family == "Debian"
-
-    - name: Checking installed version of tmux
-      shell: /usr/bin/test "$({{tmux_path}}bin/tmux -V 2> /dev/null)" = {{ tmux_version }}
-      register: wanted_version_installed
-      ignore_errors: True
-      changed_when: "wanted_version_installed.rc == 1"
-      become: yes
-      become_user: root
-      when: ansible_os_family == "Debian"
-
-    - name: Download tmux {{tmux_version}}
-      get_url: url={{tmux_tarball_url}} dest={{tmux_tmp_dir}}{{tmux_file_name}} timeout=120
-      when: wanted_version_installed.rc == 1 and ansible_os_family == "Debian"
-      become: yes
-      become_user: root
-
-    - name: Unpack tmux {{tmux_version}}
-      command: tar -xzf {{tmux_file_name}} chdir={{tmux_tmp_dir}}
-      when: wanted_version_installed.rc == 1 and ansible_os_family == "Debian"
-      become: yes
-      become_user: root
-
-    - name: Compile and install tmux {{tmux_version}}
-      shell: |
-        export LDFLAGS="-lresolv ${LDFLAGS}"
-        ./configure --prefix={{tmux_path}} --enable-utf8proc &&
-                make &&
-                make install
-                chdir={{tmux_tmp_dir}}{{tmux_file_tag}}
-      become: yes
-      become_user: root
-      when: wanted_version_installed.rc == 1 and ansible_os_family == "Debian"
-
-    - name: Register remote PATH File
-      shell: "echo $PATH"
-      register: tmux_path_out
-      become: yes
-      become_user: root
-      when: ansible_os_family == "Debian"
 
 ####################################################################################################
 # POWERLINE SETUP
@@ -412,12 +337,6 @@
       become_user: "{{bossjones__user}}"
 
   roles:
-    # NOTE: BROKEN AND NOT WORKING
-    # - role: mjanser.powerline
-    #   powerline_default_top_theme: powerline
-    #   powerline_shell_vcs_branch: yes
-    #   powerline_users:
-    #     - "{{bossjones__user}}}"
 
     - role: nass600.powerline
       powerline_package_name: "powerline-status"

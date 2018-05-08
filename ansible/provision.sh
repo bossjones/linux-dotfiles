@@ -17,7 +17,11 @@ echo "localhost ansible_connection=local ansible_python_interpreter=${_PATH_TO_P
 if [[ $unamestr == "Darwin" ]]; then
   ansible-playbook bootstrap_osx.yml
 elif [[ $unamestr == "Linux"  && -f $(which apt-get) ]]; then
-  ansible-playbook bootstrap_xenial.yml
+    _USER=$(whoami) \
+    _GROUP=$(whoami) \
+    ansible-playbook bootstrap_xenial.yml \
+    --extra-vars \
+    "bossjones__user=${_USER} bossjones__group=${_GROUP}"
 fi
 
 # TODO: Add variable files for different machines
@@ -28,5 +32,18 @@ elif [[ $unamestr == "Linux"  && -f $(which apt-get) ]]; then
   ansible-playbook install_version_managers.yml
 elif [[ $unamestr == "Linux"  && -f $(which dnf) ]]; then
     echo "Fedora: Needs to be implemented"
+    echo "Fedora: Try running ansible-playbook -vvvv install_version_managers_fedora.yml"
+
+    _USER=$(whoami) \
+    _GROUP=$(whoami) \
+    ansible-playbook bootstrap_fedora.yml \
+    --extra-vars \
+    "bossjones__user=${_USER} bossjones__group=${_GROUP}"
+
+    _USER=$(whoami) \
+    _GROUP=$(whoami) \
+    ansible-playbook install_version_managers_fedora.yml \
+    --extra-vars \
+    "bossjones__user=${_USER} bossjones__group=${_GROUP}"
 fi
 popd

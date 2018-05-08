@@ -65,7 +65,7 @@ unamestr=$(uname)
 e_header "Install fonts"
 
 if [[ $unamestr == "Linux"  && -f $(which dnf) ]]; then
-  mkdir ~/.local/share/fonts/
+  mkdir -p ~/.local/share/fonts/
   cp -rv $DOTFILES_DIR/fonts/* ~/.local/share/fonts/
   fc-cache -v
 fi
