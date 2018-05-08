@@ -50,12 +50,17 @@ shellcheck:
 		--workdir /usr/src \
 		r.j3ss.co/shellcheck ./test.sh
 
-build-fedora:
+build-fedora-force:
 	docker build \
 	--rm \
 	--force-rm \
 	--pull \
 	--no-cache \
+	-t bossjones/dotfile-test-fedora27:latest \
+	-f Dockerfile.fedora27 .
+
+build-fedora:
+	docker build \
 	-t bossjones/dotfile-test-fedora27:latest \
 	-f Dockerfile.fedora27 .
 
