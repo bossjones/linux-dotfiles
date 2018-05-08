@@ -19,7 +19,6 @@ RUN set -xv ; \
     dnf -y update; \
     dnf -y reinstall "*"; \
     dnf -y install \
-    ansible \
     sudo \
     which \
     python3-devel \
