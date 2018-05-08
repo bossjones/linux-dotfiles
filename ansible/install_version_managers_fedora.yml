@@ -336,7 +336,7 @@
         - youtube-dl
         - gnucash-to-beancount
         - rows
-        - aws-cli
+        - awscli
         - cheat
 
     # -------------------------------------------
