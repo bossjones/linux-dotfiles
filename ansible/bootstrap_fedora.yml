@@ -67,8 +67,9 @@
         - folders_to_backup
 
     - name : Compress sites folders_to_backup
-      command: "if [ -f /home/{{ bossjones__user }}/{{ item }} ] && tar -zcvf /home/{{ bossjones__user }}/backup/{{ item }}.tar.gz /home/{{ bossjones__user }}/{{ item }}"
+      command: "tar -zcvf /home/{{ bossjones__user }}/backup/{{ item }}.tar.gz /home/{{ bossjones__user }}/{{ item }}"
       with_items: folders_to_backup
+      ignore_errors: yes
       tags:
         - folders_to_backup
   roles:
