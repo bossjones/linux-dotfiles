@@ -257,6 +257,7 @@
 # Install oh-my-zsh
 - hosts: localhost
   gather_facts: True
+  become: yes
   vars_prompt:
     - name: "bossjones__user"
       prompt: "User we want to run as."
