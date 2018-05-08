@@ -19,8 +19,12 @@
   version: ca9c429ca388eb36daad9195354012158aa61e94
   name: pablocrivella.nvm
 
-- src: https://github.com/avanov/ansible-galaxy-pyenv
-  version: 15eb904383967119290ce60d4ec1135cbac49fc0
+# NOTE: Orig, doesn't support dnf
+# - src: https://github.com/avanov/ansible-galaxy-pyenv
+#   version: 09c575c7f21aba9e43f01e0c67f6ddc07ba0663d
+#   name: avanov.pyenv
+- src: https://github.com/bossjones/ansible-galaxy-pyenv
+  version: feature-support-dnf-on-fedora
   name: avanov.pyenv
 
 # Used this with oh-my-fedora, need to verify it actually works still

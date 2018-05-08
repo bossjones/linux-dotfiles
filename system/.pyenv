@@ -4,3 +4,8 @@ export PYENV_VERSION=3.5.2
 
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
+
+# To get virtualenvwrapper to create a virtual environment using pyvenv instead of virtualenv, set the PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV environment variable.
+export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"
+
+pyenv virtualenvwrapper

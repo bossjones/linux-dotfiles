@@ -243,6 +243,8 @@
   become_user: "{{bossjones__user}}"
   environment:
     SHELL: /bin/bash
+    # NOTE: To get virtualenvwrapper to create a virtual environment using pyvenv instead of virtualenv, set the PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV environment variable.
+    PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV: true
   roles:
     - role: suzuki-shunsuke.pyenv-module
 
