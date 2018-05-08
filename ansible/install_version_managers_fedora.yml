@@ -5,6 +5,7 @@
 ##############################################################################
 
 - hosts: localhost
+  gather_facts: False
   vars_prompt:
     - name: "bossjones__user"
       prompt: "User we want to run as."
@@ -39,6 +40,7 @@
         - '@Development tools'
 
 - hosts: localhost
+  gather_facts: False
   vars_prompt:
     - name: "bossjones__user"
       prompt: "User we want to run as."
@@ -90,6 +92,7 @@
 
 
 - hosts: localhost
+  gather_facts: False
   vars_prompt:
     - name: "bossjones__user"
       prompt: "User we want to run as."
@@ -135,6 +138,7 @@
         - "{{ bossjones__user }}"
 
 - hosts: localhost
+  gather_facts: False
   vars_prompt:
     - name: "bossjones__user"
       prompt: "User we want to run as."
@@ -215,6 +219,7 @@
 
 # Install pyenv module so we can use it
 - hosts: localhost
+  gather_facts: False
   vars_prompt:
     - name: "bossjones__user"
       prompt: "User we want to run as."
@@ -268,6 +273,7 @@
         - pdbpp
 
 - hosts: localhost
+  gather_facts: False
   vars_prompt:
     - name: "bossjones__user"
       prompt: "User we want to run as."
@@ -288,6 +294,7 @@
 # POWERLINE SETUP
 ####################################################################################################
 - hosts: localhost
+  gather_facts: False
   vars_prompt:
     - name: "bossjones__user"
       prompt: "User we want to run as."
@@ -360,6 +367,7 @@
 # CHEATSHEETS SETUP
 ####################################################################################################
 - hosts: localhost
+  gather_facts: False
   vars_prompt:
     - name: "bossjones__user"
       prompt: "User we want to run as."
@@ -391,6 +399,7 @@
 # BASH-IT SETUP
 ####################################################################################################
 - hosts: localhost
+  gather_facts: False
   vars_prompt:
     - name: "bossjones__user"
       prompt: "User we want to run as."
