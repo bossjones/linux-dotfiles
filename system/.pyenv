@@ -1,6 +1,6 @@
 export PYENV_ROOT="$HOME/.pyenv"
 
-export PYENV_VERSION=3.6.5
+# export PYENV_VERSION=3.6.5
 
 export WORKON_HOME=~/.virtualenvs
 export PROJECT_HOME=~/dev
