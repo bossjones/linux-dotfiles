@@ -53,6 +53,7 @@ e_header "Package managers & packages"
 
 # Package managers & packages
 
+# Pretty osx specific stuff
 . "$DOTFILES_DIR/install/brew.sh"
 . "$DOTFILES_DIR/install/npm.sh"
 . "$DOTFILES_DIR/install/bash.sh"
