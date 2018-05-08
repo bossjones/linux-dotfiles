@@ -38,8 +38,8 @@
         item: nofile
         value: 64000
   pre_tasks:
-    - name: Gather facts now that prerequisite packages are installed
-      setup: filter=ansible_*
+    # - name: Gather facts now that prerequisite packages are installed
+    #   setup: filter=ansible_*
     # Note: We use the raw command here because we aren't sure if ansible is installed by this point?
     # CMD: dnf -y update
     - name: upgrade all packages
