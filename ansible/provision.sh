@@ -11,7 +11,7 @@ elif [[ $unamestr == "Linux"  && -f $(which dnf) ]]; then
 fi
 
 pushd ~/.dotfiles/ansible
-ansible-galaxy install -r requirements.yml --roles-path roles/ -vvv
+ansible-galaxy install --force -r requirements.yml --roles-path roles/ -vvv
 echo "localhost ansible_connection=local ansible_python_interpreter=${_PATH_TO_PYTHON}" > hosts.private
 
 cat hosts.private
