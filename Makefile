@@ -91,6 +91,8 @@ run-fedora-systemd:
 
 ci-fedora: build-fedora run-fedora-systemd
 
+ci-fedora-force: build-fedora-force run-fedora-systemd
+
 docker-exec-ci-fedora:
 	docker exec -i --tty \
 	--privileged \
