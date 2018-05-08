@@ -19,7 +19,7 @@ if [[ $unamestr == "Darwin" ]]; then
 elif [[ $unamestr == "Linux"  && -f $(which apt-get) ]]; then
     _USER=$(whoami) \
     _GROUP=$(whoami) \
-    ansible-playbook bootstrap_xenial.yml \
+    ansible-playbook -vvvv bootstrap_xenial.yml \
     --extra-vars \
     "bossjones__user=${_USER} bossjones__group=${_GROUP}"
 fi
@@ -36,13 +36,13 @@ elif [[ $unamestr == "Linux"  && -f $(which dnf) ]]; then
 
     _USER=$(whoami) \
     _GROUP=$(whoami) \
-    ansible-playbook bootstrap_fedora.yml \
+    ansible-playbook -vvvv bootstrap_fedora.yml \
     --extra-vars \
     "bossjones__user=${_USER} bossjones__group=${_GROUP}"
 
     _USER=$(whoami) \
     _GROUP=$(whoami) \
-    ansible-playbook install_version_managers_fedora.yml \
+    ansible-playbook -vvvv install_version_managers_fedora.yml \
     --extra-vars \
     "bossjones__user=${_USER} bossjones__group=${_GROUP}"
 fi

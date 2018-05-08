@@ -23,10 +23,10 @@
       - '.cache'
       # XDG_DATA_HOME
       - '.local/share'
-      - .bashrc
-      - .bash_profile
-      - .vim
-      - .profile
+      - '.bashrc'
+      - '.bash_profile'
+      - '.vim'
+      - '.profile'
 
     ulimit_config:
       - domain: '*'
@@ -83,7 +83,7 @@
         - folders_to_backup
 
     - name : Compress sites folders_to_backup
-      command   : "tar -zcvf /home/{{ bossjones__user }}/backup/{{ item }}.tar.gz /home/{{ bossjones__user }}/{{ item }}"
+      command: "tar -zcvf /home/{{ bossjones__user }}/backup/{{ item }}.tar.gz /home/{{ bossjones__user }}/{{ item }}"
       with_items: folders_to_backup
       tags:
         - folders_to_backup
