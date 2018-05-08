@@ -17,6 +17,7 @@ ENV HOST_GROUP_ID ${HOST_GROUP_ID}
 # Install Ansible and other requirements.
 RUN set -xv ; \
     dnf -y update; \
+    dnf -y reinstall "*"; \
     dnf -y install \
     ansible \
     sudo \
