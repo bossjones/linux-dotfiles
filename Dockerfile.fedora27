@@ -25,6 +25,12 @@ RUN set -xv ; \
     python2-dnf \
     git \
     && \
+    dnf install -y gcc zlib-devel bzip2 bzip2-devel readline-devel sqlite sqlite-devel tk-devel && \
+    dnf install -y zlib-devel bzip2 bzip2-devel readline-devel sqlite sqlite-devel xz xz-devel && \
+    dnf install -y @development-tools && \
+    dnf reinstall -y glibc-devel.x86_64 && \
+    dnf install python3-devel -y; \
+    dnf group install "C Development Tools and Libraries" -y; \
     ln -fs /usr/share/zoneinfo/UTC /etc/localtime && \
     dnf -y remove vim-minimal; \
     dnf remove openssl-devel -y; \
