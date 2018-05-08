@@ -5,7 +5,7 @@
 ##############################################################################
 
 - hosts: localhost
-  gather_facts: False
+  gather_facts: True
   vars_prompt:
     - name: "bossjones__user"
       prompt: "User we want to run as."
@@ -40,7 +40,7 @@
         # - '@C Development Tools and Libraries'
 
 - hosts: localhost
-  gather_facts: False
+  gather_facts: True
   vars_prompt:
     - name: "bossjones__user"
       prompt: "User we want to run as."
@@ -92,7 +92,7 @@
 
 
 - hosts: localhost
-  gather_facts: False
+  gather_facts: True
   vars_prompt:
     - name: "bossjones__user"
       prompt: "User we want to run as."
@@ -138,7 +138,7 @@
         - "{{ bossjones__user }}"
 
 - hosts: localhost
-  gather_facts: False
+  gather_facts: True
   vars_prompt:
     - name: "bossjones__user"
       prompt: "User we want to run as."
@@ -219,7 +219,7 @@
 
 # Install pyenv module so we can use it
 - hosts: localhost
-  gather_facts: False
+  gather_facts: True
   vars_prompt:
     - name: "bossjones__user"
       prompt: "User we want to run as."
@@ -240,7 +240,7 @@
 
 # Install oh-my-zsh
 - hosts: localhost
-  gather_facts: False
+  gather_facts: True
   vars_prompt:
     - name: "bossjones__user"
       prompt: "User we want to run as."
@@ -297,7 +297,7 @@
 #         - pdbpp
 
 # - hosts: localhost
-#   gather_facts: False
+#   gather_facts: True
 #   vars_prompt:
 #     - name: "bossjones__user"
 #       prompt: "User we want to run as."
@@ -318,7 +318,7 @@
 # # POWERLINE SETUP
 # ####################################################################################################
 # - hosts: localhost
-#   gather_facts: False
+#   gather_facts: True
 #   vars_prompt:
 #     - name: "bossjones__user"
 #       prompt: "User we want to run as."
@@ -391,7 +391,7 @@
 # # CHEATSHEETS SETUP
 # ####################################################################################################
 # - hosts: localhost
-#   gather_facts: False
+#   gather_facts: True
 #   vars_prompt:
 #     - name: "bossjones__user"
 #       prompt: "User we want to run as."
@@ -423,7 +423,7 @@
 # # BASH-IT SETUP
 # ####################################################################################################
 # - hosts: localhost
-#   gather_facts: False
+#   gather_facts: True
 #   vars_prompt:
 #     - name: "bossjones__user"
 #       prompt: "User we want to run as."
