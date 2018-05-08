@@ -37,7 +37,7 @@
         - sqlite-devel
         - xz
         - xz-devel
-        - '@C Development Tools and Libraries'
+        # - '@C Development Tools and Libraries'
 
 - hosts: localhost
   gather_facts: False
