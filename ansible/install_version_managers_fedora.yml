@@ -352,6 +352,8 @@
         - rows
         - awscli
         - cheat
+        - powerline-status
+        - pdbpp
 
     # -------------------------------------------
     # venv: tools2
@@ -367,6 +369,8 @@
         - fabric
         - mercurial
         - cheat
+        - powerline-status
+        - pdbpp
 
       # Finally, it’s time to make all Python versions and special virtualenvs work with each other.
       # The above command establishes the PATH priority so scripts can be accessed in the right order without activating any virtualenv.
@@ -395,6 +399,7 @@ curl -L https://gist.githubusercontent.com/henriquebastos/270cff100cb303f3d74370
       become: yes
       become_user: "{{bossjones__user}}"
 
+# NOTE: This works, just might not be the right time for zsh yet
 # Install oh-my-zsh
 - hosts: localhost
   gather_facts: True
@@ -483,218 +488,218 @@ curl -L https://gist.githubusercontent.com/henriquebastos/270cff100cb303f3d74370
 
 # ####################################################################################################
 # # POWERLINE SETUP
-# ####################################################################################################
-# - hosts: localhost
-#   gather_facts: True
-#   vars_prompt:
-#     - name: "bossjones__user"
-#       prompt: "User we want to run as."
-#       private: no
-#     - name: "bossjones__group"
-#       prompt: "Group we want to run as."
-#       private: no
-#   tags:
-#     - powerline
-#   become: yes
-#   # become_user: "{{bossjones__user}}"
-#   # become: yes
-#   # become_method: sudo
-#   # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
-#   environment:
-#     SHELL: /bin/bash
-#   pre_tasks:
+####################################################################################################
+- hosts: localhost
+  gather_facts: True
+  vars_prompt:
+    - name: "bossjones__user"
+      prompt: "User we want to run as."
+      private: no
+    - name: "bossjones__group"
+      prompt: "Group we want to run as."
+      private: no
+  tags:
+    - powerline
+  become: yes
+  # become_user: "{{bossjones__user}}"
+  # become: yes
+  # become_method: sudo
+  # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
+  environment:
+    SHELL: /bin/bash
+  pre_tasks:
 
-#     # SOURCE: https://github.com/veggiemonk/ansible-dotfiles/blob/master/tasks/fonts.yml
-#     - name: Cloning fonts
-#       git:
-#         repo=https://github.com/powerline/fonts
-#         dest="/home/{{bossjones__user}}/powerlinefonts"
-#         accept_hostkey=yes
-#       register: fontCloned
-#       become: yes
-#       become_user: "{{bossjones__user}}"
+    # SOURCE: https://github.com/veggiemonk/ansible-dotfiles/blob/master/tasks/fonts.yml
+    - name: Cloning fonts
+      git:
+        repo=https://github.com/powerline/fonts
+        dest="/home/{{bossjones__user}}/powerlinefonts"
+        accept_hostkey=yes
+      register: fontCloned
+      become: yes
+      become_user: "{{bossjones__user}}"
 
-#     - name: Install Fonts
-#       shell: /home/{{bossjones__user}}/powerlinefonts/install.sh chdir=/home/{{bossjones__user}}/powerlinefonts
-#       when: fontCloned|success
-#       become: yes
-#       become_user: "{{bossjones__user}}"
+    - name: Install Fonts
+      shell: /home/{{bossjones__user}}/powerlinefonts/install.sh chdir=/home/{{bossjones__user}}/powerlinefonts
+      when: fontCloned|success
+      become: yes
+      become_user: "{{bossjones__user}}"
 
-#     - name: "Create directory: /home/{{bossjones__user}}/powerline"
-#       file:
-#         path: "/home/{{bossjones__user}}/.config/powerline"
-#         state: directory
-#         owner: "{{ bossjones__user }}"
-#       become: yes
-#       become_user: "{{bossjones__user}}"
+    - name: "Create directory: /home/{{bossjones__user}}/powerline"
+      file:
+        path: "/home/{{bossjones__user}}/.config/powerline"
+        state: directory
+        owner: "{{ bossjones__user }}"
+      become: yes
+      become_user: "{{bossjones__user}}"
 
-#     - name: "touch /home/{{bossjones__user}}/.powerline"
-#       shell: >
-#         touch /home/{{bossjones__user}}/.powerline
-#       become: yes
-#       become_user: "{{bossjones__user}}"
+    - name: "touch /home/{{bossjones__user}}/.powerline"
+      shell: >
+        touch /home/{{bossjones__user}}/.powerline
+      become: yes
+      become_user: "{{bossjones__user}}"
 
-#   roles:
+  roles:
 
-#     - role: nass600.powerline
-#       powerline_package_name: "powerline-status"
-#       powerline_version: "2.6"
+    - role: nass600.powerline
+      powerline_package_name: "powerline-status"
+      powerline_version: "2.6"
 
-#       powerline_extra_segments:
-#         - {name: powerline-gitstatus, version: "1.2.1"}
+      powerline_extra_segments:
+        - {name: powerline-gitstatus, version: "1.2.1"}
 
-#       powerline_daemon_destination: "/home/{{bossjones__user}}/.powerline"
+      powerline_daemon_destination: "/home/{{bossjones__user}}/.powerline"
 
-#       powerline_config_dir: "/home/{{bossjones__user}}/.config/powerline"
-#       powerline_config_shell_colorscheme: "default"
-#       powerline_config_shell_theme: "default"
-#       powerline_config_vim_colorscheme: "default"
-#       powerline_config_vim_theme: "default"
+      powerline_config_dir: "/home/{{bossjones__user}}/.config/powerline"
+      powerline_config_shell_colorscheme: "default"
+      powerline_config_shell_theme: "default"
+      powerline_config_vim_colorscheme: "default"
+      powerline_config_vim_theme: "default"
 
-#       powerline_fonts_repo: "git://github.com/powerline/fonts.git"
-#       powerline_fonts_dir: "{{ powerline_config_dir }}/fonts"
+      powerline_fonts_repo: "git://github.com/powerline/fonts.git"
+      powerline_fonts_dir: "{{ powerline_config_dir }}/fonts"
 
 # ####################################################################################################
 # # CHEATSHEETS SETUP
-# ####################################################################################################
-# - hosts: localhost
-#   gather_facts: True
-#   vars_prompt:
-#     - name: "bossjones__user"
-#       prompt: "User we want to run as."
-#       private: no
-#     - name: "bossjones__group"
-#       prompt: "Group we want to run as."
-#       private: no
-#   tags:
-#     - cheat
-#   vars:
-#     bossjones__user: "{{boss__user}}"
-#     bossjones__group: "{{boss_group}}"
-#     cheatsheet_update: yes
-#   become: yes
-#   become_user: "{{bossjones__user}}"
-#   # become_method: sudo
-#   # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
-#   environment:
-#     SHELL: /bin/bash
-#   tasks:
-#     - name: Clone pyenv-doctor
-#       git:
-#         repo: https://github.com/bossjones/boss-cheatsheets
-#         dest: "/home/{{ bossjones__user }}/.cheat"
-#         version: "master"
-#         update: "{{ cheatsheet_update }}"
+####################################################################################################
+- hosts: localhost
+  gather_facts: True
+  vars_prompt:
+    - name: "bossjones__user"
+      prompt: "User we want to run as."
+      private: no
+    - name: "bossjones__group"
+      prompt: "Group we want to run as."
+      private: no
+  tags:
+    - cheat
+  vars:
+    bossjones__user: "{{boss__user}}"
+    bossjones__group: "{{boss_group}}"
+    cheatsheet_update: yes
+  become: yes
+  become_user: "{{bossjones__user}}"
+  # become_method: sudo
+  # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
+  environment:
+    SHELL: /bin/bash
+  tasks:
+    - name: Clone pyenv-doctor
+      git:
+        repo: https://github.com/bossjones/boss-cheatsheets
+        dest: "/home/{{ bossjones__user }}/.cheat"
+        version: "master"
+        update: "{{ cheatsheet_update }}"
 
 # ####################################################################################################
 # # BASH-IT SETUP
-# ####################################################################################################
-# - hosts: localhost
-#   gather_facts: True
-#   vars_prompt:
-#     - name: "bossjones__user"
-#       prompt: "User we want to run as."
-#       private: no
-#     - name: "bossjones__group"
-#       prompt: "Group we want to run as."
-#       private: no
-#   tags:
-#     - bash_it
-#   vars:
-#     bossjones__user: "{{boss__user}}"
-#     bossjones__group: "{{boss_group}}"
-#     cheatsheet_update: yes
-#     boss__bash_it_theme: "powerline-plain"
-#     boss__bash_it_repository: https://github.com/Bash-it/bash-it.git
-#     boss__bash_it_version: master
-#     boss__bash_it_aliases:
-#       - general
-#     boss__bash_it_plugins:
-#       - base
-#       - history
-#     boss__bash_it_completions:
-#       - git
-#   become: yes
-#   become_user: "{{bossjones__user}}"
-#   # become_method: sudo
-#   # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
-#   environment:
-#     SHELL: /bin/bash
-#   tasks:
-#     # TODO: have bash_it run before this shell script
-#     - name: clone bash_it
-#       git: repo="{{boss__bash_it_repository}}"
-#           dest="/home/{{bossjones__user}}/.bash_it"
-#           update=no
-#           depth=1
-#       become: "{{bossjones__user}}"
-#       become_user: "{{bossjones__user}}"
+####################################################################################################
+- hosts: localhost
+  gather_facts: True
+  vars_prompt:
+    - name: "bossjones__user"
+      prompt: "User we want to run as."
+      private: no
+    - name: "bossjones__group"
+      prompt: "Group we want to run as."
+      private: no
+  tags:
+    - bash_it
+  vars:
+    bossjones__user: "{{boss__user}}"
+    bossjones__group: "{{boss_group}}"
+    cheatsheet_update: yes
+    boss__bash_it_theme: "powerline-plain"
+    boss__bash_it_repository: https://github.com/Bash-it/bash-it.git
+    boss__bash_it_version: master
+    boss__bash_it_aliases:
+      - general
+    boss__bash_it_plugins:
+      - base
+      - history
+    boss__bash_it_completions:
+      - git
+  become: yes
+  become_user: "{{bossjones__user}}"
+  # become_method: sudo
+  # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
+  environment:
+    SHELL: /bin/bash
+  tasks:
+    # TODO: have bash_it run before this shell script
+    - name: clone bash_it
+      git: repo="{{boss__bash_it_repository}}"
+          dest="/home/{{bossjones__user}}/.bash_it"
+          update=no
+          depth=1
+      become: "{{bossjones__user}}"
+      become_user: "{{bossjones__user}}"
 
-#     - name: Register home directory for {{ bossjones__user }}
-#       shell: >
-#         getent passwd {{ bossjones__user }} | cut -d: -f6
-#       changed_when: false
-#       register: linux_user_home
+    - name: Register home directory for {{ bossjones__user }}
+      shell: >
+        getent passwd {{ bossjones__user }} | cut -d: -f6
+      changed_when: false
+      register: linux_user_home
 
-#     - name: Register current login shell for {{ bossjones__user }}
-#       shell: >
-#         getent passwd {{ bossjones__user }} | cut -d: -f7
-#       changed_when: false
-#       register: linux_user_shell
+    - name: Register current login shell for {{ bossjones__user }}
+      shell: >
+        getent passwd {{ bossjones__user }} | cut -d: -f7
+      changed_when: false
+      register: linux_user_shell
 
-#     - name: Set facts
-#       set_fact:
-#         boss__bash_it_user_home: "{{ linux_user_home.stdout }}"
-#         boss__bash_it_user_shell: "{{ linux_user_shell.stdout }}"
+    - name: Set facts
+      set_fact:
+        boss__bash_it_user_home: "{{ linux_user_home.stdout }}"
+        boss__bash_it_user_shell: "{{ linux_user_shell.stdout }}"
 
-#     - name: assert home directory is detected
-#       assert: { that: boss__bash_it_user_home != "" }
+    - name: assert home directory is detected
+      assert: { that: boss__bash_it_user_home != "" }
 
-#     - name: assert current shell is detected
-#       assert: { that: boss__bash_it_user_shell != "" }
+    - name: assert current shell is detected
+      assert: { that: boss__bash_it_user_shell != "" }
 
-#     - name: "clone bash_it for {{ bossjones__user }}"
-#       git:
-#         repo: "{{ boss__bash_it_repository }}"
-#         dest: "{{ boss__bash_it_user_home }}/.bash_it"
-#         version: "{{ boss__bash_it_version }}"
-#       become: "{{ bossjones__user }}"
+    - name: "clone bash_it for {{ bossjones__user }}"
+      git:
+        repo: "{{ boss__bash_it_repository }}"
+        dest: "{{ boss__bash_it_user_home }}/.bash_it"
+        version: "{{ boss__bash_it_version }}"
+      become: "{{ bossjones__user }}"
 
-#     - name: "change shell to bash for {{ bossjones__user }}"
-#       command: "chsh -s /bin/bash {{ bossjones__user }}"
-#       become_user: root
-#       when: boss__bash_it_user_shell != "/bin/bash"
+    - name: "change shell to bash for {{ bossjones__user }}"
+      command: "chsh -s /bin/bash {{ bossjones__user }}"
+      become_user: root
+      when: boss__bash_it_user_shell != "/bin/bash"
 
-#     - name: "initialize bash_it directories for {{ bossjones__user }}"
-#       file:
-#         path: "{{ boss__bash_it_user_home }}/.bash_it/{{ item }}/enabled"
-#         state: directory
-#         owner: "{{ bossjones__user }}"
-#       with_items:
-#         - "plugins"
-#         - "aliases"
-#         - "completion"
+    - name: "initialize bash_it directories for {{ bossjones__user }}"
+      file:
+        path: "{{ boss__bash_it_user_home }}/.bash_it/{{ item }}/enabled"
+        state: directory
+        owner: "{{ bossjones__user }}"
+      with_items:
+        - "plugins"
+        - "aliases"
+        - "completion"
 
-#     - name: "install bash_it plugins for {{ bossjones__user }}"
-#       file:
-#         src: "{{ boss__bash_it_user_home }}/.bash_it/plugins/available/{{ item }}.plugin.bash"
-#         dest: "{{ boss__bash_it_user_home }}/.bash_it/plugins/enabled/{{ item }}.plugin.bash"
-#         state: link
-#         owner: "{{ bossjones__user }}"
-#       with_items: '{{ boss__bash_it_plugins }}'
+    - name: "install bash_it plugins for {{ bossjones__user }}"
+      file:
+        src: "{{ boss__bash_it_user_home }}/.bash_it/plugins/available/{{ item }}.plugin.bash"
+        dest: "{{ boss__bash_it_user_home }}/.bash_it/plugins/enabled/{{ item }}.plugin.bash"
+        state: link
+        owner: "{{ bossjones__user }}"
+      with_items: '{{ boss__bash_it_plugins }}'
 
-#     - name: "install bash_it aliases for {{ bossjones__user }}"
-#       file:
-#         src: "{{ boss__bash_it_user_home }}/.bash_it/aliases/available/{{ item }}.aliases.bash"
-#         dest: "{{ boss__bash_it_user_home }}/.bash_it/aliases/enabled/{{ item }}.aliases.bash"
-#         state: link
-#         owner: "{{ bossjones__user }}"
-#       with_items: '{{ boss__bash_it_aliases }}'
+    - name: "install bash_it aliases for {{ bossjones__user }}"
+      file:
+        src: "{{ boss__bash_it_user_home }}/.bash_it/aliases/available/{{ item }}.aliases.bash"
+        dest: "{{ boss__bash_it_user_home }}/.bash_it/aliases/enabled/{{ item }}.aliases.bash"
+        state: link
+        owner: "{{ bossjones__user }}"
+      with_items: '{{ boss__bash_it_aliases }}'
 
-#     - name: "install bash_it completions for {{ bossjones__user }}"
-#       file:
-#         src: "{{ boss__bash_it_user_home }}/.bash_it/completion/available/{{ item }}.completion.bash"
-#         dest: "{{ boss__bash_it_user_home }}/.bash_it/completion/enabled/{{ item }}.completion.bash"
-#         state: link
-#         owner: "{{ bossjones__user }}"
-#       with_items: '{{ boss__bash_it_completions }}'
+    - name: "install bash_it completions for {{ bossjones__user }}"
+      file:
+        src: "{{ boss__bash_it_user_home }}/.bash_it/completion/available/{{ item }}.completion.bash"
+        dest: "{{ boss__bash_it_user_home }}/.bash_it/completion/enabled/{{ item }}.completion.bash"
+        state: link
+        owner: "{{ bossjones__user }}"
+      with_items: '{{ boss__bash_it_completions }}'
