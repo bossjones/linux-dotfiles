@@ -16,15 +16,14 @@ ENV HOST_GROUP_ID ${HOST_GROUP_ID}
 
 # Install Ansible and other requirements.
 RUN set -xv ; \
-    dnf makecache fast \
-    && dnf -y install \
+    dnf -y update; \
+    dnf -y install \
     ansible \
     sudo \
     which \
     python3-devel \
     python2-dnf \
-    && dnf clean all && \
-    dnf -y update && \
+    && \
     ln -fs /usr/share/zoneinfo/UTC /etc/localtime && \
     dnf -y reinstall "*"; \
     dnf -y remove vim-minimal; \
