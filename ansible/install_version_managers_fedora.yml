@@ -393,11 +393,21 @@
 # pyenv virtualenv 2.7.13 ipython2
 # pyenv virtualenv 2.7.13 tools2
 
-    - name: create ipython profile
-      shell: "mkdir ~/.ipython/profile_default/startup/; ipython profile create
-curl -L https://gist.githubusercontent.com/henriquebastos/270cff100cb303f3d74370489022446b/raw/56e646054e62efb079af3666102c381fa571065c/00-detect-virtualenv-sitepackages.py > ~/.ipython/profile_default/startup/00-venv-sitepackages.py"
+
+    - name: "Create directory: /home/{{bossjones__user}}/.ipython/profile_default/startup"
+      file:
+        path: "/home/{{bossjones__user}}/.ipython/profile_default/startup/"
+        state: directory
+        owner: "{{ bossjones__user }}"
       become: yes
       become_user: "{{bossjones__user}}"
+
+# FIXME: Something wrong with this one
+#     - name: create ipython profile
+#       shell: "ipython profile create
+# curl -L https://gist.githubusercontent.com/henriquebastos/270cff100cb303f3d74370489022446b/raw/56e646054e62efb079af3666102c381fa571065c/00-detect-virtualenv-sitepackages.py > ~/.ipython/profile_default/startup/00-venv-sitepackages.py"
+#       become: yes
+#       become_user: "{{bossjones__user}}"
 
 # NOTE: This works, just might not be the right time for zsh yet
 # Install oh-my-zsh
