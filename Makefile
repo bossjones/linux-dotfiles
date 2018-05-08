@@ -60,8 +60,8 @@ build-fedora:
 	-f Dockerfile.fedora27 .
 
 run-fedora-systemd:
-	time docker kill dotfile-test-fedora27
-	time docker rm dotfile-test-fedora27
+	docker kill dotfile-test-fedora27
+	docker rm dotfile-test-fedora27
 	time docker run \
 	--privileged \
 	-i \
