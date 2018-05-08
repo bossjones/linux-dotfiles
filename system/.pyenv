@@ -1,6 +1,6 @@
 export PYENV_ROOT="$HOME/.pyenv"
 
-export PYENV_VERSION=3.5.2
+export PYENV_VERSION=3.6.5
 
 export WORKON_HOME=~/.virtualenvs
 export PROJECT_HOME=~/dev
@@ -14,4 +14,4 @@ export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"
 
 #pyenv virtualenvwrapper
 
-#pyenv virtualenvwrapper_lazy
+pyenv virtualenvwrapper_lazy
