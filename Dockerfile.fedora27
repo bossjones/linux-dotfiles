@@ -23,9 +23,9 @@ RUN set -xv ; \
     which \
     python3-devel \
     python2-dnf \
+    git \
     && \
     ln -fs /usr/share/zoneinfo/UTC /etc/localtime && \
-    dnf -y reinstall "*"; \
     dnf -y remove vim-minimal; \
     dnf remove openssl-devel -y; \
     dnf install -y compat-openssl10-devel; \
