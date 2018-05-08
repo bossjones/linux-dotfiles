@@ -21,8 +21,9 @@ cat hosts.private
 if [[ $unamestr == "Darwin" ]]; then
   ansible-playbook bootstrap_osx.yml
 elif [[ $unamestr == "Linux"  && -f $(which apt-get) ]]; then
-    _USER=$(whoami) \
-    _GROUP=$(whoami) \
+    _USER=$(whoami)
+    _GROUP=$(whoami)
+
     ansible-playbook -vvvv bootstrap_xenial.yml \
     --extra-vars \
     "bossjones__user=${_USER} bossjones__group=${_GROUP}"
@@ -38,14 +39,17 @@ elif [[ $unamestr == "Linux"  && -f $(which dnf) ]]; then
     echo "Fedora: Needs to be implemented"
     echo "Fedora: Try running ansible-playbook -vvvv install_version_managers_fedora.yml"
 
-    _USER=$(whoami) \
-    _GROUP=$(whoami) \
+    _USER=$(whoami)
+    _GROUP=$(whoami)
+
     ansible-playbook -vvvv bootstrap_fedora.yml \
     --extra-vars \
     "bossjones__user=${_USER} bossjones__group=${_GROUP}"
 
-    _USER=$(whoami) \
-    _GROUP=$(whoami) \
+    _USER=$(whoami)
+    _GROUP=$(whoami)
+
+
     ansible-playbook -vvvv install_version_managers_fedora.yml \
     --extra-vars \
     "bossjones__user=${_USER} bossjones__group=${_GROUP}"
