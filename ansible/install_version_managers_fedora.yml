@@ -40,6 +40,7 @@
         # - '@C Development Tools and Libraries'
 
 - hosts: localhost
+  # NOTE: In order to populate special var ansible_pkg_mgr, need to enable gather_facts
   gather_facts: True
   vars_prompt:
     - name: "bossjones__user"
@@ -67,6 +68,13 @@
       - jemalloc-devel
       - ctags
       - ctags-etags
+      rbenv_dnf_packages:
+      - gcc
+      - libyaml-devel
+      - readline-devel
+      - zlib-devel
+      - libffi-devel
+      - git
       rbenv:
         env: user
         version: v1.1.1
