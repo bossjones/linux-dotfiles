@@ -48,16 +48,17 @@ RUN sed -i -e 's/^\(Defaults\s*requiretty\)/#--- \1/'  /etc/sudoers
 # Install Ansible inventory file.
 # RUN echo -e '[local]\nlocalhost ansible_connection=local' > /etc/ansible/hosts
 
-RUN pip3 install --upgrade pip \
+# Assumes pip3 default
+RUN pip install --upgrade pip \
     && \
-    pip3 install \
+    pip install \
     --no-cache-dir \
     --upgrade \
     --ignore-installed \
     --force-reinstall \
     setuptools wheel \
     && \
-    pip3 install meson
+    pip install meson
 
 RUN set -xe \
     && useradd -U -d /home/${NON_ROOT_USER} -m -r -G adm,tty,audio ${NON_ROOT_USER} \
