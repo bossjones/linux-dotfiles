@@ -291,6 +291,20 @@
     #     version: 3.6.1
     #     virtualenv_name: yaml_env
 
+    - name: install virtualenvwrapper module in venv 3.6.5
+      pip:
+        name: "{{item}}"
+        executable: "{{pyenv_root}}/versions/3.6.5/bin/pip"
+      with_items:
+        - virtualenvwrapper
+
+    - name: install virtualenvwrapper module in venv 2.7.14
+      pip:
+        name: "{{item}}"
+        executable: "{{pyenv_root}}/versions/2.7.14/bin/pip"
+      with_items:
+        - virtualenvwrapper
+
     # -------------------------------------------
     # venv: jupyter3
     # -------------------------------------------
