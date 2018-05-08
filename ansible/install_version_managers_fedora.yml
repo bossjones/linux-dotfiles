@@ -163,6 +163,11 @@
     SHELL: /bin/bash
   roles:
     - role: avanov.pyenv
+      pyenv_redhat_packages:
+      - git
+      - gcc
+      - libselinux-python
+      - zlib-devel
       pyenv_path: "/home/{{ bossjones__user }}/.pyenv"
       pyenv_owner: "{{ bossjones__user }}"
       pyenv_update_git_install: no
