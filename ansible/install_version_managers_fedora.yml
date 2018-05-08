@@ -174,17 +174,18 @@
       pyenv_enable_autocompletion: yes
       pyenv_python_versions:
         - "3.6.4"
-        - "2.7.14"
-        - "3.5.2"
+        # This works but need to speed things up a bit
+        # - "2.7.14"
+        # - "3.5.2"
       pyenv_virtualenvs:
         - venv_name: "env364"
           py_version: "3.6.4"
 
-        - venv_name: "env2714"
-          py_version: "2.7.14"
+        # - venv_name: "env2714"
+        #   py_version: "2.7.14"
 
-        - venv_name: "env352"
-          py_version: "3.5.2"
+        # - venv_name: "env352"
+        #   py_version: "3.5.2"
   post_tasks:
 
     # Install plugins for pyenv
