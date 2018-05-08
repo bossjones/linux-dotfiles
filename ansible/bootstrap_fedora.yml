@@ -60,6 +60,7 @@
         - python2-dnf
         - git
         - tmux
+        - fontconfig-devel
 
     - name: install deps pkgs
       dnf:
