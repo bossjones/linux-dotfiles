@@ -2,6 +2,7 @@
 ---
 ##############################################################################
 # ansible-playbook install_version_managers_fedora.yml --extra-vars "bossjones__user=developer bossjones__group=developer"
+# ansible-playbook install_version_managers_fedora.yml --extra-vars "bossjones__user=developer bossjones__group=developer" --tags zsh
 ##############################################################################
 
 - hosts: localhost
@@ -161,6 +162,10 @@
   # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
   environment:
     SHELL: /bin/bash
+    PYENV_ROOT: "$HOME/.pyenv"
+    # PYENV_VERSION: "3.5.2"
+    WORKON_HOME: "~/.virtualenvs"
+    PROJECT_HOME: "~/dev"
   roles:
     - role: avanov.pyenv
       pyenv_redhat_packages:
@@ -173,13 +178,19 @@
       pyenv_update_git_install: no
       pyenv_enable_autocompletion: yes
       pyenv_python_versions:
-        - "3.6.4"
+        - "3.6.5"
         # This works but need to speed things up a bit
-        # - "2.7.14"
+        - "2.7.14"
         # - "3.5.2"
       pyenv_virtualenvs:
-        - venv_name: "env364"
-          py_version: "3.6.4"
+        - venv_name: "jupyter3"
+          py_version: "3.6.5"
+        - venv_name: "tools3"
+          py_version: "3.6.5"
+        - venv_name: "ipython2"
+          py_version: "2.7.14"
+        - venv_name: "tools2"
+          py_version: "2.7.14"
 
         # - venv_name: "env2714"
         #   py_version: "2.7.14"
@@ -249,10 +260,126 @@
   become_user: "{{bossjones__user}}"
   environment:
     SHELL: /bin/bash
+    PYENV_ROOT: "$HOME/.pyenv"
+    # PYENV_VERSION: "3.5.2"
+    WORKON_HOME: "~/.virtualenvs"
+    PROJECT_HOME: "~/dev"
     # NOTE: To get virtualenvwrapper to create a virtual environment using pyvenv instead of virtualenv, set the PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV environment variable.
     PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV: true
   roles:
     - role: suzuki-shunsuke.pyenv-module
+
+  tasks:
+
+    # - name: pyenv virtualenvs --skip-aliases --bare
+    #   pyenv:
+    #     subcommand: virtualenvs
+    #     pyenv_root: "~/.pyenv"
+    #   register: result
+    # - debug:
+    #     var: result.virtualenvs
+
+    # install python and create virtualenv before using pip module
+    # - name: pyenv install -s 2.7.13
+    #   pyenv:
+    #     pyenv_root: "{{pyenv_root}}"
+    #     version: 2.7.13
+    # - name: pyenv virtualenv 3.6.1 yaml_env
+    #   pyenv:
+    #     subcommand: virtualenv
+    #     pyenv_root: "{{pyenv_root}}"
+    #     version: 3.6.1
+    #     virtualenv_name: yaml_env
+
+    # -------------------------------------------
+    # venv: jupyter3
+    # -------------------------------------------
+
+    # use pip module with executable option
+    - name: install jupyter module in venv jupyter3
+      pip:
+        name: "{{item}}"
+        executable: "{{pyenv_root}}/versions/jupyter3/bin/pip"
+      with_items:
+        - jupyter
+
+    - name: install jupyter3 ipykernel
+      shell: "{{pyenv_root}}/versions/jupyter3/bin/python -m ipykernel install --user"
+      become: yes
+      become_user: "{{bossjones__user}}"
+
+    # -------------------------------------------
+      # venv: ipython2
+    # -------------------------------------------
+
+    - name: install ipykernel module in venv ipython2
+      pip:
+        name: "{{item}}"
+        executable: "{{pyenv_root}}/versions/ipython2/bin/pip"
+      with_items:
+        - ipykernel
+
+    - name: install ipython2 ipykernel
+      shell: "{{pyenv_root}}/versions/ipython2/bin/python -m ipykernel install --user"
+      become: yes
+      become_user: "{{bossjones__user}}"
+
+    # -------------------------------------------
+    # venv: tools3
+    # -------------------------------------------
+
+    - name: install common modules in venv tools3
+      pip:
+        name: "{{item}}"
+        executable: "{{pyenv_root}}/versions/tools3/bin/pip"
+      with_items:
+        - youtube-dl
+        - gnucash-to-beancount
+        - rows
+        - aws-cli
+        - cheat
+
+    # -------------------------------------------
+    # venv: tools2
+    # -------------------------------------------
+
+    - name: install common modules in venv tools2
+      pip:
+        name: "{{item}}"
+        executable: "{{pyenv_root}}/versions/tools2/bin/pip"
+      with_items:
+        - rename
+        - s3cmd
+        - fabric
+        - mercurial
+        - cheat
+
+      # Finally, it’s time to make all Python versions and special virtualenvs work with each other.
+      # The above command establishes the PATH priority so scripts can be accessed in the right order without activating any virtualenv.
+      # pyenv global 3.6.0 2.7.13 jupyter3 ipython2 tools3 tools2
+    - name: pyenv global 3.6.0 2.7.13 jupyter3 ipython2 tools3 tools2
+      pyenv:
+        subcommand: global
+        versions:
+        - 3.6.5
+        - 2.7.14
+        - jupyter3
+        - ipython2
+        - tools3
+        - tools2
+        pyenv_root: "~/.pyenv"
+
+# Taken from this guy: https://medium.com/@henriquebastos/the-definitive-guide-to-setup-my-python-workspace-628d68552e14
+# pyenv virtualenv 3.6.0 jupyter3
+# pyenv virtualenv 3.6.0 tools3
+# pyenv virtualenv 2.7.13 ipython2
+# pyenv virtualenv 2.7.13 tools2
+
+    - name: create ipython profile
+      shell: "mkdir ~/.ipython/profile_default/startup/; ipython profile create
+curl -L https://gist.githubusercontent.com/henriquebastos/270cff100cb303f3d74370489022446b/raw/56e646054e62efb079af3666102c381fa571065c/00-detect-virtualenv-sitepackages.py > ~/.ipython/profile_default/startup/00-venv-sitepackages.py"
+      become: yes
+      become_user: "{{bossjones__user}}"
 
 # Install oh-my-zsh
 - hosts: localhost
@@ -276,6 +403,12 @@
     zsh_autosuggestions_bind_key: "^U"
   roles:
     - viasite-ansible.zsh
+
+# TODO: Figure out if we want to enable this
+# # Switch to ZSH shell
+# if test -t 1; then
+# exec zsh
+# fi
 
 # ansible_ssh_user: 'vagrant', vagrant: true, zsh_user: 'vagrant'
 
