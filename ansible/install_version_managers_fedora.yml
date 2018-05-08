@@ -400,6 +400,9 @@ curl -L https://gist.githubusercontent.com/henriquebastos/270cff100cb303f3d74370
     zsh_antigen_bundles_extras:
       - nvm
       - joel-porquet/zsh-dircolors-solarized
+      - virtualenvwrapper
+      - npm
+      - cswl/zsh-rbenv
     zsh_autosuggestions_bind_key: "^U"
   roles:
     - viasite-ansible.zsh
