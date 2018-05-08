@@ -60,6 +60,8 @@ build-fedora:
 	-f Dockerfile.fedora27 .
 
 run-fedora-systemd:
+	time docker kill dotfile-test-fedora27
+	time docker rm dotfile-test-fedora27
 	time docker run \
 	--privileged \
 	-i \
@@ -81,3 +83,5 @@ run-fedora-systemd:
 	-u $(NON_ROOT_USER) \
 	-w /etc/ansible/roles/role_under_test \
 	dotfile-test-fedora27 env TERM=xterm bash -c "git clone -b feature-font-username https://github.com/bossjones/linux-dotfiles ~$(NON_ROOT_USER)/.dotfiles; cd ~$(NON_ROOT_USER)/.dotfiles; source ~$(NON_ROOT_USER)/.dotfiles/install.sh"
+
+ci-fedora: build-fedora run-fedora-systemd
