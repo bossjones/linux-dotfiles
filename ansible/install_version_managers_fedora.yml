@@ -354,6 +354,10 @@
         - cheat
         - powerline-status
         - pdbpp
+        - pylint
+        - ptpython
+        - glances
+        - isort
 
     # -------------------------------------------
     # venv: tools2
@@ -371,11 +375,14 @@
         - cheat
         - powerline-status
         - pdbpp
+        - pylint
+        - ptpython
+        - isort
 
       # Finally, it’s time to make all Python versions and special virtualenvs work with each other.
       # The above command establishes the PATH priority so scripts can be accessed in the right order without activating any virtualenv.
       # pyenv global 3.6.0 2.7.13 jupyter3 ipython2 tools3 tools2
-    - name: pyenv global 3.6.0 2.7.13 jupyter3 ipython2 tools3 tools2
+    - name: pyenv global 3.6.5 2.7.14 jupyter3 ipython2 tools3 tools2
       pyenv:
         subcommand: global
         versions:
@@ -397,6 +404,14 @@
     - name: "Create directory: /home/{{bossjones__user}}/.ipython/profile_default/startup"
       file:
         path: "/home/{{bossjones__user}}/.ipython/profile_default/startup/"
+        state: directory
+        owner: "{{ bossjones__user }}"
+      become: yes
+      become_user: "{{bossjones__user}}"
+
+    - name: "Create directory: /home/{{bossjones__user}}/.ptpython"
+      file:
+        path: "/home/{{bossjones__user}}/.ptpython/"
         state: directory
         owner: "{{ bossjones__user }}"
       become: yes

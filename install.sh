@@ -45,7 +45,7 @@ ln -sfv "$DOTFILES_DIR/runcom/.rspec" ~
 ln -sfv "$DOTFILES_DIR/runcom/.pryrc" ~
 ln -sfv "$DOTFILES_DIR/runcom/.pdbrc" ~
 ln -sfv "$DOTFILES_DIR/runcom/.pdbrc.py" ~
-ln -sfv "$DOTFILES_DIR/runcom/.ptpython_config.py" ~
+ln -sfv "$DOTFILES_DIR/runcom/.ptpython_config.py" ~/.ptpython/config.py
 ln -sfv "$DOTFILES_DIR/runcom/.pythonrc" ~
 ln -sfv "$DOTFILES_DIR/runcom/.agignore" ~
 
