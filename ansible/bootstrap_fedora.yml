@@ -63,20 +63,20 @@
         - tmux
         - fontconfig-devel
 
-    - name: install deps pkgs
-      dnf:
-        name: "{{item}}"
-        state: absent
-      with_items:
-        - vim-minimal
-        - openssl-devel
+    # - name: install deps pkgs
+    #   dnf:
+    #     name: "{{item}}"
+    #     state: absent
+    #   with_items:
+    #     - vim-minimal
+    #     - openssl-devel
 
-    - name: install compat-openssl10-devel
-      dnf:
-        name: "{{item}}"
-        state: present
-      with_items:
-        - compat-openssl10-devel
+    # - name: install compat-openssl10-devel
+    #   dnf:
+    #     name: "{{item}}"
+    #     state: present
+    #   with_items:
+    #     - compat-openssl10-devel
 
     - name: Create Backups folder
       file:
