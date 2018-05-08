@@ -6,6 +6,8 @@ if [[ $unamestr == "Darwin" ]]; then
   _PATH_TO_PYTHON="/usr/bin/python"
 elif [[ $unamestr == "Linux"  && -f $(which apt-get) ]]; then
   _PATH_TO_PYTHON="/usr/bin/python2"
+elif [[ $unamestr == "Linux"  && -f $(which dnf) ]]; then
+  _PATH_TO_PYTHON="/usr/bin/python2"
 fi
 
 pushd ~/.dotfiles/ansible

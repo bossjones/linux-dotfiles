@@ -29,13 +29,17 @@ RUN set -xv ; \
     dnf install -y zlib-devel bzip2 bzip2-devel readline-devel sqlite sqlite-devel xz xz-devel && \
     dnf install -y @development-tools && \
     dnf reinstall -y glibc-devel.x86_64 && \
-    dnf install python3-devel -y; \
+    dnf install python3-devel python-devel -y; \
     dnf group install "C Development Tools and Libraries" -y; \
     ln -fs /usr/share/zoneinfo/UTC /etc/localtime && \
     dnf -y remove vim-minimal; \
     dnf remove openssl-devel -y; \
     dnf install -y compat-openssl10-devel; \
     dnf install -y systemd dbus-x11 tree; \
+    pip2 install --upgrade pip; \
+    pip2 install ansible==2.2.1.0; \
+    pip install --upgrade pip; \
+    pip install ansible==2.2.1.0; \
         dnf clean all
 
 # Disable requiretty.
