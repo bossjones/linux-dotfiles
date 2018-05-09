@@ -212,6 +212,8 @@
         dest: "/home/{{ bossjones__user }}/.pyenv/plugins/pyenv-virtualenvwrapper"
         version: "master"
         update: "{{ pyenv_update_git_install }}"
+      become: yes
+      become_user: "{{bossjones__user}}"
 
     - name: Clone pyenv-pip-rehash
       git:
@@ -219,6 +221,8 @@
         dest: "/home/{{ bossjones__user }}/.pyenv/plugins/pyenv-pip-rehash"
         version: "master"
         update: "{{ pyenv_update_git_install }}"
+      become: yes
+      become_user: "{{bossjones__user}}"
 
     - name: Clone pyenv-pip-migrate
       git:
@@ -226,6 +230,8 @@
         dest: "/home/{{ bossjones__user }}/.pyenv/plugins/pyenv-pip-migrate"
         version: "master"
         update: "{{ pyenv_update_git_install }}"
+      become: yes
+      become_user: "{{bossjones__user}}"
 
     - name: Clone pyenv-update
       git:
@@ -233,6 +239,8 @@
         dest: "/home/{{ bossjones__user }}/.pyenv/plugins/pyenv-update"
         version: "master"
         update: "{{ pyenv_update_git_install }}"
+      become: yes
+      become_user: "{{bossjones__user}}"
 
     - name: Clone pyenv-update
       git:
@@ -240,6 +248,8 @@
         dest: "/home/{{ bossjones__user }}/.pyenv/plugins/pyenv-pip-update"
         version: "master"
         update: "{{ pyenv_update_git_install }}"
+      become: yes
+      become_user: "{{bossjones__user}}"
 
     - name: Clone pyenv-doctor
       git:
@@ -247,6 +257,8 @@
         dest: "/home/{{ bossjones__user }}/.pyenv/plugins/pyenv-doctor"
         version: "master"
         update: "{{ pyenv_update_git_install }}"
+      become: yes
+      become_user: "{{bossjones__user}}"
 
     - name: Clone pyenv-default-packages
       git:
@@ -254,6 +266,8 @@
         dest: "/home/{{ bossjones__user }}/.pyenv/plugins/pyenv-default-packages"
         version: "master"
         update: "{{ pyenv_update_git_install }}"
+      become: yes
+      become_user: "{{bossjones__user}}"
 
 # Install pyenv module so we can use it
 - hosts: localhost
