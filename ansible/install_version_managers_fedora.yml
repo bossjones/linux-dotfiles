@@ -278,12 +278,12 @@
 
   tasks:
 
-    - name: 'pyenv pip-update'
-      pyenv:
-        subcommand: pip-update
-      register: result
-    - debug:
-        var: result.virtualenvs
+    # - name: 'pyenv pip-update'
+    #   pyenv:
+    #     subcommand: pip-update
+    #   register: result
+    # - debug:
+    #     var: result.virtualenvs
 
     # install python and create virtualenv before using pip module
     # - name: pyenv install -s 2.7.13
@@ -366,6 +366,7 @@
         - isort
         - autopep8
         - pydocstyle
+        - flake8
 
     # -------------------------------------------
     # venv: tools2

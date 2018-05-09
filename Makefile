@@ -112,7 +112,7 @@ run-fedora-systemd-check-only:
 	--privileged \
 	-u $(NON_ROOT_USER) \
 	-w /etc/ansible/roles/role_under_test \
-	dotfile-test-fedora27 env TERM=xterm CHECK_ONLY=1 bash -c "git clone -b feature-font-username https://github.com/bossjones/linux-dotfiles ~$(NON_ROOT_USER)/.dotfiles; cd ~$(NON_ROOT_USER)/.dotfiles; source ~$(NON_ROOT_USER)/.dotfiles/install.sh"
+	dotfile-test-fedora27 env TERM=xterm bash -c "export CHECK_ONLY=1; git clone -b feature-font-username https://github.com/bossjones/linux-dotfiles ~$(NON_ROOT_USER)/.dotfiles; cd ~$(NON_ROOT_USER)/.dotfiles; source ~$(NON_ROOT_USER)/.dotfiles/install.sh"
 
 ci-fedora: build-fedora run-fedora-systemd
 
