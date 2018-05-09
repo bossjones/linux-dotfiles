@@ -61,12 +61,12 @@
         - tmux
         - fontconfig-devel
 
-    # - name: Create Backups folder
-    #   file:
-    #     path: "/home/{{ bossjones__user }}/folders_to_backup"
-    #     state: directory
-    #   tags:
-    #     - folders_to_backup
+    - name: Create Backups folder
+      file:
+        path: "/home/{{ bossjones__user }}/folders_to_backup"
+        state: directory
+      tags:
+        - backup
 
     - name: Create Backups folder
       file:
