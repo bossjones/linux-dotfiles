@@ -126,3 +126,10 @@ docker-exec-ci-fedora:
 	-u $(NON_ROOT_USER) \
 	-w /etc/ansible/roles/role_under_test \
 	dotfile-test-fedora27 env TERM=xterm bash
+
+docker-exec-ci-fedora-login:
+	docker exec -i --tty \
+	--privileged \
+	-u $(NON_ROOT_USER) \
+	-w /etc/ansible/roles/role_under_test \
+	dotfile-test-fedora27 env TERM=xterm bash -l
