@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+[[ "$CHECK_ONLY" ]] && export CHECK_ONLY=--check
+
 unamestr=$(uname)
 
 if [[ $unamestr == "Darwin" ]]; then
@@ -42,16 +44,24 @@ elif [[ $unamestr == "Linux"  && -f $(which dnf) ]]; then
     _USER=$(whoami)
     _GROUP=$(whoami)
 
-    ansible-playbook -vvvv bootstrap_fedora.yml \
-    --extra-vars \
-    "bossjones__user=${_USER} bossjones__group=${_GROUP}" --check
+    # If we set checkonly then run check, else run full suite
+    if [[ "${CHECK_ONLY}" = "1" ]]; then
+      ansible-playbook -vvvv bootstrap_fedora.yml \
+      --extra-vars \
+      "bossjones__user=${_USER} bossjones__group=${_GROUP}" --check
 
-    _USER=$(whoami)
-    _GROUP=$(whoami)
+      ansible-playbook -vvvv install_version_managers_fedora.yml \
+      --extra-vars \
+      "bossjones__user=${_USER} bossjones__group=${_GROUP}" --skip-tags="zsh,rbenv,nvm" --check
+    else
+      ansible-playbook -vvvv bootstrap_fedora.yml \
+      --extra-vars \
+      "bossjones__user=${_USER} bossjones__group=${_GROUP}"
 
+      ansible-playbook -vvvv install_version_managers_fedora.yml \
+      --extra-vars \
+      "bossjones__user=${_USER} bossjones__group=${_GROUP}" --skip-tags="zsh,rbenv,nvm"
+    fi
 
-    ansible-playbook -vvvv install_version_managers_fedora.yml \
-    --extra-vars \
-    "bossjones__user=${_USER} bossjones__group=${_GROUP}" --skip-tags="zsh,rbenv,nvm" --check
 fi
 popd
