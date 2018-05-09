@@ -143,6 +143,7 @@
         - npm
         - diff-so-fancy
         - docker-enter
+        - jsonlint
       nvm_users:
         - "{{ bossjones__user }}"
 
@@ -367,6 +368,7 @@
         - autopep8
         - pydocstyle
         - flake8
+        - yamllint
 
     # -------------------------------------------
     # venv: tools2
@@ -382,6 +384,16 @@
         - fabric
         - mercurial
         - restructuredtext_lint
+
+
+    - name: install common modules in venv 3.6.5
+      pip:
+        name: "{{item}}"
+        executable: "{{pyenv_root}}/versions/3.6.5/bin/pip"
+      with_items:
+        - powerline-status
+        - setuptools
+        - wheel
 
       # Finally, it’s time to make all Python versions and special virtualenvs work with each other.
       # The above command establishes the PATH priority so scripts can be accessed in the right order without activating any virtualenv.
@@ -410,6 +422,22 @@
         path: "/home/{{bossjones__user}}/.ipython/profile_default/startup/"
         state: directory
         owner: "{{ bossjones__user }}"
+      become: yes
+      become_user: "{{bossjones__user}}"
+
+    - name: "Create directory: /home/{{bossjones__user}}/.config/fontconfig/conf.d/"
+      file:
+        path: "/home/{{bossjones__user}}/.config/fontconfig/conf.d/"
+        state: directory
+        owner: "{{ bossjones__user }}"
+      become: yes
+      become_user: "{{bossjones__user}}"
+
+    - name: Download 10-powerline-symbols.conf
+      get_url:
+        url: https://raw.githubusercontent.com/powerline/powerline/8d577b59584c51c643495f5173da5b8a04806236/font/10-powerline-symbols.conf
+        dest: "/home/{{bossjones__user}}/.config/fontconfig/conf.d/10-powerline-symbols.conf"
+        mode: 0644
       become: yes
       become_user: "{{bossjones__user}}"
 
