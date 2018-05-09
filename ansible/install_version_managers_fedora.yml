@@ -38,6 +38,8 @@
         - sqlite-devel
         - xz
         - xz-devel
+        - procps
+        - net-tools
         # - '@C Development Tools and Libraries'
 
 - hosts: localhost
@@ -385,15 +387,16 @@
         - mercurial
         - restructuredtext_lint
 
-
     - name: install common modules in venv 3.6.5
       pip:
         name: "{{item}}"
         executable: "{{pyenv_root}}/versions/3.6.5/bin/pip"
       with_items:
-        - powerline-status
+        # - powerline-status
         - setuptools
         - wheel
+        - libtmux
+        - tmuxp
 
       # Finally, it’s time to make all Python versions and special virtualenvs work with each other.
       # The above command establishes the PATH priority so scripts can be accessed in the right order without activating any virtualenv.
