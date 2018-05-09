@@ -16,6 +16,7 @@ prepend-path "/usr/sbin"
 prepend-path "/usr/local/sbin"
 prepend-path "$HOME/.rbenv/bin"
 prepend-path "$HOME/.pyenv/bin"
+prepend-path "$HOME/.jenv/bin"
 prepend-path "$HOME/.local/bin"
 prepend-path "$HOME/bin"
 
