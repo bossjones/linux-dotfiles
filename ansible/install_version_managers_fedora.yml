@@ -228,6 +228,13 @@
         version: "master"
         update: "{{ pyenv_update_git_install }}"
 
+    - name: Clone pyenv-update
+      git:
+        repo: https://github.com/massongit/pyenv-pip-update
+        dest: "/home/{{ bossjones__user }}/.pyenv/plugins/pyenv-pip-update"
+        version: "master"
+        update: "{{ pyenv_update_git_install }}"
+
     - name: Clone pyenv-doctor
       git:
         repo: https://github.com/pyenv/pyenv-doctor
@@ -271,13 +278,12 @@
 
   tasks:
 
-    # - name: pyenv virtualenvs --skip-aliases --bare
-    #   pyenv:
-    #     subcommand: virtualenvs
-    #     pyenv_root: "~/.pyenv"
-    #   register: result
-    # - debug:
-    #     var: result.virtualenvs
+    - name: 'pyenv pip-update'
+      pyenv:
+        subcommand: pip-update
+      register: result
+    - debug:
+        var: result.virtualenvs
 
     # install python and create virtualenv before using pip module
     # - name: pyenv install -s 2.7.13
@@ -358,6 +364,8 @@
         - ptpython
         - glances
         - isort
+        - autopep8
+        - pydocstyle
 
     # -------------------------------------------
     # venv: tools2
@@ -372,12 +380,7 @@
         - s3cmd
         - fabric
         - mercurial
-        - cheat
-        - powerline-status
-        - pdbpp
-        - pylint
-        - ptpython
-        - isort
+        - restructuredtext_lint
 
       # Finally, it’s time to make all Python versions and special virtualenvs work with each other.
       # The above command establishes the PATH priority so scripts can be accessed in the right order without activating any virtualenv.
