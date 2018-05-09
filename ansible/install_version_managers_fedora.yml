@@ -280,26 +280,6 @@
     - role: suzuki-shunsuke.pyenv-module
 
   tasks:
-
-    # - name: 'pyenv pip-update'
-    #   pyenv:
-    #     subcommand: pip-update
-    #   register: result
-    # - debug:
-    #     var: result.virtualenvs
-
-    # install python and create virtualenv before using pip module
-    # - name: pyenv install -s 2.7.13
-    #   pyenv:
-    #     pyenv_root: "{{pyenv_root}}"
-    #     version: 2.7.13
-    # - name: pyenv virtualenv 3.6.1 yaml_env
-    #   pyenv:
-    #     subcommand: virtualenv
-    #     pyenv_root: "{{pyenv_root}}"
-    #     version: 3.6.1
-    #     virtualenv_name: yaml_env
-
     - name: install virtualenvwrapper module in venv 3.6.5
       pip:
         name: "{{item}}"
@@ -371,6 +351,7 @@
         - flake8
         - yamllint
         - mypy
+        - graphviz
 
     # -------------------------------------------
     # venv: tools2
