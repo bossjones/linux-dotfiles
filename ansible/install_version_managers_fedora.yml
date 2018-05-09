@@ -592,23 +592,23 @@
 
   roles:
 
-    - role: nass600.powerline
-      powerline_package_name: "powerline-status"
-      powerline_version: "2.6"
+    # - role: nass600.powerline
+    #   powerline_package_name: "powerline-status"
+    #   powerline_version: "2.6"
 
-      powerline_extra_segments:
-        - {name: powerline-gitstatus, version: "1.2.1"}
+    #   powerline_extra_segments:
+    #     - {name: powerline-gitstatus, version: "1.2.1"}
 
-      powerline_daemon_destination: "/home/{{bossjones__user}}/.powerline"
+    #   powerline_daemon_destination: "/home/{{bossjones__user}}/.powerline"
 
-      powerline_config_dir: "/home/{{bossjones__user}}/.config/powerline"
-      powerline_config_shell_colorscheme: "default"
-      powerline_config_shell_theme: "default"
-      powerline_config_vim_colorscheme: "default"
-      powerline_config_vim_theme: "default"
+    #   powerline_config_dir: "/home/{{bossjones__user}}/.config/powerline"
+    #   powerline_config_shell_colorscheme: "default"
+    #   powerline_config_shell_theme: "default"
+    #   powerline_config_vim_colorscheme: "default"
+    #   powerline_config_vim_theme: "default"
 
-      powerline_fonts_repo: "git://github.com/powerline/fonts.git"
-      powerline_fonts_dir: "{{ powerline_config_dir }}/fonts"
+    #   powerline_fonts_repo: "git://github.com/powerline/fonts.git"
+    #   powerline_fonts_dir: "{{ powerline_config_dir }}/fonts"
 
 # ####################################################################################################
 # # CHEATSHEETS SETUP
