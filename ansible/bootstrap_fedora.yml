@@ -60,6 +60,7 @@
         - git
         - tmux
         - fontconfig-devel
+        - libselinux-python
 
     - name: Create Backups folder
       file:
