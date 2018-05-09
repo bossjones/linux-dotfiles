@@ -41,7 +41,6 @@
         - procps
         - net-tools
         - ShellCheck
-        # - '@C Development Tools and Libraries'
 
 - hosts: localhost
   # NOTE: In order to populate special var ansible_pkg_mgr, need to enable gather_facts
@@ -362,7 +361,6 @@
         - rows
         - awscli
         - cheat
-        - powerline-status
         - pdbpp
         - pylint
         - ptpython
@@ -372,6 +370,7 @@
         - pydocstyle
         - flake8
         - yamllint
+        - mypy
 
     # -------------------------------------------
     # venv: tools2
@@ -387,6 +386,15 @@
         - fabric
         - mercurial
         - restructuredtext_lint
+        - pdbpp
+        - pylint
+        - ptpython
+        - isort
+        - autopep8
+        - pydocstyle
+        - flake8
+        - yamllint
+        - mypy
 
     - name: install common modules in venv 3.6.5
       pip:
