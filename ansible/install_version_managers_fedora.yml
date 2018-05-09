@@ -392,7 +392,6 @@
         - pydocstyle
         - flake8
         - yamllint
-        - mypy
 
     - name: install common modules in venv 3.6.5
       pip:
