@@ -44,7 +44,7 @@ elif [[ $unamestr == "Linux"  && -f $(which dnf) ]]; then
 
     ansible-playbook -vvvv bootstrap_fedora.yml \
     --extra-vars \
-    "bossjones__user=${_USER} bossjones__group=${_GROUP}"
+    "bossjones__user=${_USER} bossjones__group=${_GROUP}" --check
 
     _USER=$(whoami)
     _GROUP=$(whoami)
@@ -52,6 +52,6 @@ elif [[ $unamestr == "Linux"  && -f $(which dnf) ]]; then
 
     ansible-playbook -vvvv install_version_managers_fedora.yml \
     --extra-vars \
-    "bossjones__user=${_USER} bossjones__group=${_GROUP}" --skip-tags="zsh,rbenv,nvm"
+    "bossjones__user=${_USER} bossjones__group=${_GROUP}" --skip-tags="zsh,rbenv,nvm" --check
 fi
 popd
