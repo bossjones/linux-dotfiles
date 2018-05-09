@@ -48,6 +48,7 @@ ln -sfv "$DOTFILES_DIR/runcom/.pdbrc.py" ~
 ln -sfv "$DOTFILES_DIR/runcom/.ptpython_config.py" ~/.ptpython/config.py
 ln -sfv "$DOTFILES_DIR/runcom/.pythonrc" ~
 ln -sfv "$DOTFILES_DIR/runcom/.agignore" ~
+ln -sfv "$DOTFILES_DIR/runcom/.10-powerline-symbols.conf" ~/.config/fontconfig/conf.d/10-powerline-symbols.conf
 
 e_header "Package managers & packages"
 
