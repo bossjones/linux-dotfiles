@@ -42,6 +42,8 @@
       dnf:
         name: "*"
         state: latest
+      become: yes
+      become_method: sudo
 
     - name: install deps pkgs
       dnf:

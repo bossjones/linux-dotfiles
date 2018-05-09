@@ -41,6 +41,7 @@
         - procps
         - net-tools
         - ShellCheck
+        - python2-dnf
 
 - hosts: localhost
   # NOTE: In order to populate special var ansible_pkg_mgr, need to enable gather_facts
