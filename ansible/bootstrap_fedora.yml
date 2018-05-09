@@ -71,13 +71,13 @@
         path: "/home/{{ bossjones__user }}/backup"
         state: directory
       tags:
-        - folders_to_backup
+        - backup
 
     - name : Compress sites folders_to_backup
       command: "tar -zcvf /home/{{ bossjones__user }}/backup/{{ item }}.tar.gz /home/{{ bossjones__user }}/{{ item }}"
       with_items: "{{ folders_to_backup }}"
       ignore_errors: yes
       tags:
-        - folders_to_backup
+        - backup
   roles:
     - role: ulimit
