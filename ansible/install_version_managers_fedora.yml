@@ -801,3 +801,34 @@
           depth=1
       become: "{{bossjones__user}}"
       become_user: "{{bossjones__user}}"
+
+# ####################################################################################################
+# # sysctl SETUP(VSCode requirement)
+####################################################################################################
+- hosts: localhost
+  gather_facts: True
+  vars_prompt:
+    - name: "bossjones__user"
+      prompt: "User we want to run as."
+      private: no
+    - name: "bossjones__group"
+      prompt: "Group we want to run as."
+      private: no
+  tags:
+    - sysctl
+  vars:
+    bossjones__user: "{{boss__user}}"
+    bossjones__group: "{{boss_group}}"
+  become: yes
+  # become_method: sudo
+  # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
+  environment:
+    SHELL: /bin/bash
+  tasks:
+    - name: 'set fs.inotify.max_user_watches=524288'
+      sysctl:
+        name: fs.inotify.max_user_watches
+        value: 524288
+        sysctl_set: yes
+        state: present
+        reload: yes
