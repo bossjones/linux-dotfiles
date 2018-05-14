@@ -6,7 +6,9 @@
 
 # INFO: BASH_SOURCE - An array variable whose members are the source filenames where the corresponding shell function names in the FUNCNAME array variable are defined. The shell function ${FUNCNAME[$i]} is defined in the file ${BASH_SOURCE[$i]} and called from ${BASH_SOURCE[$i+1]}
 
-READLINK=$(which greadlink || which readlink)
+# TODO: 5/8/2018 re-enable this, but dump error output to stderr or /dev/null
+# READLINK=$(which greadlink || which readlink)
+READLINK=$(which readlink)
 CURRENT_SCRIPT=$BASH_SOURCE
 
 if [[ -n $CURRENT_SCRIPT && -x "$READLINK" ]]; then
@@ -33,7 +35,7 @@ DOTFILES_CACHE="$DOTFILES_DIR/.cache.sh"
 # rdebugrc
 # SOURCE: https://github.com/skwp/dotfiles/tree/master/ruby
 
-for DOTFILE in "$DOTFILES_DIR"/system/.{function,function_*,path,env,alias,completion,grep,prompt_bash_it,nvm,rbenv,rdebugrc,pyenv,cheatrc,powerline,custom}; do
+for DOTFILE in "$DOTFILES_DIR"/system/.{function,function_*,path,env,alias,completion,grep,prompt_bash_it,nvm,rbenv,rdebugrc,pyenv,cheatrc,powerline,custom,cargo,ccache,jenv}; do
   [ -f "$DOTFILE" ] && . "$DOTFILE"
 done
 
@@ -45,7 +47,7 @@ fi
 
 # Set LSCOLORS
 
-eval "$(dircolors "$DOTFILES_DIR"/system/.dir_colors)"
+eval "$(dircolors -b "$DOTFILES_DIR"/system/.dir_colors)"
 
 # Hook for extra/custom stuff
 

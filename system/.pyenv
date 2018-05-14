@@ -1,6 +1,14 @@
 export PYENV_ROOT="$HOME/.pyenv"
 
-export PYENV_VERSION=2.7.14
+# export PYENV_VERSION=3.6.5
+
+export WORKON_HOME=~/.virtualenvs
+export PROJECT_HOME=~/dev
 
 eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
+# Also note that I did not include the command pyenv virtualenv init in ~/.bashrc unlike the documentation suggests. This is on purpose: activate both extensions causes conflicts.
+# eval "$(pyenv virtualenv-init -)"
+
+#pyenv virtualenvwrapper
+
+pyenv virtualenvwrapper_lazy

@@ -5,9 +5,14 @@
   # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
   environment:
     SHELL: /bin/bash
+  vars_prompt:
+    - name: "bossjones__user"
+      prompt: "User we want to run as."
+      private: no
+    - name: "bossjones__group"
+      prompt: "Group we want to run as."
+      private: no
   vars:
-    bossjones__user: vagrant
-    bossjones__group: vagrant
     ulimit_config:
       - domain: '*'
         type: soft

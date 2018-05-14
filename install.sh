@@ -45,19 +45,39 @@ ln -sfv "$DOTFILES_DIR/runcom/.rspec" ~
 ln -sfv "$DOTFILES_DIR/runcom/.pryrc" ~
 ln -sfv "$DOTFILES_DIR/runcom/.pdbrc" ~
 ln -sfv "$DOTFILES_DIR/runcom/.pdbrc.py" ~
-ln -sfv "$DOTFILES_DIR/runcom/.ptpython" ~
+ln -sfv "$DOTFILES_DIR/runcom/.ptpython_config.py" ~/.ptpython/config.py
 ln -sfv "$DOTFILES_DIR/runcom/.pythonrc" ~
 ln -sfv "$DOTFILES_DIR/runcom/.agignore" ~
+ln -sfv "$DOTFILES_DIR/runcom/.10-powerline-symbols.conf" ~/.config/fontconfig/conf.d/10-powerline-symbols.conf
 
 e_header "Package managers & packages"
 
 # Package managers & packages
 
+# Pretty osx specific stuff
 . "$DOTFILES_DIR/install/brew.sh"
 . "$DOTFILES_DIR/install/npm.sh"
 . "$DOTFILES_DIR/install/bash.sh"
 . "$DOTFILES_DIR/install/brew-cask.sh"
 . "$DOTFILES_DIR/install/gem.sh"
+
+# Fonts
+unamestr=$(uname)
+
+e_header "Install fonts"
+
+if [[ $unamestr == "Linux"  && -f $(which dnf) ]]; then
+  mkdir -p ~/.local/share/fonts/
+  cp -rv $DOTFILES_DIR/fonts/* ~/.local/share/fonts/
+  fc-cache -v
+fi
+
+# e_header "Copy folders into .config"
+
+# if [[ $unamestr == "Linux"  && -f $(which dnf) ]]; then
+#   cp -rvf "$DOTFILES_DIR/runcom/.config/gtk-3.0" ~/.config/
+#   cp -rvf "$DOTFILES_DIR/runcom/.config/powerline" ~/.config/
+# fi
 
 e_header "Run tests"
 

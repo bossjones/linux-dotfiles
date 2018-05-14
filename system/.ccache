@@ -1,0 +1,2 @@
+command-exists ccache && export PATH="/usr/lib64/ccache:$PATH"
+

@@ -1,0 +1,86 @@
+---
+##############################################################################
+# ansible-playbook bootstrap_fedora.yml --extra-vars "bossjones__user=developer bossjones__group=developer"
+##############################################################################
+- hosts: all
+  become: yes
+  gather_facts: False
+  become_method: sudo
+  # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
+  environment:
+    SHELL: /bin/bash
+  vars_prompt:
+    - name: "bossjones__user"
+      prompt: "User we want to run as."
+      private: no
+    - name: "bossjones__group"
+      prompt: "Group we want to run as."
+      private: no
+  vars:
+    folders_to_backup:
+      # XDG_CONFIG_HOME
+      - '.config'
+      # XDG_CACHE_HOME
+      - '.cache'
+      # XDG_DATA_HOME
+      - '.local/share'
+      - '.bashrc'
+      - '.bash_profile'
+      - '.vim'
+      - '.profile'
+    ulimit_config:
+      - domain: '*'
+        type: soft
+        item: nofile
+        value: 64000
+      - domain: '*'
+        type: hard
+        item: nofile
+        value: 64000
+  pre_tasks:
+    - name: 'dnf -y update'
+      dnf:
+        name: "*"
+        state: latest
+      become: yes
+      become_method: sudo
+
+    - name: install deps pkgs
+      dnf:
+        name: "{{item}}"
+        state: present
+      with_items:
+        - systemd
+        - tree
+        - ansible
+        - sudo
+        - which
+        - python3-devel
+        - python2-dnf
+        - git
+        - tmux
+        - fontconfig-devel
+        - libselinux-python
+
+    - name: Create Backups folder
+      file:
+        path: "/home/{{ bossjones__user }}/folders_to_backup"
+        state: directory
+      tags:
+        - backup
+
+    - name: Create Backups folder
+      file:
+        path: "/home/{{bossjones__user}}/backup"
+        state: directory
+      tags:
+        - backup
+
+    - name : Compress sites folders_to_backup
+      command: "tar -zcvf /home/{{bossjones__user}}/backup/{{item}}.tar.gz /home/{{bossjones__user}}/{{item}}"
+      with_items: folders_to_backup
+      ignore_errors: yes
+      tags:
+        - backup
+  roles:
+    - role: ulimit
