@@ -17,7 +17,7 @@ fi
 # OVERRIDES: Use relative directory if travis
 if [[ "${_TRAVIS_CI}" == "1" ]]; then
     _PATH_TO_PYTHON=`which python`
-    pushd ansible
+    pushd ~/build/bossjones/linux-dotfiles/ansible
 else
     pushd ~/.dotfiles/ansible
 fi

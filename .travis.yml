@@ -37,7 +37,9 @@ script:
   - echo $_GROUP
   # Test the playbook.
   # - "travis_wait 30 source install.sh"
-  - "source install.sh"
+  # - "source install.sh"
+  - make install
+  - source ~/.dotfiles/install.sh
 
   # # Install dependencies.
   # - "ansible-galaxy install -r requirements.yml"

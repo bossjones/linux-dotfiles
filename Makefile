@@ -204,3 +204,6 @@ decrypt:
 
 encrypt_pre_commit: encrypt
 	@git add $(ANSIBLE_SENSITIVE_CONTENT_FILES)
+
+install:
+	install -d . ~/.dotfiles
