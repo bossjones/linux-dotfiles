@@ -43,7 +43,8 @@ VAULT_COMMAND := \
 	converge \
 	encrypt \
 	decrypt \
-	encrypt_pre_commit
+	encrypt_pre_commit \
+	install
 
 all: bin dotfiles etc
 
