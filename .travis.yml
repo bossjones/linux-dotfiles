@@ -34,7 +34,8 @@ script:
   - _GROUP=$(ls -lta | awk '{print $4}')
 
   # Test the playbook.
-  - "travis_wait 30 source install.sh"
+  # - "travis_wait 30 source install.sh"
+  - "source install.sh"
 
   # # Install dependencies.
   # - "ansible-galaxy install -r requirements.yml"
