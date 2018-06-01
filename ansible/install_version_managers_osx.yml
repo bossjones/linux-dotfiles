@@ -25,24 +25,12 @@
   vars:
     bossjones__user: "{{boss__user}}"
     bossjones__group: "{{boss_group}}"
-  tasks:
-    - name: install development tools
-      dnf:
-        name: "{{item}}"
-        state: present
-      with_items:
-        - zlib-devel
-        - bzip2
-        - bzip2-devel
-        - readline-devel
-        - sqlite
-        - sqlite-devel
-        - xz
-        - xz-devel
-        - procps
-        - net-tools
-        - ShellCheck
-        - python2-dnf
+  roles:
+    - role: geerlingguy.homebrew
+      tags: ['homebrew']
+    # - role: geerlingguy.mas
+    #   when: mas_installed_apps
+    #   tags: ['mas']
 
 - hosts: localhost
   # NOTE: In order to populate special var ansible_pkg_mgr, need to enable gather_facts
@@ -66,20 +54,7 @@
     bossjones__group: "{{boss_group}}"
   roles:
     - role: zzet.rbenv
-      default_gems_file: "/home/{{ bossjones__user }}/.dotfiles/ruby/default-gems"
-      # TODO: These values need to be changed
-      rbenv_extra_depends:
-      - libvmmalloc-devel
-      - jemalloc-devel
-      - ctags
-      - ctags-etags
-      rbenv_dnf_packages:
-      - gcc
-      - libyaml-devel
-      - readline-devel
-      - zlib-devel
-      - libffi-devel
-      - git
+      default_gems_file: "~{{ bossjones__user }}/.dotfiles/ruby/default-gems"
       rbenv:
         env: user
         version: v1.1.1
@@ -126,7 +101,7 @@
   roles:
     - role: pablocrivella.nvm
       nvm_repo: "git://github.com/creationix/nvm.git"
-      nvm_root: "/home/{{ bossjones__user }}/.nvm"
+      nvm_root: "~{{ bossjones__user }}/.nvm"
       nvm_env: user
       nvm_version: v0.33.1
       nvm_default_node_version: stable
@@ -175,12 +150,7 @@
     PROJECT_HOME: "~/dev"
   roles:
     - role: avanov.pyenv
-      pyenv_redhat_packages:
-      - git
-      - gcc
-      - libselinux-python
-      - zlib-devel
-      pyenv_path: "/home/{{ bossjones__user }}/.pyenv"
+      pyenv_path: "~{{ bossjones__user }}/.pyenv"
       pyenv_owner: "{{ bossjones__user }}"
       pyenv_update_git_install: no
       pyenv_enable_autocompletion: yes
@@ -210,7 +180,7 @@
     - name: Clone pyenv-virtualenvwrapper
       git:
         repo: https://github.com/pyenv/pyenv-virtualenvwrapper
-        dest: "/home/{{ bossjones__user }}/.pyenv/plugins/pyenv-virtualenvwrapper"
+        dest: "~{{ bossjones__user }}/.pyenv/plugins/pyenv-virtualenvwrapper"
         version: "master"
         update: "{{ pyenv_update_git_install }}"
       become: yes
@@ -219,7 +189,7 @@
     - name: Clone pyenv-pip-rehash
       git:
         repo: https://github.com/pyenv/pyenv-pip-rehash
-        dest: "/home/{{ bossjones__user }}/.pyenv/plugins/pyenv-pip-rehash"
+        dest: "~{{ bossjones__user }}/.pyenv/plugins/pyenv-pip-rehash"
         version: "master"
         update: "{{ pyenv_update_git_install }}"
       become: yes
@@ -228,7 +198,7 @@
     - name: Clone pyenv-pip-migrate
       git:
         repo: https://github.com/pyenv/pyenv-pip-migrate
-        dest: "/home/{{ bossjones__user }}/.pyenv/plugins/pyenv-pip-migrate"
+        dest: "~{{ bossjones__user }}/.pyenv/plugins/pyenv-pip-migrate"
         version: "master"
         update: "{{ pyenv_update_git_install }}"
       become: yes
@@ -237,7 +207,7 @@
     - name: Clone pyenv-update
       git:
         repo: https://github.com/pyenv/pyenv-update
-        dest: "/home/{{ bossjones__user }}/.pyenv/plugins/pyenv-update"
+        dest: "~{{ bossjones__user }}/.pyenv/plugins/pyenv-update"
         version: "master"
         update: "{{ pyenv_update_git_install }}"
       become: yes
@@ -246,7 +216,7 @@
     - name: Clone pyenv-update
       git:
         repo: https://github.com/massongit/pyenv-pip-update
-        dest: "/home/{{ bossjones__user }}/.pyenv/plugins/pyenv-pip-update"
+        dest: "~{{ bossjones__user }}/.pyenv/plugins/pyenv-pip-update"
         version: "master"
         update: "{{ pyenv_update_git_install }}"
       become: yes
@@ -255,7 +225,7 @@
     - name: Clone pyenv-doctor
       git:
         repo: https://github.com/pyenv/pyenv-doctor
-        dest: "/home/{{ bossjones__user }}/.pyenv/plugins/pyenv-doctor"
+        dest: "~{{ bossjones__user }}/.pyenv/plugins/pyenv-doctor"
         version: "master"
         update: "{{ pyenv_update_git_install }}"
       become: yes
@@ -264,7 +234,7 @@
     - name: Clone pyenv-default-packages
       git:
         repo: https://github.com/jawshooah/pyenv-default-packages
-        dest: "/home/{{ bossjones__user }}/.pyenv/plugins/pyenv-default-packages"
+        dest: "~{{ bossjones__user }}/.pyenv/plugins/pyenv-default-packages"
         version: "master"
         update: "{{ pyenv_update_git_install }}"
       become: yes
@@ -370,6 +340,7 @@
         - yamllint
         - mypy
         - graphviz
+        - ansible
 
     # -------------------------------------------
     # venv: tools2
@@ -427,33 +398,25 @@
 # pyenv virtualenv 2.7.13 tools2
 
 
-    - name: "Create directory: /home/{{bossjones__user}}/.ipython/profile_default/startup"
+    - name: "Create directory:~/{{bossjones__user}}/.ipython/profile_default/startup"
       file:
-        path: "/home/{{bossjones__user}}/.ipython/profile_default/startup/"
+        path: "~{{bossjones__user}}/.ipython/profile_default/startup/"
         state: directory
         owner: "{{ bossjones__user }}"
       become: yes
       become_user: "{{bossjones__user}}"
 
-    - name: "Create directory: /home/{{bossjones__user}}/.config/fontconfig/conf.d/"
+    - name: "Create directory: ~{{bossjones__user}}/.config/fontconfig/conf.d/"
       file:
-        path: "/home/{{bossjones__user}}/.config/fontconfig/conf.d/"
+        path: "~{{bossjones__user}}/.config/fontconfig/conf.d/"
         state: directory
         owner: "{{ bossjones__user }}"
       become: yes
       become_user: "{{bossjones__user}}"
 
-    - name: Download 10-powerline-symbols.conf
-      get_url:
-        url: https://raw.githubusercontent.com/powerline/powerline/8d577b59584c51c643495f5173da5b8a04806236/font/10-powerline-symbols.conf
-        dest: "/home/{{bossjones__user}}/.config/fontconfig/conf.d/10-powerline-symbols.conf"
-        mode: 0644
-      become: yes
-      become_user: "{{bossjones__user}}"
-
-    - name: "Create directory: /home/{{bossjones__user}}/.ptpython"
+    - name: "Create directory: ~{{bossjones__user}}/.ptpython"
       file:
-        path: "/home/{{bossjones__user}}/.ptpython/"
+        path: "~{{bossjones__user}}/.ptpython/"
         state: directory
         owner: "{{ bossjones__user }}"
       become: yes
@@ -499,60 +462,6 @@
 # exec zsh
 # fi
 
-# ansible_ssh_user: 'vagrant', vagrant: true, zsh_user: 'vagrant'
-
-#   post_tasks:
-#     # use pip module with executable option
-#     - name: install powerline-status
-#       pip:
-#         name: "{{item}}"
-#         executable: "{{pyenv_root}}/versions/2.7.14/bin/pip"
-#       with_items:
-#         - cheat
-#         - powerline-status
-#         - ipython
-#         - pdbpp
-
-#     # use pip module with executable option
-#     - name: install powerline-status
-#       pip:
-#         name: "{{item}}"
-#         executable: "{{pyenv_root}}/versions/3.6.4/bin/pip"
-#       with_items:
-#         - cheat
-#         - powerline-status
-#         - ipython
-#         - pdbpp
-
-#     # use pip module with executable option
-#     - name: install powerline-status
-#       pip:
-#         name: "{{item}}"
-#         executable: "{{pyenv_root}}/versions/3.5.2/bin/pip"
-#       with_items:
-#         - cheat
-#         - powerline-status
-#         - ipython
-#         - pdbpp
-
-# - hosts: localhost
-#   gather_facts: True
-#   vars_prompt:
-#     - name: "bossjones__user"
-#       prompt: "User we want to run as."
-#       private: no
-#     - name: "bossjones__group"
-#       prompt: "Group we want to run as."
-#       private: no
-#   tags:
-#     - motd
-#   become: yes
-#   become_method: sudo
-#   environment:
-#     SHELL: /bin/bash
-#   roles:
-#     - role: motd
-
 # ####################################################################################################
 # # POWERLINE SETUP
 ####################################################################################################
@@ -580,51 +489,51 @@
     - name: Cloning fonts
       git:
         repo=https://github.com/powerline/fonts
-        dest="/home/{{bossjones__user}}/powerlinefonts"
+        dest="~{{bossjones__user}}/powerlinefonts"
         accept_hostkey=yes
       register: fontCloned
       become: yes
       become_user: "{{bossjones__user}}"
 
     - name: Install Fonts
-      shell: /home/{{bossjones__user}}/powerlinefonts/install.sh chdir=/home/{{bossjones__user}}/powerlinefonts
+      shell: ~{{bossjones__user}}/powerlinefonts/install.sh chdir=~/{{bossjones__user}}/powerlinefonts
       when: fontCloned|success
       become: yes
       become_user: "{{bossjones__user}}"
 
-    - name: "Create directory: /home/{{bossjones__user}}/powerline"
+    - name: "Create directory: ~{{bossjones__user}}/powerline"
       file:
-        path: "/home/{{bossjones__user}}/.config/powerline"
+        path: "~{{bossjones__user}}/.config/powerline"
         state: directory
         owner: "{{ bossjones__user }}"
       become: yes
       become_user: "{{bossjones__user}}"
 
-    - name: "touch /home/{{bossjones__user}}/.powerline"
+    - name: "touch ~{{bossjones__user}}/.powerline"
       shell: >
-        touch /home/{{bossjones__user}}/.powerline
+        touch ~{{bossjones__user}}/.powerline
       become: yes
       become_user: "{{bossjones__user}}"
 
   roles:
 
-    # - role: nass600.powerline
-    #   powerline_package_name: "powerline-status"
-    #   powerline_version: "2.6"
+    - role: nass600.powerline
+      powerline_package_name: "powerline-status"
+      powerline_version: "2.6"
 
-    #   powerline_extra_segments:
-    #     - {name: powerline-gitstatus, version: "1.2.1"}
+      powerline_extra_segments:
+        - {name: powerline-gitstatus, version: "1.2.1"}
 
-    #   powerline_daemon_destination: "/home/{{bossjones__user}}/.powerline"
+      powerline_daemon_destination: "~{{bossjones__user}}/.powerline"
 
-    #   powerline_config_dir: "/home/{{bossjones__user}}/.config/powerline"
-    #   powerline_config_shell_colorscheme: "default"
-    #   powerline_config_shell_theme: "default"
-    #   powerline_config_vim_colorscheme: "default"
-    #   powerline_config_vim_theme: "default"
+      powerline_config_dir: "~{{bossjones__user}}/.config/powerline"
+      powerline_config_shell_colorscheme: "default"
+      powerline_config_shell_theme: "default"
+      powerline_config_vim_colorscheme: "default"
+      powerline_config_vim_theme: "default"
 
-    #   powerline_fonts_repo: "git://github.com/powerline/fonts.git"
-    #   powerline_fonts_dir: "{{ powerline_config_dir }}/fonts"
+      powerline_fonts_repo: "git://github.com/powerline/fonts.git"
+      powerline_fonts_dir: "{{ powerline_config_dir }}/fonts"
 
 # ####################################################################################################
 # # CHEATSHEETS SETUP
@@ -654,7 +563,7 @@
     - name: Clone pyenv-doctor
       git:
         repo: https://github.com/bossjones/boss-cheatsheets
-        dest: "/home/{{ bossjones__user }}/.cheat"
+        dest: "~{{ bossjones__user }}/.cheat"
         version: "master"
         update: "{{ cheatsheet_update }}"
 
@@ -696,7 +605,7 @@
     # TODO: have bash_it run before this shell script
     - name: clone bash_it
       git: repo="{{boss__bash_it_repository}}"
-          dest="/home/{{bossjones__user}}/.bash_it"
+          dest="~{{bossjones__user}}/.bash_it"
           update=no
           depth=1
       become: "{{bossjones__user}}"
@@ -797,39 +706,8 @@
   tasks:
     - name: clone jenv
       git: repo="https://github.com/gcuisinier/jenv.git"
-          dest="/home/{{bossjones__user}}/.jenv"
+          dest="~{{bossjones__user}}/.jenv"
           update=no
           depth=1
       become: "{{bossjones__user}}"
       become_user: "{{bossjones__user}}"
-
-# ####################################################################################################
-# # sysctl SETUP(VSCode requirement)
-####################################################################################################
-- hosts: localhost
-  gather_facts: True
-  vars_prompt:
-    - name: "bossjones__user"
-      prompt: "User we want to run as."
-      private: no
-    - name: "bossjones__group"
-      prompt: "Group we want to run as."
-      private: no
-  tags:
-    - sysctl
-  vars:
-    bossjones__user: "{{boss__user}}"
-    bossjones__group: "{{boss_group}}"
-  become: yes
-  # become_method: sudo
-  # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
-  environment:
-    SHELL: /bin/bash
-  tasks:
-    - name: 'set fs.inotify.max_user_watches=524288'
-      sysctl:
-        name: fs.inotify.max_user_watches
-        value: 524288
-        sysctl_set: yes
-        state: present
-        reload: yes

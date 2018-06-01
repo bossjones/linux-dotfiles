@@ -20,6 +20,12 @@ if is_ubuntu; then
   . "$DOTFILES_DIR/install/prereq-linux.sh"
 fi
 
+# Ubuntu-only stuff. Abort if not Ubuntu.
+if is-macos; then
+  e_header "EXPERIMENTAL ... this might break - Macos"
+  . "$DOTFILES_DIR/install/prereq-linux.sh"
+fi
+
 e_header "Provision machine using ansible bootstrap.yml"
 command-exists ansible && bash "$DOTFILES_DIR/ansible/provision.sh"
 

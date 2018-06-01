@@ -50,3 +50,7 @@
 - src: https://github.com/viasite-ansible/ansible-role-zsh
   version: 0017e34d8bf50c50481cd473eccc5e5c8620ddac
   name: viasite-ansible.zsh
+
+
+- name: geerlingguy.homebrew
+- name: geerlingguy.mas

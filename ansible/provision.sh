@@ -21,7 +21,8 @@ cat hosts.private
 
 # Mac OS X
 if [[ $unamestr == "Darwin" ]]; then
-  ansible-playbook bootstrap_osx.yml
+  echo "already bootstraped, run version manage now"
+  # ansible-playbook bootstrap_osx.yml
 elif [[ $unamestr == "Linux"  && -f $(which apt-get) ]]; then
     _USER=$(whoami)
     _GROUP=$(whoami)
@@ -34,13 +35,22 @@ fi
 # TODO: Add variable files for different machines
 # ansible-playbook install_version_managers.yml --skip-tags="nvm"
 if [[ $unamestr == "Darwin" ]]; then
-  echo "OS X: Needs to be implemented"
+  _USER=$(whoami)
+  _GROUP=$(whoami)
+
+  # If we set checkonly then run check, else run full suite
+  if [[ "${CHECK_ONLY}" = "1" ]]; then
+    ansible-playbook -vvvv install_version_managers_osx.yml \
+    --extra-vars \
+    "bossjones__user=${_USER} bossjones__group=${_GROUP}" --skip-tags="zsh" --check
+  else
+    ansible-playbook -vvvv install_version_managers_osx.yml \
+    --extra-vars \
+    "bossjones__user=${_USER} bossjones__group=${_GROUP}" --skip-tags="zsh"
+  fi
 elif [[ $unamestr == "Linux"  && -f $(which apt-get) ]]; then
   ansible-playbook install_version_managers.yml
 elif [[ $unamestr == "Linux"  && -f $(which dnf) ]]; then
-    echo "Fedora: Needs to be implemented"
-    echo "Fedora: Try running ansible-playbook -vvvv install_version_managers_fedora.yml"
-
     _USER=$(whoami)
     _GROUP=$(whoami)
 

@@ -1,20 +1,9 @@
 ---
 downloads: ~/.ansible-downloads/
 
-configure_dotfiles: yes
 configure_sudoers: yes
 configure_terminal: yes
 configure_osx: yes
-
-dotfiles_repo: https://github.com/geerlingguy/dotfiles.git
-dotfiles_repo_accept_hostkey: yes
-dotfiles_repo_local_destination: ~/Dropbox/Development/GitHub/dotfiles
-dotfiles_files:
-  - .bash_profile
-  - .gitignore
-  - .inputrc
-  - .osx
-  - .vimrc
 
 homebrew_installed_packages:
   # - ansible # Installed via Pip.
@@ -34,7 +23,6 @@ homebrew_installed_packages:
   - mcrypt
   - nmap
   - node
-  - nvm
   - ssh-copy-id
   - cowsay
   - readline
@@ -45,10 +33,24 @@ homebrew_installed_packages:
   - rbenv
   - ruby-build
   - tree
+  - ctags
+  - ack
+  - pkg-config
+  - pyenv
+  - pyenv-virtualenv
+  - pyenv-virtualenvwrapper
 
 homebrew_taps:
   - homebrew/core
   - homebrew/cask
+  - facebook/fb
+  - homebrew/bundle
+  - homebrew/completions
+  - homebrew/dupes
+  - homebrew/php
+  - homebrew/science
+  - homebrew/services
+  - homebrew/versions
 
 homebrew_cask_appdir: /Applications
 homebrew_cask_apps:
@@ -82,29 +84,29 @@ composer_packages: []
   # - name: drush
   #   state: present # present/absent, default: present
   #   version: "^8.1" # default: N/A
-gem_packages:
-  - name: pry
-    state: present
-  - name: bundler
-    state: present
-  - name: ruby-debug-ide
-    version: "0.6.0"
-    state: present
-  - name: debase
-    version: "0.2.2.beta10"
-    state: present
-  - name: rcodetools
-    state: present
-  - name: rubocop
-    state: present
-  - name: fastri
-    state: present
-  - name: htmlbeautifier
-    state: present
-  - name: hirb
-    state: present
-  - name: pry-doc
-    state: present
+gem_packages: []
+  # - name: pry
+  #   state: present
+  # - name: bundler
+  #   state: present
+  # - name: ruby-debug-ide
+  #   version: "0.6.0"
+  #   state: present
+  # - name: debase
+  #   version: "0.2.2.beta10"
+  #   state: present
+  # - name: rcodetools
+  #   state: present
+  # - name: rubocop
+  #   state: present
+  # - name: fastri
+  #   state: present
+  # - name: htmlbeautifier
+  #   state: present
+  # - name: hirb
+  #   state: present
+  # - name: pry-doc
+  #   state: present
   # - name: bundler
   #   state: present # present/absent/latest, default: present
   #   version: "~> 1.15.1" # default: N/A
