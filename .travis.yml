@@ -32,7 +32,8 @@ install:
 script:
   - _USER=$(ls -lta | awk '{print $3}')
   - _GROUP=$(ls -lta | awk '{print $4}')
-
+  - echo $_USER
+  - echo $_GROUP
   # Test the playbook.
   # - "travis_wait 30 source install.sh"
   - "source install.sh"
