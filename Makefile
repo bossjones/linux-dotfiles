@@ -50,7 +50,7 @@ VAULT_COMMAND := \
 all: bin dotfiles etc
 
 sed-travis:
-	sed -i 's,"bossjones__user=\\${_USER} bossjones__group=\\${_GROUP}","bossjones__user=\\${_USER} bossjones__group=\\${_GROUP} configure_sudoers=false",g' ~/.dotfiles/ansible/provision.sh
+	bash ./sed-travis.sh
 
 bin:
 	# add aliases for things in bin
