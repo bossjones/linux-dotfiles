@@ -39,7 +39,8 @@ script:
   # - "travis_wait 30 source install.sh"
   # - "source install.sh"
   - cp -a $(pwd) ~/.dotfiles
-  - sed -i 's,"bossjones__user=${_USER} bossjones__group=${_GROUP}","bossjones__user=${_USER} bossjones__group=${_GROUP} configure_sudoers=false",g'  ~/.dotfiles/ansible/provision.sh
+  - ls -lta ~/.dotfiles
+  - make sed-travis
   - cat ~/.dotfiles/ansible/provision.sh
   - source ~/.dotfiles/install.sh
 
