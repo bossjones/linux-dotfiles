@@ -17,8 +17,10 @@
       private: no
   tags:
     - devel-tools
+  # become: yes
+  # become_method: sudo
   become: yes
-  become_method: sudo
+  become_user: "{{bossjones__user}}"
   # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
   environment:
     SHELL: /bin/bash
