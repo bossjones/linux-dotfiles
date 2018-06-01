@@ -61,11 +61,12 @@ e_header "Package managers & packages"
 # Package managers & packages
 
 # Pretty osx specific stuff
-. "$DOTFILES_DIR/install/brew.sh"
-. "$DOTFILES_DIR/install/npm.sh"
-. "$DOTFILES_DIR/install/bash.sh"
-. "$DOTFILES_DIR/install/brew-cask.sh"
-. "$DOTFILES_DIR/install/gem.sh"
+# DISABLING FOR NOW
+# . "$DOTFILES_DIR/install/brew.sh"
+# . "$DOTFILES_DIR/install/npm.sh"
+# . "$DOTFILES_DIR/install/bash.sh"
+# . "$DOTFILES_DIR/install/brew-cask.sh"
+# . "$DOTFILES_DIR/install/gem.sh"
 
 # Fonts
 unamestr=$(uname)
