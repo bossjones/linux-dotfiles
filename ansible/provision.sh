@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -x
+
 [[ "$CHECK_ONLY" ]] && export CHECK_ONLY=--check
 
 unamestr=$(uname)
@@ -12,7 +14,14 @@ elif [[ $unamestr == "Linux"  && -f $(which dnf) ]]; then
   _PATH_TO_PYTHON="/usr/bin/python2"
 fi
 
-pushd ~/.dotfiles/ansible
+# OVERRIDES: Use relative directory if travis
+if [[ "${_TRAVIS_CI}" == "1" ]]; then
+    _PATH_TO_PYTHON=`which python`
+    pushd ansible
+else
+    pushd ~/.dotfiles/ansible
+fi
+
 ansible-galaxy install --force -r requirements.yml --roles-path roles/ -vvv
 echo "localhost ansible_connection=local ansible_python_interpreter=${_PATH_TO_PYTHON}" > hosts.private
 

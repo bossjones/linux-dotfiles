@@ -32,6 +32,7 @@ install:
 script:
   - _USER=$(ls -lta | awk '{print $3}')
   - _GROUP=$(ls -lta | awk '{print $4}')
+  - _TRAVIS_CI=1
   - echo $_USER
   - echo $_GROUP
   # Test the playbook.
