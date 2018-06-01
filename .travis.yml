@@ -38,7 +38,7 @@ script:
   # Test the playbook.
   # - "travis_wait 30 source install.sh"
   # - "source install.sh"
-  - make install
+  - cp -a $(pwd) ~/.dotfiles
   - source ~/.dotfiles/install.sh
 
   # # Install dependencies.
