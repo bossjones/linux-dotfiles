@@ -844,36 +844,35 @@
       become: "{{bossjones__user}}"
       become_user: "{{bossjones__user}}"
 
+# # ####################################################################################################
+# # dircolors SETUP
 # ####################################################################################################
-# dircolors SETUP
-####################################################################################################
-- hosts: localhost
-  gather_facts: True
-  vars_prompt:
-    - name: "bossjones__user"
-      prompt: "User we want to run as."
-      private: no
-    - name: "bossjones__group"
-      prompt: "Group we want to run as."
-      private: no
-  tags:
-    - dircolors
-  vars:
-    bossjones__user: "{{boss__user}}"
-    bossjones__group: "{{boss_group}}"
-  become: yes
-  become_user: "{{bossjones__user}}"
-  # become_method: sudo
-  # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
-  environment:
-    SHELL: /bin/bash
-  tasks:
-    - name: clone dircolors
-      git: repo="https://github.com/gibbling666/dircolors.git"
-          dest="~{{bossjones__user}}/.dircolors"
-          update=no
-          depth=1
-      become: "{{bossjones__user}}"
-      become_user: "{{bossjones__user}}"
+# - hosts: localhost
+#   gather_facts: True
+#   vars_prompt:
+#     - name: "bossjones__user"
+#       prompt: "User we want to run as."
+#       private: no
+#     - name: "bossjones__group"
+#       prompt: "Group we want to run as."
+#       private: no
+#   tags:
+#     - dircolors
+#   vars:
+#     bossjones__user: "{{boss__user}}"
+#     bossjones__group: "{{boss_group}}"
+#   become: yes
+#   become_user: "{{bossjones__user}}"
+#   # become_method: sudo
+#   # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
+#   environment:
+#     SHELL: /bin/bash
+#   tasks:
+#     - name: clone dircolors
+#       git: repo="https://github.com/gibbling666/dircolors.git"
+#           dest="~{{bossjones__user}}/.dircolors"
+#           update=no
+#           depth=1
+#       become: "{{bossjones__user}}"
+#       become_user: "{{bossjones__user}}"
 
-# git clone https://github.com/gibbling666/dircolors.git ~/.dircolors
