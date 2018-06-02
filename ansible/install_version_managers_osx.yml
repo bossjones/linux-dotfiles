@@ -5,9 +5,7 @@
 # ansible-playbook install_version_managers_osx.yml --extra-vars "bossjones__user=malcolm bossjones__group=staff" --ask-pass --ask-become-pass
 # ansible-playbook install_version_managers_osx.yml --extra-vars "bossjones__user=malcolm bossjones__group=staff" --ask-pass --ask-become-pass --tags zsh
 ##############################################################################
-
 - hosts: localhost
-  gather_facts: True
   vars_prompt:
     - name: "bossjones__user"
       prompt: "User we want to run as."
@@ -16,30 +14,65 @@
       prompt: "Group we want to run as."
       private: no
   tags:
-    - devel-tools
+    - homebrew
   # become: yes
-  become_method: sudo
-  become: yes
-  become_user: "{{bossjones__user}}"
+  # become_method: sudo
+  # become: yes
+  # become_user: "{{bossjones__user}}"
   # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
   environment:
     SHELL: /bin/bash
   vars:
     bossjones__user: "{{boss__user}}"
     bossjones__group: "{{boss_group}}"
-  pre_tasks:
-    # This is necessary since we want to enable sudo when running the Homebrew
-    # install script but don't want to run it as root. Yeah, I know.
-    - name: authenticate sudo
-      ping:
-      become: yes
+  # pre_tasks:
+  #   # This is necessary since we want to enable sudo when running the Homebrew
+  #   # install script but don't want to run it as root. Yeah, I know.
+  #   - name: authenticate sudo
+  #     ping:
+  #     become: yes
 
   roles:
+    - role: elliotweiser.osx-command-line-tools
+      tags: ['homebrew']
     - role: geerlingguy.homebrew
       tags: ['homebrew']
-    # - role: geerlingguy.mas
-    #   when: mas_installed_apps
-    #   tags: ['mas']
+
+
+# - hosts: localhost
+#   gather_facts: True
+#   vars_prompt:
+#     - name: "bossjones__user"
+#       prompt: "User we want to run as."
+#       private: no
+#     - name: "bossjones__group"
+#       prompt: "Group we want to run as."
+#       private: no
+#   tags:
+#     - devel-tools
+#   # become: yes
+#   become_method: sudo
+#   become: yes
+#   become_user: "{{bossjones__user}}"
+#   # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
+#   environment:
+#     SHELL: /bin/bash
+#   vars:
+#     bossjones__user: "{{boss__user}}"
+#     bossjones__group: "{{boss_group}}"
+#   pre_tasks:
+#     # This is necessary since we want to enable sudo when running the Homebrew
+#     # install script but don't want to run it as root. Yeah, I know.
+#     - name: authenticate sudo
+#       ping:
+#       become: yes
+
+#   roles:
+#     - role: geerlingguy.homebrew
+#       tags: ['homebrew']
+#     # - role: geerlingguy.mas
+#     #   when: mas_installed_apps
+#     #   tags: ['mas']
 
 - hosts: localhost
   # NOTE: In order to populate special var ansible_pkg_mgr, need to enable gather_facts
