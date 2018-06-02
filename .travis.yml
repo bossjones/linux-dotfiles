@@ -42,12 +42,4 @@ script:
   - make sed-travis
   - cat ~/.dotfiles/ansible/provision.sh
   - source ~/.dotfiles/install.sh
-
-  # # Install dependencies.
-  # - "ansible-galaxy install -r requirements.yml"
-
-  # # Check the role/playbook's syntax.
-  # - "ansible-playbook main.yml --syntax-check"
-
-  # Test the playbook.
-  # - "travis_wait 30 ansible-playbook --extra-vars '{\"configure_sudoers\":\"false\"}' main.yml"
+  - bash -l
