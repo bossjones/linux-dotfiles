@@ -596,10 +596,11 @@
       debug: msg="preparing to install"
 
     - name: install powerline-fonts
-      script: "bash -x /tmp/.fonts/powerline/install.sh --home=~{{bossjones__user}}"
+      script: "/tmp/.fonts/powerline/install.sh --home=~{{bossjones__user}}"
       register: result
 
-    - debug: var=result
+    - debug:
+        var: result.stdout
 
     # FIXME: This isn't working, but small fry
     # - file: path="~{{bossjones__user}}/Library/Fonts/Anonymice Powerline.ttf" state=file
