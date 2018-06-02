@@ -109,6 +109,11 @@
   # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
   environment:
     SHELL: /bin/bash
+  pre_tasks:
+    - name: '/etc/profile.d'
+      file:
+        path: "/etc/profile.d"
+        state: directory
   roles:
     - role: pablocrivella.nvm
       nvm_repo: "git://github.com/creationix/nvm.git"
