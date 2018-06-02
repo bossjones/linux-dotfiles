@@ -171,8 +171,10 @@
       pyenv_path: "~{{ bossjones__user }}/.pyenv"
       pyenv_owner: "{{ bossjones__user }}"
       pyenv_group: "{{ bossjones__group }}"
+      pyenv_setting_path: "{% if pyenv_env == 'user' %}~/.bashrc{% else %}/etc/profile.d/pyenv.sh{% endif %}"
       pyenv_update_git_install: no
       pyenv_enable_autocompletion: yes
+      pyenv_update: no
       pyenv_python_versions:
         - "3.6.5"
         - "2.7.14"
