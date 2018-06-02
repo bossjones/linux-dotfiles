@@ -172,6 +172,7 @@
     - role: avanov.pyenv
       pyenv_path: "~{{ bossjones__user }}/.pyenv"
       pyenv_owner: "{{ bossjones__user }}"
+      pyenv_group: "{{ bossjones__group }}"
       pyenv_update_git_install: no
       pyenv_enable_autocompletion: yes
       pyenv_python_versions:
@@ -188,12 +189,6 @@
           py_version: "2.7.14"
         - venv_name: "tools2"
           py_version: "2.7.14"
-
-        # - venv_name: "env2714"
-        #   py_version: "2.7.14"
-
-        # - venv_name: "env352"
-        #   py_version: "3.5.2"
   post_tasks:
 
     # Install plugins for pyenv
