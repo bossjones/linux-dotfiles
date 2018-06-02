@@ -6,9 +6,20 @@
 
 # INFO: BASH_SOURCE - An array variable whose members are the source filenames where the corresponding shell function names in the FUNCNAME array variable are defined. The shell function ${FUNCNAME[$i]} is defined in the file ${BASH_SOURCE[$i]} and called from ${BASH_SOURCE[$i+1]}
 
+unamestr=$(uname)
+
 # TODO: 5/8/2018 re-enable this, but dump error output to stderr or /dev/null
 # READLINK=$(which greadlink || which readlink)
-READLINK=$(which readlink)
+# READLINK=$(which readlink)
+if [[ $unamestr == "Darwin" ]]; then
+  READLINK=$(which greadlink || which readlink)
+elif [[ $unamestr == "Linux"  && -f $(which apt-get) ]]; then
+  READLINK=$(which readlink)
+elif [[ $unamestr == "Linux"  && -f $(which dnf) ]]; then
+  READLINK=$(which readlink)
+fi
+
+
 CURRENT_SCRIPT=$BASH_SOURCE
 
 if [[ -n $CURRENT_SCRIPT && -x "$READLINK" ]]; then
@@ -46,7 +57,8 @@ if is-macos; then
 fi
 
 # Set LSCOLORS
-
+# PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+# MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
 eval "$(dircolors -b "$DOTFILES_DIR"/system/.dir_colors)"
 
 # Hook for extra/custom stuff
