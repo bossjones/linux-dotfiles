@@ -601,7 +601,8 @@
 
     - debug: var=result
 
-    - file: path="~{{bossjones__user}}/Library/Fonts/Anonymice Powerline.ttf" state=file
+    # FIXME: This isn't working, but small fry
+    # - file: path="~{{bossjones__user}}/Library/Fonts/Anonymice Powerline.ttf" state=file
 
     # # SOURCE: https://github.com/veggiemonk/ansible-dotfiles/blob/master/tasks/fonts.yml
     # - name: Cloning fonts
