@@ -27,6 +27,13 @@
   vars:
     bossjones__user: "{{boss__user}}"
     bossjones__group: "{{boss_group}}"
+  pre_tasks:
+    # This is necessary since we want to enable sudo when running the Homebrew
+    # install script but don't want to run it as root. Yeah, I know.
+    - name: authenticate sudo
+      ping:
+      become: yes
+
   roles:
     - role: geerlingguy.homebrew
       tags: ['homebrew']
