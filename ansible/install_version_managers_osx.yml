@@ -165,11 +165,9 @@
   environment:
     SHELL: /bin/bash
     PYENV_ROOT: "$HOME/.pyenv"
-    # PYENV_VERSION: "3.5.2"
     WORKON_HOME: "~/.virtualenvs"
     PROJECT_HOME: "~/dev"
-  roles:
-    - role: avanov.pyenv
+  vars:
       pyenv_path: "~{{ bossjones__user }}/.pyenv"
       pyenv_owner: "{{ bossjones__user }}"
       pyenv_group: "{{ bossjones__group }}"
@@ -177,9 +175,7 @@
       pyenv_enable_autocompletion: yes
       pyenv_python_versions:
         - "3.6.5"
-        # This works but need to speed things up a bit
         - "2.7.14"
-        # - "3.5.2"
       pyenv_virtualenvs:
         - venv_name: "jupyter3"
           py_version: "3.6.5"
@@ -189,6 +185,76 @@
           py_version: "2.7.14"
         - venv_name: "tools2"
           py_version: "2.7.14"
+  pre_tasks:
+    - name: Ensure homebrew deps are installed
+      homebrew: "name={{ item }} state=present"
+      with_items:
+        - pyenv
+        - pyenv-virtualenv
+        - pyenv-virtualenvwrapper
+
+    - name: "create pyenvrc"
+      copy:
+        content: |
+          export PYENV_ROOT=~/.pyenv
+          export PATH="$PYENV_ROOT/bin:$PATH"
+          eval "$(pyenv init -)"
+        dest: "{{ pyenv_path }}/.pyenvrc"
+        owner: "{{ bossjones__user }}"
+        group: "{{ bossjones__group }}"
+        mode: 0644
+
+    - name: "Load pyenv env variables in {{ pyenv_setting_path }}"
+      lineinfile: dest="{{ pyenv_setting_path }}"
+                  regexp="\.pyenvrc$"
+                  line="source {{ pyenv_path }}/.pyenvrc"
+                  state=present
+                  create=yes
+
+    - name: "Add pyenv autocomplete in {{ pyenv_setting_path }}"
+      lineinfile: dest="{{ pyenv_setting_path }}"
+                  regexp="pyenv\.bash$"
+                  line="source {{ pyenv_path }}/completions/pyenv.bash"
+                  state=present
+      when: pyenv_enable_autocompletion
+
+    - name: Update Pyenv interpreter list
+      shell: . {{ pyenv_path }}/.pyenvrc && pyenv update
+      when: pyenv_update
+
+    - name: Install Python interpreters "{{ pyenv_python_versions }}"
+      shell: . {{ pyenv_path }}/.pyenvrc && pyenv install {{ item }}
+            creates="{{ pyenv_path }}/versions/{{ item }}/bin/python"
+      with_items: "{{ pyenv_python_versions }}"
+
+    - name: Create virtual environments
+      shell: . {{ pyenv_path }}/.pyenvrc && pyenv virtualenv {{ item.py_version }} {{ item.venv_name }}
+            creates="{{ pyenv_path }}/versions/{{ item.venv_name }}/bin/python"
+      with_items: "{{ pyenv_virtualenvs }}"
+
+    - name: Set pyenv global
+      shell: . {{ pyenv_path }}/.pyenvrc && pyenv global {{ pyenv_global }} && pyenv rehash
+      when: pyenv_global is defined
+
+  # roles:
+  #   - role: avanov.pyenv
+  #     pyenv_path: "~{{ bossjones__user }}/.pyenv"
+  #     pyenv_owner: "{{ bossjones__user }}"
+  #     pyenv_group: "{{ bossjones__group }}"
+  #     pyenv_update_git_install: no
+  #     pyenv_enable_autocompletion: yes
+  #     pyenv_python_versions:
+  #       - "3.6.5"
+  #       - "2.7.14"
+  #     pyenv_virtualenvs:
+  #       - venv_name: "jupyter3"
+  #         py_version: "3.6.5"
+  #       - venv_name: "tools3"
+  #         py_version: "3.6.5"
+  #       - venv_name: "ipython2"
+  #         py_version: "2.7.14"
+  #       - venv_name: "tools2"
+  #         py_version: "2.7.14"
   post_tasks:
 
     # Install plugins for pyenv
