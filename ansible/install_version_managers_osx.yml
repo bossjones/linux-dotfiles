@@ -739,15 +739,19 @@
 
     - name: Register home directory for {{ bossjones__user }}
       shell: >
-        getent passwd {{ bossjones__user }} | cut -d: -f6
+        echo $HOME
       changed_when: false
       register: linux_user_home
+      become: "{{bossjones__user}}"
+      become_user: "{{bossjones__user}}"
 
     - name: Register current login shell for {{ bossjones__user }}
       shell: >
-        getent passwd {{ bossjones__user }} | cut -d: -f7
+        echo $SHELL
       changed_when: false
       register: linux_user_shell
+      become: "{{bossjones__user}}"
+      become_user: "{{bossjones__user}}"
 
     - name: Set facts
       set_fact:
