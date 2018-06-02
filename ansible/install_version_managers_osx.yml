@@ -589,14 +589,14 @@
       file: dest=/tmp/.fonts state=directory
 
     - name: clone powerline-fonts
-      git: repo=https://github.com/OldhamMade/fonts
+      git: repo=https://github.com/powerline/fonts
            dest=/tmp/.fonts/powerline
 
     - name: preparing to install powerline-fonts
       debug: msg="preparing to install"
 
     - name: install powerline-fonts
-      script: "/tmp/.fonts/powerline/install.sh --home=~{{bossjones__user}}"
+      script: "bash -x /tmp/.fonts/powerline/install.sh --home=~{{bossjones__user}}"
       register: result
 
     - debug: var=result
@@ -625,7 +625,7 @@
     #   become: yes
     #   become_user: "{{bossjones__user}}"
 
-    - name: "Create directory: ~{{bossjones__user}}/powerline"
+    - name: "Create directory: ~{{bossjones__user}}/.config/powerline"
       file:
         path: "~{{bossjones__user}}/.config/powerline"
         state: directory
