@@ -46,7 +46,7 @@
       private: no
   tags:
     - rbenv
-  become: yes
+  # become: yes
   # become_method: sudo
   # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
   environment:
