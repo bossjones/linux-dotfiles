@@ -54,6 +54,15 @@
   vars:
     bossjones__user: "{{boss__user}}"
     bossjones__group: "{{boss_group}}"
+
+  pre_tasks:
+    - name: Ensure homebrew deps are installed
+      homebrew: "name={{ item }} state=present"
+      with_items:
+        - openssl
+        - libyaml
+        - python2
+
   roles:
     - role: zzet.rbenv
       default_gems_file: "~{{ bossjones__user }}/.dotfiles/ruby/default-gems"
