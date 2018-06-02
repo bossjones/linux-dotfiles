@@ -594,8 +594,14 @@
       become: yes
       become_user: "{{bossjones__user}}"
 
+    # - name: Install Fonts
+    #   shell: ~{{bossjones__user}}/powerlinefonts/install.sh chdir=~/{{bossjones__user}}/powerlinefonts
+    #   when: fontCloned|success
+    #   become: yes
+    #   become_user: "{{bossjones__user}}"
+
     - name: Install Fonts
-      shell: ~{{bossjones__user}}/powerlinefonts/install.sh chdir=~/{{bossjones__user}}/powerlinefonts
+      shell: ~{{bossjones__user}}/powerlinefonts/install.sh
       when: fontCloned|success
       become: yes
       become_user: "{{bossjones__user}}"
