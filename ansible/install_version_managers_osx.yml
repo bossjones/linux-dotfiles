@@ -159,7 +159,7 @@
   # become_method: sudo
   # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
   become: yes
-  # become_user: "{{bossjones__user}}"
+  become_user: "{{bossjones__user}}"
   environment:
     SHELL: /bin/bash
     PYENV_ROOT: "$HOME/.pyenv"
