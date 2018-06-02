@@ -51,11 +51,11 @@ if [[ $unamestr == "Darwin" ]]; then
   if [[ "${CHECK_ONLY}" = "1" ]]; then
     ansible-playbook -vvvv install_version_managers_osx.yml \
     --extra-vars \
-    "bossjones__user=${_USER} bossjones__group=${_GROUP}" --skip-tags="zsh" --check
+    "bossjones__user=${_USER} bossjones__group=${_GROUP}" --skip-tags="zsh,nvm" --check
   else
     ansible-playbook -vvvv install_version_managers_osx.yml \
     --extra-vars \
-    "bossjones__user=${_USER} bossjones__group=${_GROUP}" --skip-tags="zsh"
+    "bossjones__user=${_USER} bossjones__group=${_GROUP}" --skip-tags="zsh,nvm"
   fi
 elif [[ $unamestr == "Linux"  && -f $(which apt-get) ]]; then
   ansible-playbook install_version_managers.yml
