@@ -175,6 +175,7 @@
       pyenv_update_git_install: no
       pyenv_enable_autocompletion: yes
       pyenv_update: no
+      pyenv_env: "user"
       pyenv_python_versions:
         - "3.6.5"
         - "2.7.14"
