@@ -54,3 +54,4 @@
 
 - name: geerlingguy.homebrew
 - name: geerlingguy.mas
+- name: elliotweiser.osx-command-line-tools
