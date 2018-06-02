@@ -27,6 +27,11 @@
   #   - name: authenticate sudo
   #     ping:
   #     become: yes
+    pre_tasks:
+    - include_vars: "{{ item }}"
+      with_fileglob:
+        - ../config.yml
+      tags: ['always']
 
   roles:
     - role: elliotweiser.osx-command-line-tools
@@ -67,8 +72,41 @@
         - rbenv
         - ruby-build
         - tree
-        - greadlink
         - coreutils
+        - bats
+        - bash-completion2
+  # bats
+  # battery
+  # coreutils
+  # diff-so-fancy
+  # dockutil
+  # ffmpeg
+  # fasd
+  # gifsicle
+  # git
+  # git-extras
+  # gnu-sed --with-default-names
+  # grep --with-default-names
+  # hub
+  # httpie
+  # imagemagick
+  # jq
+  # lynx
+  # mackup
+  # nano
+  # pandoc
+  # peco
+  # psgrep
+  # python
+  # shellcheck
+  # ssh-copy-id
+  # tree
+  # unar
+  # wget
+  # wifi-password
+  # - ssh-copy-id
+  # - pv
+  # - { name: vim, install_options: "with-luajit,override-system-vi" }
 
   # roles:
   #   - role: zzet.rbenv

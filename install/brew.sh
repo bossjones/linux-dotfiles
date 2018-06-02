@@ -5,9 +5,9 @@ fi
 
 ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
-brew tap Goles/battery
-brew update
-brew upgrade
+# brew tap Goles/battery
+# brew update
+# brew upgrade
 
 # Install packages
 

@@ -40,6 +40,7 @@ script:
   - cp -a $(pwd) ~/.dotfiles
   - ls -lta ~/.dotfiles
   - make sed-travis
+  - make cp-config-travis
   - cat ~/.dotfiles/ansible/provision.sh
   - source ~/.dotfiles/install.sh
-  - bash -l
+  - "travis_wait 1 bash -l"

@@ -212,6 +212,9 @@ bootstrap-python:
 # @test -s $(ANSIBLE_VAULT_PASSWORD_FILE) \
 # 	|| echo ATTENTION: Please create '$(PWD)/$(ANSIBLE_VAULT_PASSWORD_FILE)' with this project\'s Ansible Vault password
 
+cp-config-travis:
+	cp ansible/tests/config.yml ansible/config.yml
+
 converge:
 	@$(ANSIBLE_COMMAND_LOCAL_WITH_VAULT) $(ANSIBLE_PLAYBOOKS_DIRECTORY)/main.yml
 
