@@ -193,6 +193,21 @@ bootstrap:
 	@sudo xcodebuild -license
 	@sudo easy_install pip
 	@sudo pip install ansible
+
+bootstrap-python:
+	brew update
+	# brew outdated pyenv || brew upgrade pyenv
+	brew install python@2
+	brew link --overwrite python@2
+	brew install python@3
+	brew link --overwrite python@3
+	sudo easy_install pip
+	sudo pip install --upgrade pip setuptools
+	sudo pip install virtualenv
+	# python -m virtualenv env
+	# source env/bin/activate
+	python --version
+	which python
 # @$(ANSIBLE_COMMAND_LOCAL_WITH_VAULT) $(ANSIBLE_PLAYBOOKS_DIRECTORY)/bootstrap.yml
 # @test -s $(ANSIBLE_VAULT_PASSWORD_FILE) \
 # 	|| echo ATTENTION: Please create '$(PWD)/$(ANSIBLE_VAULT_PASSWORD_FILE)' with this project\'s Ansible Vault password

@@ -347,6 +347,9 @@
     - pyenv_module
   vars:
     pyenv_root: "~/.pyenv"
+    pyenv_path: "~{{ bossjones__user }}/.pyenv"
+    pyenv_owner: "{{ bossjones__user }}"
+    pyenv_group: "{{ bossjones__group }}"
   become: yes
   become_user: "{{bossjones__user}}"
   environment:
