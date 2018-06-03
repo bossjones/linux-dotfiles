@@ -90,7 +90,10 @@ e_header "Run tests"
 
 # Run tests
 
-if is-executable bats; then bats test/*.bats; else echo "Skipped: tests (missing: bats)"; fi
+e_header "Where is test folder"
+ls -lta
+
+if is-executable bats; then bats "$DOTFILES_DIR"/test/*.bats; else echo "Skipped: tests (missing: bats)"; fi
 
 e_header "Install extra stuff"
 
