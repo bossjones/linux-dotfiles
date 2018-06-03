@@ -75,6 +75,9 @@
         - coreutils
         - bats
         - bash-completion2
+        - moreutils
+        - findutils
+
   # bats
   # battery
   # coreutils

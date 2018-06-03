@@ -1,3 +1,4 @@
+# NOTE: We probably need to make this osx specific here
 # DISABLED # if [ -f "$DOTFILES_BREW_PREFIX_NVM/nvm.sh" ]; then
 # DISABLED #   export NVM_DIR=~/.nvm
 # DISABLED #   source "$DOTFILES_BREW_PREFIX_NVM/nvm.sh"

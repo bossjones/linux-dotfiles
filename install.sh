@@ -62,9 +62,9 @@ e_header "Package managers & packages"
 
 # Pretty osx specific stuff
 # DISABLING FOR NOW
-# . "$DOTFILES_DIR/install/brew.sh"
-# . "$DOTFILES_DIR/install/npm.sh"
-# . "$DOTFILES_DIR/install/bash.sh"
+. "$DOTFILES_DIR/install/brew.sh"
+. "$DOTFILES_DIR/install/npm.sh"
+. "$DOTFILES_DIR/install/bash.sh"
 # . "$DOTFILES_DIR/install/brew-cask.sh"
 # . "$DOTFILES_DIR/install/gem.sh"
 
@@ -91,7 +91,6 @@ e_header "Run tests"
 # Run tests
 
 e_header "Where is test folder"
-ls -lta
 
 if is-executable bats; then bats "$DOTFILES_DIR"/test/*.bats; else echo "Skipped: tests (missing: bats)"; fi
 
