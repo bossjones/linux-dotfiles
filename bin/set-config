@@ -6,8 +6,22 @@ FILE="$3"
 
 touch "$FILE"
 
+unamestr=$(uname)
+
+if [[ $unamestr == "Darwin" ]]; then
+  SED_CMD=$(which gsed || which sed)
+elif [[ $unamestr == "Linux"  && -f $(which apt-get) ]]; then
+  SED_CMD=$(which sed)
+elif [[ $unamestr == "Linux"  && -f $(which dnf) ]]; then
+  SED_CMD=$(which sed)
+fi
+
 if grep -q "$1=" "$FILE"; then
-  sed "s@$KEY=.*@$KEY=\"$VALUE\"@" -i "$FILE"
+  if [[ $unamestr == "Darwin" ]]; then
+    $SED_CMD -i '.bak' "s@$KEY=.*@$KEY=\"$VALUE\"@" "$FILE"
+  else
+    $SED_CMD "s@$KEY=.*@$KEY=\"$VALUE\"@" -i "$FILE"
+  fi
 else
   echo "export $KEY=\"$VALUE\"" >> "$FILE"
 fi
