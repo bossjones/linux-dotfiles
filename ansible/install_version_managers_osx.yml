@@ -186,7 +186,7 @@
   # become_method: sudo
   # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
   become: yes
-  become_user: "{{bossjones__user}}"
+  become_user: "{{ bossjones__user }}"
   environment:
     SHELL: /bin/bash
     PYENV_ROOT: "$HOME/.pyenv"
@@ -221,13 +221,13 @@
         - pyenv-virtualenv
         - pyenv-virtualenvwrapper
 
-    - name: "Create directory:~/{{bossjones__user}}/.pyenv"
+    - name: "Create directory:~/{{ bossjones__user }}/.pyenv"
       file:
-        path: "~{{bossjones__user}}/.pyenv"
+        path: "~{{ bossjones__user }}/.pyenv"
         state: directory
         owner: "{{ bossjones__user }}"
       become: yes
-      become_user: "{{bossjones__user}}"
+      become_user: "{{ bossjones__user }}"
 
     - name: "create pyenvrc"
       copy:
@@ -301,7 +301,7 @@
         version: "master"
         update: "{{ pyenv_update_git_install }}"
       become: yes
-      become_user: "{{bossjones__user}}"
+      become_user: "{{ bossjones__user }}"
 
     - name: Clone pyenv-pip-rehash
       git:
@@ -310,7 +310,7 @@
         version: "master"
         update: "{{ pyenv_update_git_install }}"
       become: yes
-      become_user: "{{bossjones__user}}"
+      become_user: "{{ bossjones__user }}"
 
     - name: Clone pyenv-pip-migrate
       git:
@@ -319,7 +319,7 @@
         version: "master"
         update: "{{ pyenv_update_git_install }}"
       become: yes
-      become_user: "{{bossjones__user}}"
+      become_user: "{{ bossjones__user }}"
 
     - name: Clone pyenv-update
       git:
@@ -328,7 +328,7 @@
         version: "master"
         update: "{{ pyenv_update_git_install }}"
       become: yes
-      become_user: "{{bossjones__user}}"
+      become_user: "{{ bossjones__user }}"
 
     - name: Clone pyenv-update
       git:
@@ -337,7 +337,7 @@
         version: "master"
         update: "{{ pyenv_update_git_install }}"
       become: yes
-      become_user: "{{bossjones__user}}"
+      become_user: "{{ bossjones__user }}"
 
     - name: Clone pyenv-doctor
       git:
@@ -346,7 +346,7 @@
         version: "master"
         update: "{{ pyenv_update_git_install }}"
       become: yes
-      become_user: "{{bossjones__user}}"
+      become_user: "{{ bossjones__user }}"
 
     - name: Clone pyenv-default-packages
       git:
@@ -355,7 +355,7 @@
         version: "master"
         update: "{{ pyenv_update_git_install }}"
       become: yes
-      become_user: "{{bossjones__user}}"
+      become_user: "{{ bossjones__user }}"
 
 # Install pyenv module so we can use it
 - hosts: localhost
@@ -375,7 +375,7 @@
     pyenv_owner: "{{ bossjones__user }}"
     pyenv_group: "{{ bossjones__group }}"
   become: yes
-  become_user: "{{bossjones__user}}"
+  become_user: "{{ bossjones__user }}"
   environment:
     SHELL: /bin/bash
     PYENV_ROOT: "$HOME/.pyenv"
@@ -394,6 +394,8 @@
         executable: "{{pyenv_root}}/versions/3.6.5/bin/pip"
       with_items:
         - virtualenvwrapper
+        - pip
+        - setuptools
 
     - name: install virtualenvwrapper module in venv 2.7.14
       pip:
@@ -401,6 +403,8 @@
         executable: "{{pyenv_root}}/versions/2.7.14/bin/pip"
       with_items:
         - virtualenvwrapper
+        - pip
+        - setuptools
 
     # -------------------------------------------
     # venv: jupyter3
@@ -413,11 +417,13 @@
         executable: "{{pyenv_root}}/versions/jupyter3/bin/pip"
       with_items:
         - jupyter
+        - pip
+        - setuptools
 
     - name: install jupyter3 ipykernel
       shell: "{{pyenv_root}}/versions/jupyter3/bin/python -m ipykernel install --user"
       become: yes
-      become_user: "{{bossjones__user}}"
+      become_user: "{{ bossjones__user }}"
 
     # -------------------------------------------
       # venv: ipython2
@@ -429,11 +435,13 @@
         executable: "{{pyenv_root}}/versions/ipython2/bin/pip"
       with_items:
         - ipykernel
+        - pip
+        - setuptools
 
     - name: install ipython2 ipykernel
       shell: "{{pyenv_root}}/versions/ipython2/bin/python -m ipykernel install --user"
       become: yes
-      become_user: "{{bossjones__user}}"
+      become_user: "{{ bossjones__user }}"
 
     # -------------------------------------------
     # venv: tools3
@@ -461,6 +469,8 @@
         - mypy
         - graphviz
         - ansible
+        - pip
+        - setuptools
 
     # -------------------------------------------
     # venv: tools2
@@ -484,6 +494,8 @@
         - pydocstyle
         - flake8
         - yamllint
+        - pip
+        - setuptools
 
     - name: install common modules in venv 3.6.5
       pip:
@@ -495,6 +507,7 @@
         - wheel
         - libtmux
         - tmuxp
+        - pip
 
       # Finally, it’s time to make all Python versions and special virtualenvs work with each other.
       # The above command establishes the PATH priority so scripts can be accessed in the right order without activating any virtualenv.
@@ -521,36 +534,36 @@
 # pyenv virtualenv 2.7.13 tools2
 
 
-    - name: "Create directory:~/{{bossjones__user}}/.ipython/profile_default/startup"
+    - name: "Create directory:~/{{ bossjones__user }}/.ipython/profile_default/startup"
       file:
-        path: "~{{bossjones__user}}/.ipython/profile_default/startup/"
+        path: "~{{ bossjones__user }}/.ipython/profile_default/startup/"
         state: directory
         owner: "{{ bossjones__user }}"
       become: yes
-      become_user: "{{bossjones__user}}"
+      become_user: "{{ bossjones__user }}"
 
-    - name: "Create directory: ~{{bossjones__user}}/.config/fontconfig/conf.d/"
+    - name: "Create directory: ~{{ bossjones__user }}/.config/fontconfig/conf.d/"
       file:
-        path: "~{{bossjones__user}}/.config/fontconfig/conf.d/"
+        path: "~{{ bossjones__user }}/.config/fontconfig/conf.d/"
         state: directory
         owner: "{{ bossjones__user }}"
       become: yes
-      become_user: "{{bossjones__user}}"
+      become_user: "{{ bossjones__user }}"
 
-    - name: "Create directory: ~{{bossjones__user}}/.ptpython"
+    - name: "Create directory: ~{{ bossjones__user }}/.ptpython"
       file:
-        path: "~{{bossjones__user}}/.ptpython/"
+        path: "~{{ bossjones__user }}/.ptpython/"
         state: directory
         owner: "{{ bossjones__user }}"
       become: yes
-      become_user: "{{bossjones__user}}"
+      become_user: "{{ bossjones__user }}"
 
 # FIXME: Something wrong with this one
 #     - name: create ipython profile
 #       shell: "ipython profile create
 # curl -L https://gist.githubusercontent.com/henriquebastos/270cff100cb303f3d74370489022446b/raw/56e646054e62efb079af3666102c381fa571065c/00-detect-virtualenv-sitepackages.py > ~/.ipython/profile_default/startup/00-venv-sitepackages.py"
 #       become: yes
-#       become_user: "{{bossjones__user}}"
+#       become_user: "{{ bossjones__user }}"
 
 # NOTE: This works, just might not be the right time for zsh yet
 # Install oh-my-zsh
@@ -567,8 +580,8 @@
   tags:
     - zsh
   vars:
-    ansible_ssh_user: "{{bossjones__user}}"
-    zsh_user: "{{bossjones__user}}"
+    ansible_ssh_user: "{{ bossjones__user }}"
+    zsh_user: "{{ bossjones__user }}"
     zsh_antigen_bundles_extras:
       - nvm
       - joel-porquet/zsh-dircolors-solarized
@@ -601,7 +614,7 @@
   tags:
     - powerline
   become: yes
-  # become_user: "{{bossjones__user}}"
+  # become_user: "{{ bossjones__user }}"
   # become: yes
   # become_method: sudo
   # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
@@ -620,50 +633,50 @@
       debug: msg="preparing to install"
 
     - name: install powerline-fonts
-      script: "/tmp/.fonts/powerline/install.sh --home=~{{bossjones__user}}"
+      script: "/tmp/.fonts/powerline/install.sh --home=~{{ bossjones__user }}"
       register: result
 
     - debug:
         var: result.stdout
 
     # FIXME: This isn't working, but small fry
-    # - file: path="~{{bossjones__user}}/Library/Fonts/Anonymice Powerline.ttf" state=file
+    # - file: path="~{{ bossjones__user }}/Library/Fonts/Anonymice Powerline.ttf" state=file
 
     # # SOURCE: https://github.com/veggiemonk/ansible-dotfiles/blob/master/tasks/fonts.yml
     # - name: Cloning fonts
     #   git:
     #     repo=https://github.com/powerline/fonts
-    #     dest="~{{bossjones__user}}/powerlinefonts"
+    #     dest="~{{ bossjones__user }}/powerlinefonts"
     #     accept_hostkey=yes
     #   register: fontCloned
     #   become: yes
-    #   become_user: "{{bossjones__user}}"
+    #   become_user: "{{ bossjones__user }}"
 
     # # - name: Install Fonts
-    # #   shell: ~{{bossjones__user}}/powerlinefonts/install.sh chdir=~/{{bossjones__user}}/powerlinefonts
+    # #   shell: ~{{ bossjones__user }}/powerlinefonts/install.sh chdir=~/{{ bossjones__user }}/powerlinefonts
     # #   when: fontCloned|success
     # #   become: yes
-    # #   become_user: "{{bossjones__user}}"
+    # #   become_user: "{{ bossjones__user }}"
 
     # - name: Install Fonts
-    #   shell: ~{{bossjones__user}}/powerlinefonts/install.sh
+    #   shell: ~{{ bossjones__user }}/powerlinefonts/install.sh
     #   when: fontCloned|success
     #   become: yes
-    #   become_user: "{{bossjones__user}}"
+    #   become_user: "{{ bossjones__user }}"
 
-    - name: "Create directory: ~{{bossjones__user}}/.config/powerline"
+    - name: "Create directory: ~{{ bossjones__user }}/.config/powerline"
       file:
-        path: "~{{bossjones__user}}/.config/powerline"
+        path: "~{{ bossjones__user }}/.config/powerline"
         state: directory
         owner: "{{ bossjones__user }}"
       become: yes
-      become_user: "{{bossjones__user}}"
+      become_user: "{{ bossjones__user }}"
 
-    - name: "touch ~{{bossjones__user}}/.powerline"
+    - name: "touch ~{{ bossjones__user }}/.powerline"
       shell: >
-        touch ~{{bossjones__user}}/.powerline
+        touch ~{{ bossjones__user }}/.powerline
       become: yes
-      become_user: "{{bossjones__user}}"
+      become_user: "{{ bossjones__user }}"
 
   roles:
 
@@ -674,9 +687,9 @@
       powerline_extra_segments:
         - {name: powerline-gitstatus, version: "1.2.1"}
 
-      powerline_daemon_destination: "~{{bossjones__user}}/.powerline"
+      powerline_daemon_destination: "~{{ bossjones__user }}/.powerline"
 
-      powerline_config_dir: "~{{bossjones__user}}/.config/powerline"
+      powerline_config_dir: "~{{ bossjones__user }}/.config/powerline"
       powerline_config_shell_colorscheme: "default"
       powerline_config_shell_theme: "default"
       powerline_config_vim_colorscheme: "default"
@@ -704,7 +717,7 @@
     bossjones__group: "{{boss_group}}"
     cheatsheet_update: yes
   become: yes
-  become_user: "{{bossjones__user}}"
+  become_user: "{{ bossjones__user }}"
   # become_method: sudo
   # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
   environment:
@@ -746,7 +759,7 @@
     boss__bash_it_completions:
       - git
   become: yes
-  become_user: "{{bossjones__user}}"
+  become_user: "{{ bossjones__user }}"
   # become_method: sudo
   # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
   environment:
@@ -852,7 +865,7 @@
     bossjones__user: "{{boss__user}}"
     bossjones__group: "{{boss_group}}"
   become: yes
-  become_user: "{{bossjones__user}}"
+  become_user: "{{ bossjones__user }}"
   # become_method: sudo
   # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
   environment:
@@ -860,11 +873,11 @@
   tasks:
     - name: clone jenv
       git: repo="https://github.com/gcuisinier/jenv.git"
-          dest="~{{bossjones__user}}/.jenv"
+          dest="~{{ bossjones__user }}/.jenv"
           update=no
           depth=1
-      become: "{{bossjones__user}}"
-      become_user: "{{bossjones__user}}"
+      become: "{{ bossjones__user }}"
+      become_user: "{{ bossjones__user }}"
 
 # # ####################################################################################################
 # # dircolors SETUP
@@ -884,7 +897,7 @@
 #     bossjones__user: "{{boss__user}}"
 #     bossjones__group: "{{boss_group}}"
 #   become: yes
-#   become_user: "{{bossjones__user}}"
+#   become_user: "{{ bossjones__user }}"
 #   # become_method: sudo
 #   # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
 #   environment:
@@ -892,9 +905,9 @@
 #   tasks:
 #     - name: clone dircolors
 #       git: repo="https://github.com/gibbling666/dircolors.git"
-#           dest="~{{bossjones__user}}/.dircolors"
+#           dest="~{{ bossjones__user }}/.dircolors"
 #           update=no
 #           depth=1
-#       become: "{{bossjones__user}}"
-#       become_user: "{{bossjones__user}}"
+#       become: "{{ bossjones__user }}"
+#       become_user: "{{ bossjones__user }}"
 
