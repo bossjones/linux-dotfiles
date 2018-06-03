@@ -39,6 +39,9 @@ homebrew_installed_packages:
   - pyenv
   - pyenv-virtualenv
   - pyenv-virtualenvwrapper
+  - jenv
+  - ccache
+  - pyenv-ccache
 
 homebrew_taps:
   - homebrew/core
@@ -70,6 +73,7 @@ homebrew_cask_apps:
   - sublime-text
   - transmit
   - vagrant
+  - iterm2
 
 # See `geerlingguy.mas` role documentation for usage instructions.
 mas_installed_apps: []
