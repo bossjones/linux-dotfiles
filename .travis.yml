@@ -43,4 +43,4 @@ script:
   - make cp-config-travis
   - cat ~/.dotfiles/ansible/provision.sh
   - source ~/.dotfiles/install.sh
-  - "travis_wait 1 bash -l"
+  - "travis_wait 1 /bin/bash -l -c 'pyenv versions'"
