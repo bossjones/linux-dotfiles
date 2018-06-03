@@ -357,6 +357,15 @@
       become: yes
       become_user: "{{ bossjones__user }}"
 
+    - name: Clone pyenv-update
+      git:
+        repo: https://github.com/pyenv/pyenv-update
+        dest: "~{{ bossjones__user }}/.pyenv/plugins/pyenv-update"
+        version: "master"
+        update: "{{ pyenv_update_git_install }}"
+      become: yes
+      become_user: "{{ bossjones__user }}"
+
 # Install pyenv module so we can use it
 - hosts: localhost
   gather_facts: True
