@@ -26,6 +26,7 @@ packages=(
   travis
   excon
   pry-doc
+  tmuxinator
 )
 
 eval "$(rbenv init -)"
