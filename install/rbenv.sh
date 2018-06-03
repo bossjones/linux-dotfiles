@@ -1,24 +1,22 @@
 if ! is-executable brew -o ! is-executable git; then
-  echo "Skipped: npm (missing: brew and/or git)"
+  echo "Skipped: rbenv (missing: brew and/or git)"
   return
 fi
 
-
-
-export DOTFILES_BREW_PREFIX_NVM=`brew --prefix rbenv`
+export DOTFILES_BREW_PREFIX_RBENV=`brew --prefix rbenv`
 set-config "DOTFILES_BREW_PREFIX_RBENV" "$DOTFILES_BREW_PREFIX_RBENV" "$DOTFILES_CACHE"
 
-. "${DOTFILES_DIR}/system/.nvm"
-nvm install stable
-nvm alias default stable
+# . "${DOTFILES_DIR}/system/.nvm"
+# nvm install stable
+# nvm alias default stable
 
 # Globally install with npm
 
 packages=(
   pry
   bundler
-  ruby-debug-ide-0.6.0
-  debase-0.2.2.beta10
+  ruby-debug-ide
+  debase
   rcodetools
   rubocop
   fastri
@@ -30,8 +28,14 @@ packages=(
   pry-doc
 )
 
-rbenv install 2.4.2
+eval "$(rbenv init -)"
 
-rbenv shell 2.4.2
+if [ ! -d ~/.rbenv/versions/2.4.2 ]
+then
+  rbenv install 2.4.2
 
-gem install "${packages[@]}"
+  rbenv shell 2.4.2
+
+  gem install "${packages[@]}"
+fi
+
