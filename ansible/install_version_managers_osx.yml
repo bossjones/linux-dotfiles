@@ -1,0 +1,921 @@
+# -*- coding: utf-8 -*-
+---
+##############################################################################
+# Enter password when prompted
+# ansible-playbook install_version_managers_osx.yml --extra-vars "bossjones__user=malcolm bossjones__group=staff" --ask-pass --ask-become-pass
+# ansible-playbook install_version_managers_osx.yml --extra-vars "bossjones__user=malcolm bossjones__group=staff" --ask-pass --ask-become-pass --tags zsh
+##############################################################################
+- hosts: localhost
+  vars_prompt:
+    - name: "bossjones__user"
+      prompt: "User we want to run as."
+      private: no
+    - name: "bossjones__group"
+      prompt: "Group we want to run as."
+      private: no
+  tags:
+    - homebrew
+  # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
+  environment:
+    SHELL: /bin/bash
+  vars:
+    bossjones__user: "{{boss__user}}"
+    bossjones__group: "{{boss_group}}"
+  # pre_tasks:
+  #   # This is necessary since we want to enable sudo when running the Homebrew
+  #   # install script but don't want to run it as root. Yeah, I know.
+  #   - name: authenticate sudo
+  #     ping:
+  #     become: yes
+    pre_tasks:
+    - include_vars: "{{ item }}"
+      with_fileglob:
+        - ../config.yml
+      tags: ['always']
+
+  roles:
+    - role: elliotweiser.osx-command-line-tools
+      tags: ['homebrew']
+    - role: geerlingguy.homebrew
+      tags: ['homebrew']
+
+- hosts: localhost
+  # NOTE: In order to populate special var ansible_pkg_mgr, need to enable gather_facts
+  gather_facts: True
+  vars_prompt:
+    - name: "bossjones__user"
+      prompt: "User we want to run as."
+      private: no
+    - name: "bossjones__group"
+      prompt: "Group we want to run as."
+      private: no
+  tags:
+    - rbenv
+  # become: yes
+  # become_method: sudo
+  # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
+  environment:
+    SHELL: /bin/bash
+  vars:
+    bossjones__user: "{{boss__user}}"
+    bossjones__group: "{{boss_group}}"
+
+  pre_tasks:
+    - name: Ensure homebrew deps are installed
+      homebrew: "name={{ item }} state=present"
+      with_items:
+        - openssl
+        - libyaml
+        - python2
+        - nvm
+        - nodejs
+        - rbenv
+        - ruby-build
+        - tree
+        - coreutils
+        - bats
+        - bash-completion2
+        - moreutils
+        - findutils
+        # - { name: gnu-sed, install_options: "with-default-names" }
+        # - { name: grep, install_options: "with-default-names" }
+
+  # bats
+  # battery
+  # coreutils
+  # diff-so-fancy
+  # dockutil
+  # ffmpeg
+  # fasd
+  # gifsicle
+  # git
+  # git-extras
+  # gnu-sed --with-default-names
+  # grep --with-default-names
+  # hub
+  # httpie
+  # imagemagick
+  # jq
+  # lynx
+  # mackup
+  # nano
+  # pandoc
+  # peco
+  # psgrep
+  # python
+  # shellcheck
+  # ssh-copy-id
+  # tree
+  # unar
+  # wget
+  # wifi-password
+  # - ssh-copy-id
+  # - pv
+  # - { name: vim, install_options: "with-luajit,override-system-vi" }
+
+  # roles:
+  #   - role: zzet.rbenv
+  #     default_gems_file: "~{{ bossjones__user }}/.dotfiles/ruby/default-gems"
+  #     rbenv:
+  #       env: user
+  #       version: v1.1.1
+  #       default_ruby: 2.4.2
+  #       rubies:
+  #       - version: 2.4.2
+  #     rbenv_users:
+  #     - "{{ bossjones__user }}"
+  #     rbenv_repo: "https://github.com/rbenv/rbenv.git"
+  #     rbenv_plugins:
+  #       - { name: "rbenv-vars",         repo: "https://github.com/rbenv/rbenv-vars.git",         version: "master" }
+  #       - { name: "ruby-build",         repo: "https://github.com/rbenv/ruby-build.git",         version: "master" }
+  #       - { name: "rbenv-default-gems", repo: "https://github.com/rbenv/rbenv-default-gems.git", version: "master" }
+  #       - { name: "rbenv-installer",    repo: "https://github.com/rbenv/rbenv-installer.git",    version: "master" }
+  #       - { name: "rbenv-update",       repo: "https://github.com/rkh/rbenv-update.git",         version: "master" }
+  #       - { name: "rbenv-whatis",       repo: "https://github.com/rkh/rbenv-whatis.git",         version: "master" }
+  #       - { name: "rbenv-use",          repo: "https://github.com/rkh/rbenv-use.git",            version: "master" }
+  #       - { name: "rbenv-ctags",        repo: "https://github.com/tpope/rbenv-ctags.git",        version: "master" }
+  #       - { name: "rbenv-each",         repo: "https://github.com/rbenv/rbenv-each.git",         version: "master" }
+  #       - { name: "rbenv-aliases",      repo: "https://github.com/tpope/rbenv-aliases.git",      version: "master" }
+
+  #     rbenv_root: "{% if rbenv.env == 'system' %}/usr/local/rbenv{% else %}~/.rbenv{% endif %}"
+
+
+- hosts: localhost
+  gather_facts: True
+  vars_prompt:
+    - name: "bossjones__user"
+      prompt: "User we want to run as."
+      private: no
+    - name: "bossjones__group"
+      prompt: "Group we want to run as."
+      private: no
+  tags:
+    - nvm
+  become: yes
+  become_method: sudo
+  vars:
+    bossjones__user: "{{boss__user}}"
+    bossjones__group: "{{boss_group}}"
+  # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
+  environment:
+    SHELL: /bin/bash
+  pre_tasks:
+    - name: '/etc/profile.d'
+      file:
+        path: "/etc/profile.d"
+        state: directory
+  roles:
+    - role: pablocrivella.nvm
+      nvm_repo: "git://github.com/creationix/nvm.git"
+      nvm_root: "~{{ bossjones__user }}/.nvm"
+      nvm_env: user
+      nvm_version: v0.33.1
+      nvm_default_node_version: stable
+      nvm_node_versions:
+        - stable
+      nvm_global_packages:
+        - vtop
+        - whereami
+        - figlet-cli
+        - get-port-cli
+        - getmac
+        - speed-test
+        - spoof
+        - wireless-tools
+        - yaml-lint
+        - pathogen-pm
+        - gtop
+        - npm
+        - diff-so-fancy
+        - docker-enter
+        - jsonlint
+      nvm_users:
+        - "{{ bossjones__user }}"
+
+- hosts: localhost
+  gather_facts: True
+  vars_prompt:
+    - name: "bossjones__user"
+      prompt: "User we want to run as."
+      private: no
+    - name: "bossjones__group"
+      prompt: "Group we want to run as."
+      private: no
+  tags:
+    - pyenv
+  # become: yes
+  # become_method: sudo
+  # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
+  become: yes
+  become_user: "{{bossjones__user}}"
+  environment:
+    SHELL: /bin/bash
+    PYENV_ROOT: "$HOME/.pyenv"
+    WORKON_HOME: "~/.virtualenvs"
+    PROJECT_HOME: "~/dev"
+  vars:
+      pyenv_path: "~{{ bossjones__user }}/.pyenv"
+      pyenv_owner: "{{ bossjones__user }}"
+      pyenv_group: "{{ bossjones__group }}"
+      pyenv_setting_path: "{% if pyenv_env == 'user' %}~/.bashrc{% else %}/etc/profile.d/pyenv.sh{% endif %}"
+      pyenv_update_git_install: no
+      pyenv_enable_autocompletion: yes
+      pyenv_update: no
+      pyenv_env: "user"
+      pyenv_python_versions:
+        - "3.6.5"
+        - "2.7.14"
+      pyenv_virtualenvs:
+        - venv_name: "jupyter3"
+          py_version: "3.6.5"
+        - venv_name: "tools3"
+          py_version: "3.6.5"
+        - venv_name: "ipython2"
+          py_version: "2.7.14"
+        - venv_name: "tools2"
+          py_version: "2.7.14"
+  pre_tasks:
+    - name: Ensure homebrew deps are installed
+      homebrew: "name={{ item }} state=present"
+      with_items:
+        - pyenv
+        - pyenv-virtualenv
+        - pyenv-virtualenvwrapper
+
+    - name: "Create directory:~/{{bossjones__user}}/.pyenv"
+      file:
+        path: "~{{bossjones__user}}/.pyenv"
+        state: directory
+        owner: "{{ bossjones__user }}"
+      become: yes
+      become_user: "{{bossjones__user}}"
+
+    - name: "create pyenvrc"
+      copy:
+        content: |
+          export PYENV_ROOT=~/.pyenv
+          export PATH="$PYENV_ROOT/bin:$PATH"
+          eval "$(pyenv init -)"
+        dest: "{{ pyenv_path }}/.pyenvrc"
+        owner: "{{ bossjones__user }}"
+        group: "{{ bossjones__group }}"
+        mode: 0644
+
+    - name: "Load pyenv env variables in {{ pyenv_setting_path }}"
+      lineinfile: dest="{{ pyenv_setting_path }}"
+                  regexp="\.pyenvrc$"
+                  line="source {{ pyenv_path }}/.pyenvrc"
+                  state=present
+                  create=yes
+
+    - name: "Add pyenv autocomplete in {{ pyenv_setting_path }}"
+      lineinfile: dest="{{ pyenv_setting_path }}"
+                  regexp="pyenv\.bash$"
+                  line="source {{ pyenv_path }}/completions/pyenv.bash"
+                  state=present
+      when: pyenv_enable_autocompletion
+
+    - name: Update Pyenv interpreter list
+      shell: . {{ pyenv_path }}/.pyenvrc && pyenv update
+      when: pyenv_update
+
+    - name: Install Python interpreters "{{ pyenv_python_versions }}"
+      shell: . {{ pyenv_path }}/.pyenvrc && pyenv install {{ item }}
+            creates="{{ pyenv_path }}/versions/{{ item }}/bin/python"
+      with_items: "{{ pyenv_python_versions }}"
+
+    - name: Create virtual environments
+      shell: . {{ pyenv_path }}/.pyenvrc && pyenv virtualenv {{ item.py_version }} {{ item.venv_name }}
+            creates="{{ pyenv_path }}/versions/{{ item.venv_name }}/bin/python"
+      with_items: "{{ pyenv_virtualenvs }}"
+
+    - name: Set pyenv global
+      shell: . {{ pyenv_path }}/.pyenvrc && pyenv global {{ pyenv_global }} && pyenv rehash
+      when: pyenv_global is defined
+
+  # roles:
+  #   - role: avanov.pyenv
+  #     pyenv_path: "~{{ bossjones__user }}/.pyenv"
+  #     pyenv_owner: "{{ bossjones__user }}"
+  #     pyenv_group: "{{ bossjones__group }}"
+  #     pyenv_update_git_install: no
+  #     pyenv_enable_autocompletion: yes
+  #     pyenv_python_versions:
+  #       - "3.6.5"
+  #       - "2.7.14"
+  #     pyenv_virtualenvs:
+  #       - venv_name: "jupyter3"
+  #         py_version: "3.6.5"
+  #       - venv_name: "tools3"
+  #         py_version: "3.6.5"
+  #       - venv_name: "ipython2"
+  #         py_version: "2.7.14"
+  #       - venv_name: "tools2"
+  #         py_version: "2.7.14"
+  post_tasks:
+
+    # Install plugins for pyenv
+    - name: Clone pyenv-virtualenvwrapper
+      git:
+        repo: https://github.com/pyenv/pyenv-virtualenvwrapper
+        dest: "~{{ bossjones__user }}/.pyenv/plugins/pyenv-virtualenvwrapper"
+        version: "master"
+        update: "{{ pyenv_update_git_install }}"
+      become: yes
+      become_user: "{{bossjones__user}}"
+
+    - name: Clone pyenv-pip-rehash
+      git:
+        repo: https://github.com/pyenv/pyenv-pip-rehash
+        dest: "~{{ bossjones__user }}/.pyenv/plugins/pyenv-pip-rehash"
+        version: "master"
+        update: "{{ pyenv_update_git_install }}"
+      become: yes
+      become_user: "{{bossjones__user}}"
+
+    - name: Clone pyenv-pip-migrate
+      git:
+        repo: https://github.com/pyenv/pyenv-pip-migrate
+        dest: "~{{ bossjones__user }}/.pyenv/plugins/pyenv-pip-migrate"
+        version: "master"
+        update: "{{ pyenv_update_git_install }}"
+      become: yes
+      become_user: "{{bossjones__user}}"
+
+    - name: Clone pyenv-update
+      git:
+        repo: https://github.com/pyenv/pyenv-update
+        dest: "~{{ bossjones__user }}/.pyenv/plugins/pyenv-update"
+        version: "master"
+        update: "{{ pyenv_update_git_install }}"
+      become: yes
+      become_user: "{{bossjones__user}}"
+
+    - name: Clone pyenv-update
+      git:
+        repo: https://github.com/massongit/pyenv-pip-update
+        dest: "~{{ bossjones__user }}/.pyenv/plugins/pyenv-pip-update"
+        version: "master"
+        update: "{{ pyenv_update_git_install }}"
+      become: yes
+      become_user: "{{bossjones__user}}"
+
+    - name: Clone pyenv-doctor
+      git:
+        repo: https://github.com/pyenv/pyenv-doctor
+        dest: "~{{ bossjones__user }}/.pyenv/plugins/pyenv-doctor"
+        version: "master"
+        update: "{{ pyenv_update_git_install }}"
+      become: yes
+      become_user: "{{bossjones__user}}"
+
+    - name: Clone pyenv-default-packages
+      git:
+        repo: https://github.com/jawshooah/pyenv-default-packages
+        dest: "~{{ bossjones__user }}/.pyenv/plugins/pyenv-default-packages"
+        version: "master"
+        update: "{{ pyenv_update_git_install }}"
+      become: yes
+      become_user: "{{bossjones__user}}"
+
+# Install pyenv module so we can use it
+- hosts: localhost
+  gather_facts: True
+  vars_prompt:
+    - name: "bossjones__user"
+      prompt: "User we want to run as."
+      private: no
+    - name: "bossjones__group"
+      prompt: "Group we want to run as."
+      private: no
+  tags:
+    - pyenv_module
+  vars:
+    pyenv_root: "~/.pyenv"
+    pyenv_path: "~{{ bossjones__user }}/.pyenv"
+    pyenv_owner: "{{ bossjones__user }}"
+    pyenv_group: "{{ bossjones__group }}"
+  become: yes
+  become_user: "{{bossjones__user}}"
+  environment:
+    SHELL: /bin/bash
+    PYENV_ROOT: "$HOME/.pyenv"
+    # PYENV_VERSION: "3.5.2"
+    WORKON_HOME: "~/.virtualenvs"
+    PROJECT_HOME: "~/dev"
+    # NOTE: To get virtualenvwrapper to create a virtual environment using pyvenv instead of virtualenv, set the PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV environment variable.
+    PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV: true
+  roles:
+    - role: suzuki-shunsuke.pyenv-module
+
+  tasks:
+    - name: install virtualenvwrapper module in venv 3.6.5
+      pip:
+        name: "{{item}}"
+        executable: "{{pyenv_root}}/versions/3.6.5/bin/pip"
+      with_items:
+        - virtualenvwrapper
+
+    - name: install virtualenvwrapper module in venv 2.7.14
+      pip:
+        name: "{{item}}"
+        executable: "{{pyenv_root}}/versions/2.7.14/bin/pip"
+      with_items:
+        - virtualenvwrapper
+
+    # -------------------------------------------
+    # venv: jupyter3
+    # -------------------------------------------
+
+    # use pip module with executable option
+    - name: install jupyter module in venv jupyter3
+      pip:
+        name: "{{item}}"
+        executable: "{{pyenv_root}}/versions/jupyter3/bin/pip"
+      with_items:
+        - jupyter
+
+    - name: install jupyter3 ipykernel
+      shell: "{{pyenv_root}}/versions/jupyter3/bin/python -m ipykernel install --user"
+      become: yes
+      become_user: "{{bossjones__user}}"
+
+    # -------------------------------------------
+      # venv: ipython2
+    # -------------------------------------------
+
+    - name: install ipykernel module in venv ipython2
+      pip:
+        name: "{{item}}"
+        executable: "{{pyenv_root}}/versions/ipython2/bin/pip"
+      with_items:
+        - ipykernel
+
+    - name: install ipython2 ipykernel
+      shell: "{{pyenv_root}}/versions/ipython2/bin/python -m ipykernel install --user"
+      become: yes
+      become_user: "{{bossjones__user}}"
+
+    # -------------------------------------------
+    # venv: tools3
+    # -------------------------------------------
+
+    - name: install common modules in venv tools3
+      pip:
+        name: "{{item}}"
+        executable: "{{pyenv_root}}/versions/tools3/bin/pip"
+      with_items:
+        - youtube-dl
+        - gnucash-to-beancount
+        - rows
+        - awscli
+        - cheat
+        - pdbpp
+        - pylint
+        - ptpython
+        - glances
+        - isort
+        - autopep8
+        - pydocstyle
+        - flake8
+        - yamllint
+        - mypy
+        - graphviz
+        - ansible
+
+    # -------------------------------------------
+    # venv: tools2
+    # -------------------------------------------
+
+    - name: install common modules in venv tools2
+      pip:
+        name: "{{item}}"
+        executable: "{{pyenv_root}}/versions/tools2/bin/pip"
+      with_items:
+        - rename
+        - s3cmd
+        - fabric
+        - mercurial
+        - restructuredtext_lint
+        - pdbpp
+        - pylint
+        - ptpython
+        - isort
+        - autopep8
+        - pydocstyle
+        - flake8
+        - yamllint
+
+    - name: install common modules in venv 3.6.5
+      pip:
+        name: "{{item}}"
+        executable: "{{pyenv_root}}/versions/3.6.5/bin/pip"
+      with_items:
+        # - powerline-status
+        - setuptools
+        - wheel
+        - libtmux
+        - tmuxp
+
+      # Finally, it’s time to make all Python versions and special virtualenvs work with each other.
+      # The above command establishes the PATH priority so scripts can be accessed in the right order without activating any virtualenv.
+      # pyenv global 3.6.0 2.7.13 jupyter3 ipython2 tools3 tools2
+    # - name: pyenv global 3.6.5 2.7.14 jupyter3 ipython2 tools3 tools2
+    #   pyenv:
+    #     subcommand: global
+    #     versions:
+    #     - 3.6.5
+    #     - 2.7.14
+    #     - jupyter3
+    #     - ipython2
+    #     - tools3
+    #     - tools2
+    #     pyenv_root: "~/.pyenv"
+
+    - name: pyenv global 3.6.5 2.7.14 jupyter3 ipython2 tools3 tools2
+      shell: . {{ pyenv_path }}/.pyenvrc && pyenv global 3.6.5 2.7.14 jupyter3 ipython2 tools3 tools2
+
+# Taken from this guy: https://medium.com/@henriquebastos/the-definitive-guide-to-setup-my-python-workspace-628d68552e14
+# pyenv virtualenv 3.6.0 jupyter3
+# pyenv virtualenv 3.6.0 tools3
+# pyenv virtualenv 2.7.13 ipython2
+# pyenv virtualenv 2.7.13 tools2
+
+
+    - name: "Create directory:~/{{bossjones__user}}/.ipython/profile_default/startup"
+      file:
+        path: "~{{bossjones__user}}/.ipython/profile_default/startup/"
+        state: directory
+        owner: "{{ bossjones__user }}"
+      become: yes
+      become_user: "{{bossjones__user}}"
+
+    - name: "Create directory: ~{{bossjones__user}}/.config/fontconfig/conf.d/"
+      file:
+        path: "~{{bossjones__user}}/.config/fontconfig/conf.d/"
+        state: directory
+        owner: "{{ bossjones__user }}"
+      become: yes
+      become_user: "{{bossjones__user}}"
+
+    - name: "Create directory: ~{{bossjones__user}}/.ptpython"
+      file:
+        path: "~{{bossjones__user}}/.ptpython/"
+        state: directory
+        owner: "{{ bossjones__user }}"
+      become: yes
+      become_user: "{{bossjones__user}}"
+
+# FIXME: Something wrong with this one
+#     - name: create ipython profile
+#       shell: "ipython profile create
+# curl -L https://gist.githubusercontent.com/henriquebastos/270cff100cb303f3d74370489022446b/raw/56e646054e62efb079af3666102c381fa571065c/00-detect-virtualenv-sitepackages.py > ~/.ipython/profile_default/startup/00-venv-sitepackages.py"
+#       become: yes
+#       become_user: "{{bossjones__user}}"
+
+# NOTE: This works, just might not be the right time for zsh yet
+# Install oh-my-zsh
+- hosts: localhost
+  gather_facts: True
+  become: yes
+  vars_prompt:
+    - name: "bossjones__user"
+      prompt: "User we want to run as."
+      private: no
+    - name: "bossjones__group"
+      prompt: "Group we want to run as."
+      private: no
+  tags:
+    - zsh
+  vars:
+    ansible_ssh_user: "{{bossjones__user}}"
+    zsh_user: "{{bossjones__user}}"
+    zsh_antigen_bundles_extras:
+      - nvm
+      - joel-porquet/zsh-dircolors-solarized
+      - virtualenvwrapper
+      - npm
+      - cswl/zsh-rbenv
+    zsh_autosuggestions_bind_key: "^U"
+  roles:
+    - viasite-ansible.zsh
+
+# TODO: Figure out if we want to enable this
+# # Switch to ZSH shell
+# if test -t 1; then
+# exec zsh
+# fi
+
+
+# ####################################################################################################
+# # POWERLINE SETUP
+####################################################################################################
+- hosts: localhost
+  gather_facts: True
+  vars_prompt:
+    - name: "bossjones__user"
+      prompt: "User we want to run as."
+      private: no
+    - name: "bossjones__group"
+      prompt: "Group we want to run as."
+      private: no
+  tags:
+    - powerline
+  become: yes
+  # become_user: "{{bossjones__user}}"
+  # become: yes
+  # become_method: sudo
+  # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
+  environment:
+    SHELL: /bin/bash
+  pre_tasks:
+    # SOURCE: https://github.com/OldhamMade/ansible-osx/blob/master/powerline.yml
+    - name: "mk /tmp/.fonts dir"
+      file: dest=/tmp/.fonts state=directory
+
+    - name: clone powerline-fonts
+      git: repo=https://github.com/powerline/fonts
+           dest=/tmp/.fonts/powerline
+
+    - name: preparing to install powerline-fonts
+      debug: msg="preparing to install"
+
+    - name: install powerline-fonts
+      script: "/tmp/.fonts/powerline/install.sh --home=~{{bossjones__user}}"
+      register: result
+
+    - debug:
+        var: result.stdout
+
+    # FIXME: This isn't working, but small fry
+    # - file: path="~{{bossjones__user}}/Library/Fonts/Anonymice Powerline.ttf" state=file
+
+    # # SOURCE: https://github.com/veggiemonk/ansible-dotfiles/blob/master/tasks/fonts.yml
+    # - name: Cloning fonts
+    #   git:
+    #     repo=https://github.com/powerline/fonts
+    #     dest="~{{bossjones__user}}/powerlinefonts"
+    #     accept_hostkey=yes
+    #   register: fontCloned
+    #   become: yes
+    #   become_user: "{{bossjones__user}}"
+
+    # # - name: Install Fonts
+    # #   shell: ~{{bossjones__user}}/powerlinefonts/install.sh chdir=~/{{bossjones__user}}/powerlinefonts
+    # #   when: fontCloned|success
+    # #   become: yes
+    # #   become_user: "{{bossjones__user}}"
+
+    # - name: Install Fonts
+    #   shell: ~{{bossjones__user}}/powerlinefonts/install.sh
+    #   when: fontCloned|success
+    #   become: yes
+    #   become_user: "{{bossjones__user}}"
+
+    - name: "Create directory: ~{{bossjones__user}}/.config/powerline"
+      file:
+        path: "~{{bossjones__user}}/.config/powerline"
+        state: directory
+        owner: "{{ bossjones__user }}"
+      become: yes
+      become_user: "{{bossjones__user}}"
+
+    - name: "touch ~{{bossjones__user}}/.powerline"
+      shell: >
+        touch ~{{bossjones__user}}/.powerline
+      become: yes
+      become_user: "{{bossjones__user}}"
+
+  roles:
+
+    - role: nass600.powerline
+      powerline_package_name: "powerline-status"
+      powerline_version: "2.6"
+
+      powerline_extra_segments:
+        - {name: powerline-gitstatus, version: "1.2.1"}
+
+      powerline_daemon_destination: "~{{bossjones__user}}/.powerline"
+
+      powerline_config_dir: "~{{bossjones__user}}/.config/powerline"
+      powerline_config_shell_colorscheme: "default"
+      powerline_config_shell_theme: "default"
+      powerline_config_vim_colorscheme: "default"
+      powerline_config_vim_theme: "default"
+
+      powerline_fonts_repo: "git://github.com/powerline/fonts.git"
+      powerline_fonts_dir: "{{ powerline_config_dir }}/fonts"
+
+# ####################################################################################################
+# # CHEATSHEETS SETUP
+####################################################################################################
+- hosts: localhost
+  gather_facts: True
+  vars_prompt:
+    - name: "bossjones__user"
+      prompt: "User we want to run as."
+      private: no
+    - name: "bossjones__group"
+      prompt: "Group we want to run as."
+      private: no
+  tags:
+    - cheat
+  vars:
+    bossjones__user: "{{boss__user}}"
+    bossjones__group: "{{boss_group}}"
+    cheatsheet_update: yes
+  become: yes
+  become_user: "{{bossjones__user}}"
+  # become_method: sudo
+  # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
+  environment:
+    SHELL: /bin/bash
+  tasks:
+    - name: Clone pyenv-doctor
+      git:
+        repo: https://github.com/bossjones/boss-cheatsheets
+        dest: "~{{ bossjones__user }}/.cheat"
+        version: "master"
+        update: "{{ cheatsheet_update }}"
+
+# ####################################################################################################
+# # BASH-IT SETUP
+####################################################################################################
+- hosts: localhost
+  gather_facts: True
+  vars_prompt:
+    - name: "bossjones__user"
+      prompt: "User we want to run as."
+      private: no
+    - name: "bossjones__group"
+      prompt: "Group we want to run as."
+      private: no
+  tags:
+    - bash_it
+  vars:
+    bossjones__user: "{{boss__user}}"
+    bossjones__group: "{{boss_group}}"
+    cheatsheet_update: yes
+    boss__bash_it_theme: "powerline-plain"
+    boss__bash_it_repository: https://github.com/Bash-it/bash-it.git
+    boss__bash_it_version: master
+    boss__bash_it_aliases:
+      - general
+    boss__bash_it_plugins:
+      - base
+      - history
+    boss__bash_it_completions:
+      - git
+  become: yes
+  become_user: "{{bossjones__user}}"
+  # become_method: sudo
+  # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
+  environment:
+    SHELL: /bin/bash
+  tasks:
+    # TODO: have bash_it run before this shell script
+    - name: clone bash_it
+      git: repo="{{boss__bash_it_repository}}"
+          dest="~{{bossjones__user}}/.bash_it"
+          update=no
+          depth=1
+      become: "{{bossjones__user}}"
+      become_user: "{{bossjones__user}}"
+
+    - name: Register home directory for {{ bossjones__user }}
+      shell: >
+        echo $HOME
+      changed_when: false
+      register: linux_user_home
+      become: "{{bossjones__user}}"
+      become_user: "{{bossjones__user}}"
+
+    - name: Register current login shell for {{ bossjones__user }}
+      shell: >
+        echo $SHELL
+      changed_when: false
+      register: linux_user_shell
+      become: "{{bossjones__user}}"
+      become_user: "{{bossjones__user}}"
+
+    - name: Set facts
+      set_fact:
+        boss__bash_it_user_home: "{{ linux_user_home.stdout }}"
+        boss__bash_it_user_shell: "{{ linux_user_shell.stdout }}"
+
+    - name: assert home directory is detected
+      assert: { that: boss__bash_it_user_home != "" }
+
+    - name: assert current shell is detected
+      assert: { that: boss__bash_it_user_shell != "" }
+
+    - name: "clone bash_it for {{ bossjones__user }}"
+      git:
+        repo: "{{ boss__bash_it_repository }}"
+        dest: "{{ boss__bash_it_user_home }}/.bash_it"
+        version: "{{ boss__bash_it_version }}"
+      become: "{{ bossjones__user }}"
+
+    - name: "change shell to bash for {{ bossjones__user }}"
+      command: "chsh -s /bin/bash {{ bossjones__user }}"
+      become_user: root
+      when: boss__bash_it_user_shell != "/bin/bash"
+
+    - name: "initialize bash_it directories for {{ bossjones__user }}"
+      file:
+        path: "{{ boss__bash_it_user_home }}/.bash_it/{{ item }}/enabled"
+        state: directory
+        owner: "{{ bossjones__user }}"
+      with_items:
+        - "plugins"
+        - "aliases"
+        - "completion"
+
+    - name: "install bash_it plugins for {{ bossjones__user }}"
+      file:
+        src: "{{ boss__bash_it_user_home }}/.bash_it/plugins/available/{{ item }}.plugin.bash"
+        dest: "{{ boss__bash_it_user_home }}/.bash_it/plugins/enabled/{{ item }}.plugin.bash"
+        state: link
+        owner: "{{ bossjones__user }}"
+      with_items: '{{ boss__bash_it_plugins }}'
+
+    - name: "install bash_it aliases for {{ bossjones__user }}"
+      file:
+        src: "{{ boss__bash_it_user_home }}/.bash_it/aliases/available/{{ item }}.aliases.bash"
+        dest: "{{ boss__bash_it_user_home }}/.bash_it/aliases/enabled/{{ item }}.aliases.bash"
+        state: link
+        owner: "{{ bossjones__user }}"
+      with_items: '{{ boss__bash_it_aliases }}'
+
+    - name: "install bash_it completions for {{ bossjones__user }}"
+      file:
+        src: "{{ boss__bash_it_user_home }}/.bash_it/completion/available/{{ item }}.completion.bash"
+        dest: "{{ boss__bash_it_user_home }}/.bash_it/completion/enabled/{{ item }}.completion.bash"
+        state: link
+        owner: "{{ bossjones__user }}"
+      with_items: '{{ boss__bash_it_completions }}'
+
+# ####################################################################################################
+# # jenv SETUP
+####################################################################################################
+- hosts: localhost
+  gather_facts: True
+  vars_prompt:
+    - name: "bossjones__user"
+      prompt: "User we want to run as."
+      private: no
+    - name: "bossjones__group"
+      prompt: "Group we want to run as."
+      private: no
+  tags:
+    - jenv
+  vars:
+    bossjones__user: "{{boss__user}}"
+    bossjones__group: "{{boss_group}}"
+  become: yes
+  become_user: "{{bossjones__user}}"
+  # become_method: sudo
+  # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
+  environment:
+    SHELL: /bin/bash
+  tasks:
+    - name: clone jenv
+      git: repo="https://github.com/gcuisinier/jenv.git"
+          dest="~{{bossjones__user}}/.jenv"
+          update=no
+          depth=1
+      become: "{{bossjones__user}}"
+      become_user: "{{bossjones__user}}"
+
+# # ####################################################################################################
+# # dircolors SETUP
+# ####################################################################################################
+# - hosts: localhost
+#   gather_facts: True
+#   vars_prompt:
+#     - name: "bossjones__user"
+#       prompt: "User we want to run as."
+#       private: no
+#     - name: "bossjones__group"
+#       prompt: "Group we want to run as."
+#       private: no
+#   tags:
+#     - dircolors
+#   vars:
+#     bossjones__user: "{{boss__user}}"
+#     bossjones__group: "{{boss_group}}"
+#   become: yes
+#   become_user: "{{bossjones__user}}"
+#   # become_method: sudo
+#   # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
+#   environment:
+#     SHELL: /bin/bash
+#   tasks:
+#     - name: clone dircolors
+#       git: repo="https://github.com/gibbling666/dircolors.git"
+#           dest="~{{bossjones__user}}/.dircolors"
+#           update=no
+#           depth=1
+#       become: "{{bossjones__user}}"
+#       become_user: "{{bossjones__user}}"
+

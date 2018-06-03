@@ -1,9 +1,56 @@
 NON_ROOT_USER = developer
 
-.PHONY: all bin dotfiles etc test shellcheck
+# SOURCE: https://github.com/mpereira/macbook-playbook
+LOCAL_PROJECT_DIRECTORY         := $(shell pwd)
+ANSIBLE_DIRECTORY               := .
+ANSIBLE_PLAYBOOKS_DIRECTORY     := $(ANSIBLE_DIRECTORY)
+ANSIBLE_ROLES_DIRECTORY         := $(ANSIBLE_DIRECTORY)/roles
+ANSIBLE_INVENTORY               := $(ANSIBLE_DIRECTORY)/hosts
+ANSIBLE_VERBOSE                 := -vv
+ANSIBLE_VAULT_PASSWORD_FILE     := $(ANSIBLE_DIRECTORY)/.ansible_vault_password
+ANSIBLE_SENSITIVE_CONTENT_FILES := \
+  $(ANSIBLE_ROLES_DIRECTORY)/ssh-keys/files/id_rsa \
+  $(ANSIBLE_ROLES_DIRECTORY)/s3cmd/files/.s3cfg \
+  $(ANSIBLE_ROLES_DIRECTORY)/dotfiles/vars/environment.yml \
+  $(ANSIBLE_ROLES_DIRECTORY)/prey/vars/api_key.yml
+
+ANSIBLE_COMMAND := \
+	ansible-playbook $(ANSIBLE_VERBOSE) \
+		-i $(ANSIBLE_INVENTORY) \
+		--extra-vars "local_project_directory=$(LOCAL_PROJECT_DIRECTORY)"
+
+ANSIBLE_COMMAND_LOCAL := \
+	ansible-playbook $(ANSIBLE_VERBOSE) \
+		-i $(ANSIBLE_INVENTORY) \
+		--extra-vars "local_project_directory=$(LOCAL_PROJECT_DIRECTORY)"
+
+ANSIBLE_COMMAND_LOCAL_WITH_VAULT := \
+	$(ANSIBLE_COMMAND_LOCAL) --vault-password-file $(ANSIBLE_VAULT_PASSWORD_FILE)
+
+VAULT_COMMAND := \
+	ansible-vault --vault-password-file $(ANSIBLE_VAULT_PASSWORD_FILE)
+
+.PHONY: \
+	all \
+	bin \
+	dotfiles \
+	etc \
+	test \
+	shellcheck \
+	upgrade_pip \
+	upgrade_ansible \
+	bootstrap \
+	converge \
+	encrypt \
+	decrypt \
+	encrypt_pre_commit \
+	install \
+	sed-travis
 
 all: bin dotfiles etc
 
+sed-travis:
+	bash ./sed-travis.sh
 
 bin:
 	# add aliases for things in bin
@@ -133,3 +180,52 @@ docker-exec-ci-fedora-login:
 	-u $(NON_ROOT_USER) \
 	-w /etc/ansible/roles/role_under_test \
 	dotfile-test-fedora27 env TERM=xterm bash -l
+
+upgrade_pip:
+	@sudo pip install --upgrade pip
+
+# https://github.com/pypa/pip/issues/3165#issuecomment-146666737
+upgrade_ansible:
+	@sudo -H pip install --upgrade ansible --ignore-installed six
+
+bootstrap:
+	@xcode-select --install
+	@sudo xcodebuild -license
+	@sudo easy_install pip
+	@sudo pip install ansible
+
+bootstrap-python:
+	brew update
+	# brew outdated pyenv || brew upgrade pyenv
+	brew install python@2
+	brew link --overwrite python@2
+	brew install python@3
+	brew link --overwrite python@3
+	sudo easy_install pip
+	sudo pip install --upgrade pip setuptools
+	sudo pip install virtualenv
+	# python -m virtualenv env
+	# source env/bin/activate
+	python --version
+	which python
+# @$(ANSIBLE_COMMAND_LOCAL_WITH_VAULT) $(ANSIBLE_PLAYBOOKS_DIRECTORY)/bootstrap.yml
+# @test -s $(ANSIBLE_VAULT_PASSWORD_FILE) \
+# 	|| echo ATTENTION: Please create '$(PWD)/$(ANSIBLE_VAULT_PASSWORD_FILE)' with this project\'s Ansible Vault password
+
+cp-config-travis:
+	cp ./ansible/tests/config.yml ./ansible/config.yml
+
+converge:
+	@$(ANSIBLE_COMMAND_LOCAL_WITH_VAULT) $(ANSIBLE_PLAYBOOKS_DIRECTORY)/main.yml
+
+encrypt:
+	@$(VAULT_COMMAND) encrypt $(ANSIBLE_SENSITIVE_CONTENT_FILES)
+
+decrypt:
+	@$(VAULT_COMMAND) decrypt $(ANSIBLE_SENSITIVE_CONTENT_FILES)
+
+encrypt_pre_commit: encrypt
+	@git add $(ANSIBLE_SENSITIVE_CONTENT_FILES)
+
+install:
+	install -d . ~/.dotfiles

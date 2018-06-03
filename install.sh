@@ -20,6 +20,12 @@ if is_ubuntu; then
   . "$DOTFILES_DIR/install/prereq-linux.sh"
 fi
 
+# Ubuntu-only stuff. Abort if not Ubuntu.
+if is-macos; then
+  e_header "EXPERIMENTAL ... this might break - Macos"
+  . "$DOTFILES_DIR/install/prereq-linux.sh"
+fi
+
 e_header "Provision machine using ansible bootstrap.yml"
 command-exists ansible && bash "$DOTFILES_DIR/ansible/provision.sh"
 
@@ -55,11 +61,12 @@ e_header "Package managers & packages"
 # Package managers & packages
 
 # Pretty osx specific stuff
+# DISABLING FOR NOW
 . "$DOTFILES_DIR/install/brew.sh"
 . "$DOTFILES_DIR/install/npm.sh"
 . "$DOTFILES_DIR/install/bash.sh"
-. "$DOTFILES_DIR/install/brew-cask.sh"
-. "$DOTFILES_DIR/install/gem.sh"
+# . "$DOTFILES_DIR/install/brew-cask.sh"
+# . "$DOTFILES_DIR/install/gem.sh"
 
 # Fonts
 unamestr=$(uname)
@@ -83,7 +90,9 @@ e_header "Run tests"
 
 # Run tests
 
-if is-executable bats; then bats test/*.bats; else echo "Skipped: tests (missing: bats)"; fi
+e_header "Where is test folder"
+
+if is-executable bats; then bats "$DOTFILES_DIR"/test/*.bats; else echo "Skipped: tests (missing: bats)"; fi
 
 e_header "Install extra stuff"
 
