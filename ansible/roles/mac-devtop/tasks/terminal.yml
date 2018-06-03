@@ -6,6 +6,10 @@
   changed_when: false
   check_mode: no
 
+- name: 'DEBUG terminal_theme'
+  debug:
+    var: terminal_theme.stdout
+
 - name: Ensure custom Terminal profile is added.
   shell: open files/terminal/JJG-Term.terminal
   changed_when: false
