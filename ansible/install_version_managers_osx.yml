@@ -79,6 +79,11 @@
         - findutils
         # - { name: gnu-sed, install_options: "with-default-names" }
         # - { name: grep, install_options: "with-default-names" }
+        # - { name: tmux, install_options: "with-utf8proc" }
+        - tmux
+        - fzf
+        - hub
+        - jq
 
   # bats
   # battery
@@ -112,33 +117,6 @@
   # - ssh-copy-id
   # - pv
   # - { name: vim, install_options: "with-luajit,override-system-vi" }
-
-  # roles:
-  #   - role: zzet.rbenv
-  #     default_gems_file: "~{{ bossjones__user }}/.dotfiles/ruby/default-gems"
-  #     rbenv:
-  #       env: user
-  #       version: v1.1.1
-  #       default_ruby: 2.4.2
-  #       rubies:
-  #       - version: 2.4.2
-  #     rbenv_users:
-  #     - "{{ bossjones__user }}"
-  #     rbenv_repo: "https://github.com/rbenv/rbenv.git"
-  #     rbenv_plugins:
-  #       - { name: "rbenv-vars",         repo: "https://github.com/rbenv/rbenv-vars.git",         version: "master" }
-  #       - { name: "ruby-build",         repo: "https://github.com/rbenv/ruby-build.git",         version: "master" }
-  #       - { name: "rbenv-default-gems", repo: "https://github.com/rbenv/rbenv-default-gems.git", version: "master" }
-  #       - { name: "rbenv-installer",    repo: "https://github.com/rbenv/rbenv-installer.git",    version: "master" }
-  #       - { name: "rbenv-update",       repo: "https://github.com/rkh/rbenv-update.git",         version: "master" }
-  #       - { name: "rbenv-whatis",       repo: "https://github.com/rkh/rbenv-whatis.git",         version: "master" }
-  #       - { name: "rbenv-use",          repo: "https://github.com/rkh/rbenv-use.git",            version: "master" }
-  #       - { name: "rbenv-ctags",        repo: "https://github.com/tpope/rbenv-ctags.git",        version: "master" }
-  #       - { name: "rbenv-each",         repo: "https://github.com/rbenv/rbenv-each.git",         version: "master" }
-  #       - { name: "rbenv-aliases",      repo: "https://github.com/tpope/rbenv-aliases.git",      version: "master" }
-
-  #     rbenv_root: "{% if rbenv.env == 'system' %}/usr/local/rbenv{% else %}~/.rbenv{% endif %}"
-
 
 - hosts: localhost
   gather_facts: True
