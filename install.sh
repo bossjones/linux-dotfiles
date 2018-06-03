@@ -28,6 +28,7 @@ fi
 
 # Put this in place before trying to install everything
 cp -fv "$DOTFILES_DIR/system/.osx" ~/.osx
+chmod +x ~/.osx
 
 e_header "Provision machine using ansible bootstrap.yml"
 command-exists ansible && bash "$DOTFILES_DIR/ansible/provision.sh"
