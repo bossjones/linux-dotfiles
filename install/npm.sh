@@ -3,7 +3,7 @@ if ! is-executable brew -o ! is-executable git; then
   return
 fi
 
-brew install nvm
+brew reinstall nvm
 
 export DOTFILES_BREW_PREFIX_NVM=`brew --prefix nvm`
 set-config "DOTFILES_BREW_PREFIX_NVM" "$DOTFILES_BREW_PREFIX_NVM" "$DOTFILES_CACHE"
