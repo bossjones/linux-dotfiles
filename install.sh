@@ -67,6 +67,7 @@ e_header "Package managers & packages"
 . "$DOTFILES_DIR/install/bash.sh"
 # . "$DOTFILES_DIR/install/brew-cask.sh"
 # . "$DOTFILES_DIR/install/gem.sh"
+. "$DOTFILES_DIR/install/rbenv.sh"
 
 # Fonts
 unamestr=$(uname)
