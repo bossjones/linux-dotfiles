@@ -79,7 +79,8 @@
         - findutils
         # - { name: gnu-sed, install_options: "with-default-names" }
         # - { name: grep, install_options: "with-default-names" }
-        - { name: tmux, install_options: "with-utf8proc" }
+        # - { name: tmux, install_options: "with-utf8proc" }
+        - tmux
         - fzf
         - hub
         - jq
