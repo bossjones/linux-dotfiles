@@ -77,6 +77,8 @@
         - bash-completion2
         - moreutils
         - findutils
+        - { name: gnu-sed, install_options: "with-default-names" }
+        - { name: grep, install_options: "with-default-names" }
 
   # bats
   # battery
