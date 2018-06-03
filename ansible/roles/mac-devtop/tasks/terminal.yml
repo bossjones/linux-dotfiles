@@ -11,7 +11,7 @@
     var: terminal_theme.stdout
 
 - name: Ensure custom Terminal profile is added.
-  shell: open {{ lookup('env','PWD') }}/files/terminal/JJG-Term.terminal
+  shell: open {{ lookup('env','PWD') }}/roles/mac-devtop/files/terminal/JJG-Term.terminal
   changed_when: false
   when: "'JJG-Term' not in terminal_theme.stdout"
 
