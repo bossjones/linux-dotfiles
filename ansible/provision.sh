@@ -45,7 +45,8 @@ fi
 # ansible-playbook install_version_managers.yml --skip-tags="nvm"
 if [[ $unamestr == "Darwin" ]]; then
   _USER=$(whoami)
-  _GROUP=$(groups $(whoami) | cut -d' ' -f1)
+  # _GROUP=$(groups $(whoami) | cut -d' ' -f1)
+  _GROUP=staff
 
   # If we set checkonly then run check, else run full suite
   if [[ "${CHECK_ONLY}" = "1" ]]; then
