@@ -37,6 +37,7 @@ packages=(
   excon
   pry-doc
   tmuxinator
+  solargraph
 )
 
 eval "$(rbenv init -)"

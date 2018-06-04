@@ -386,6 +386,10 @@
         - virtualenvwrapper
         - pip
         - setuptools
+        - black
+        - pylint
+        - isort
+        - autopep8
 
     - name: install virtualenvwrapper module in venv 2.7.14
       pip:
@@ -395,6 +399,9 @@
         - virtualenvwrapper
         - pip
         - setuptools
+        - pylint
+        - isort
+        - autopep8
 
     # -------------------------------------------
     # venv: jupyter3
