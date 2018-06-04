@@ -7,41 +7,58 @@ configure_osx: yes
 
 homebrew_installed_packages:
   # - ansible # Installed via Pip.
+  - ack
   - autoconf
-  - bash-completion
+  - bash-completion2
+  - ccache
+  - cowsay
+  - ctags
+  - dos2unix
   - doxygen
+  - fortune
   - gettext
   - gifsicle
   - git
   - go
   - gpg
-  - hub
+  - htop-osx
   - httpie
+  - hub
+  - iftop
   - iperf
+  - jenv
   - libevent
-  - sqlite
   - mcrypt
+  - mtr
+  - netcat
   - nmap
   - node
-  - ssh-copy-id
-  - cowsay
-  - readline
   - openssl
-  - pv
-  - wget
-  - wrk
-  - rbenv
-  - ruby-build
-  - tree
-  - ctags
-  - ack
   - pkg-config
+  - pv
   - pyenv
+  - pyenv-ccache
   - pyenv-virtualenv
   - pyenv-virtualenvwrapper
-  - jenv
-  - ccache
-  - pyenv-ccache
+  - python
+  - rbenv
+  - readline
+  - reattach-to-user-namespace
+  - ruby-build
+  - sqlite
+  - ssh-copy-id
+  - task
+  - the_silver_searcher
+  - tmux
+  - tree
+  - unrar
+  - vim
+  - watch
+  - weechat
+  - wget
+  - wrk
+  - youtube-dl
+  - zsh
 
 homebrew_taps:
   - homebrew/core
@@ -58,8 +75,7 @@ homebrew_taps:
 
 homebrew_cask_appdir: /Applications
 homebrew_cask_apps:
-  - chromedriver
-  - docker
+  # - docker
   - dropbox
   # - firefox
   - google-chrome
@@ -71,9 +87,27 @@ homebrew_cask_apps:
   - sequel-pro
   - skitch
   - slack
-  - sublime-text
   - transmit
   - vagrant
+  - alfred
+  - dash
+  - evernote
+  - firefox
+  - font-inconsolata-for-powerline
+  - google-chrome
+  - grandperspective
+  - iterm2
+  - keepassx
+  - menumeters
+  - picasa
+  - smcfancontrol
+  - spotify
+  - sublime-text3
+  - vagrant
+  - virtualbox
+  - vlc
+  - xquartz
+  - visual-studio-code
 
 # See `geerlingguy.mas` role documentation for usage instructions.
 mas_installed_apps: []
