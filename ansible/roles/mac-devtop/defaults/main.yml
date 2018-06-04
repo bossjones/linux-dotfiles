@@ -61,9 +61,10 @@ homebrew_cask_apps:
   - chromedriver
   - docker
   - dropbox
-  - firefox
+  # - firefox
   - google-chrome
   - handbrake
+  - iterm2
   - licecap
   - limechat
   - macvim
@@ -73,7 +74,6 @@ homebrew_cask_apps:
   - sublime-text
   - transmit
   - vagrant
-  - iterm2
 
 # See `geerlingguy.mas` role documentation for usage instructions.
 mas_installed_apps: []
