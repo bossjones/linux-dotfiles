@@ -84,3 +84,28 @@ s#INFO#${esc}[36m&${esc}[0m#; \
 s#DEBUG#${esc}[32m&${esc}[0m#; \
 s#[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}[^ \t]*#${esc}[1;34m&${esc}[0m#"
 }
+
+# https://forum.openframeworks.cc/t/speeding-up-compilation-with-ccache-xcode-tip/23492
+ccache-clang-env() {
+  if type -p `which ccache` >/dev/null 2>&1; then
+    export CCACHE_MAXSIZE=10G
+    export CCACHE_CPP2=true
+    export CCACHE_HARDLINK=true
+    export CCACHE_SLOPPINESS=file_macro,time_macros,include_file_mtime,include_file_ctime,file_stat_matches
+    exec /usr/local/bin/ccache /usr/bin/clang "$@"
+  else
+    exec clang "$@"
+  fi
+}
+
+ccache-clangpp-env() {
+  if type -p `which ccache` >/dev/null 2>&1; then
+    export CCACHE_MAXSIZE=10G
+    export CCACHE_CPP2=true
+    export CCACHE_HARDLINK=true
+    export CCACHE_SLOPPINESS=file_macro,time_macros,include_file_mtime,include_file_ctime,file_stat_matches
+    exec /usr/local/bin/ccache /usr/bin/clang++ "$@"
+  else
+    exec clang++ "$@"
+  fi
+}

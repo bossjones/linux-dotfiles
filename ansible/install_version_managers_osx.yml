@@ -272,25 +272,6 @@
       shell: . {{ pyenv_path }}/.pyenvrc && pyenv global {{ pyenv_global }} && pyenv rehash
       when: pyenv_global is defined
 
-  # roles:
-  #   - role: avanov.pyenv
-  #     pyenv_path: "~{{ bossjones__user }}/.pyenv"
-  #     pyenv_owner: "{{ bossjones__user }}"
-  #     pyenv_group: "{{ bossjones__group }}"
-  #     pyenv_update_git_install: no
-  #     pyenv_enable_autocompletion: yes
-  #     pyenv_python_versions:
-  #       - "3.6.5"
-  #       - "2.7.14"
-  #     pyenv_virtualenvs:
-  #       - venv_name: "jupyter3"
-  #         py_version: "3.6.5"
-  #       - venv_name: "tools3"
-  #         py_version: "3.6.5"
-  #       - venv_name: "ipython2"
-  #         py_version: "2.7.14"
-  #       - venv_name: "tools2"
-  #         py_version: "2.7.14"
   post_tasks:
 
     # Install plugins for pyenv
@@ -480,6 +461,9 @@
         - ansible
         - pip
         - setuptools
+        # Needed for cless ( man pages )
+        # SOURCE: https://github.com/KevinOfNeu/colored-less-more-cat
+        - pygmentize
 
     # -------------------------------------------
     # venv: tools2
@@ -505,6 +489,9 @@
         - yamllint
         - pip
         - setuptools
+        # Needed for cless ( man pages )
+        # SOURCE: https://github.com/KevinOfNeu/colored-less-more-cat
+        - pygmentize
 
     - name: install common modules in venv 3.6.5
       pip:
