@@ -850,3 +850,15 @@
         owner: "{{ bossjones__user }}"
       with_items: '{{ boss__bash_it_completions }}'
 
+    - name: "Create directory:~/{{ bossjones__user }}/dev"
+      file:
+        path: "~{{ bossjones__user }}/dev"
+        state: directory
+        owner: "{{ bossjones__user }}"
+      become: yes
+      become_user: "{{ bossjones__user }}"
+
+    - name: clone base16-iterm2
+      git: repo=https://github.com/chriskempson/base16-iterm2
+           dest=~{{ bossjones__user }}/dev/base16-iterm2
+
