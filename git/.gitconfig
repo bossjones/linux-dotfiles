@@ -5,6 +5,9 @@
 [github]
   user = bossjones
 
+[include]
+  path = .gitconfig.token
+
 [core]
   excludesfile = ~/.gitignore_global
   editor = nano

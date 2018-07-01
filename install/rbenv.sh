@@ -16,12 +16,6 @@ fi
 export DOTFILES_BREW_PREFIX_RBENV=`brew --prefix rbenv`
 set-config "DOTFILES_BREW_PREFIX_RBENV" "$DOTFILES_BREW_PREFIX_RBENV" "$DOTFILES_CACHE"
 
-# . "${DOTFILES_DIR}/system/.nvm"
-# nvm install stable
-# nvm alias default stable
-
-# Globally install with npm
-
 packages=(
   pry
   bundler
