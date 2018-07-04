@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ets-labs/python-vimrc/master/setup.sh)"
+
+
+echo "You probably need to run one of the following afterwards"
+echo "Fedora: python3 ~/.vim/bundle/YouCompleteMe/install.py --clang-completer --system-libclang"
+echo "OS X: python3 ~/.vim/bundle/YouCompleteMe/install.py --clang-completer"

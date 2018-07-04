@@ -272,25 +272,6 @@
       shell: . {{ pyenv_path }}/.pyenvrc && pyenv global {{ pyenv_global }} && pyenv rehash
       when: pyenv_global is defined
 
-  # roles:
-  #   - role: avanov.pyenv
-  #     pyenv_path: "~{{ bossjones__user }}/.pyenv"
-  #     pyenv_owner: "{{ bossjones__user }}"
-  #     pyenv_group: "{{ bossjones__group }}"
-  #     pyenv_update_git_install: no
-  #     pyenv_enable_autocompletion: yes
-  #     pyenv_python_versions:
-  #       - "3.6.5"
-  #       - "2.7.14"
-  #     pyenv_virtualenvs:
-  #       - venv_name: "jupyter3"
-  #         py_version: "3.6.5"
-  #       - venv_name: "tools3"
-  #         py_version: "3.6.5"
-  #       - venv_name: "ipython2"
-  #         py_version: "2.7.14"
-  #       - venv_name: "tools2"
-  #         py_version: "2.7.14"
   post_tasks:
 
     # Install plugins for pyenv
@@ -405,6 +386,10 @@
         - virtualenvwrapper
         - pip
         - setuptools
+        - black
+        - pylint
+        - isort
+        - autopep8
 
     - name: install virtualenvwrapper module in venv 2.7.14
       pip:
@@ -414,6 +399,9 @@
         - virtualenvwrapper
         - pip
         - setuptools
+        - pylint
+        - isort
+        - autopep8
 
     # -------------------------------------------
     # venv: jupyter3
@@ -480,6 +468,9 @@
         - ansible
         - pip
         - setuptools
+        # Needed for cless ( man pages )
+        # SOURCE: https://github.com/KevinOfNeu/colored-less-more-cat
+        - Pygments
 
     # -------------------------------------------
     # venv: tools2
@@ -505,6 +496,9 @@
         - yamllint
         - pip
         - setuptools
+        # Needed for cless ( man pages )
+        # SOURCE: https://github.com/KevinOfNeu/colored-less-more-cat
+        - Pygments
 
     - name: install common modules in venv 3.6.5
       pip:
@@ -856,67 +850,15 @@
         owner: "{{ bossjones__user }}"
       with_items: '{{ boss__bash_it_completions }}'
 
-# ####################################################################################################
-# # jenv SETUP
-####################################################################################################
-# - hosts: localhost
-#   gather_facts: True
-#   vars_prompt:
-#     - name: "bossjones__user"
-#       prompt: "User we want to run as."
-#       private: no
-#     - name: "bossjones__group"
-#       prompt: "Group we want to run as."
-#       private: no
-#   tags:
-#     - jenv
-#   vars:
-#     bossjones__user: "{{boss__user}}"
-#     bossjones__group: "{{boss_group}}"
-#   become: yes
-#   become_user: "{{ bossjones__user }}"
-#   # become_method: sudo
-#   # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
-#   environment:
-#     SHELL: /bin/bash
-#   tasks:
-#     - name: clone jenv
-#       git: repo="https://github.com/gcuisinier/jenv.git"
-#           dest="~{{ bossjones__user }}/.jenv"
-#           update=no
-#           depth=1
-#       become: "{{ bossjones__user }}"
-#       become_user: "{{ bossjones__user }}"
+    - name: "Create directory:~/{{ bossjones__user }}/dev"
+      file:
+        path: "~{{ bossjones__user }}/dev"
+        state: directory
+        owner: "{{ bossjones__user }}"
+      become: yes
+      become_user: "{{ bossjones__user }}"
 
-# # ####################################################################################################
-# # dircolors SETUP
-# ####################################################################################################
-# - hosts: localhost
-#   gather_facts: True
-#   vars_prompt:
-#     - name: "bossjones__user"
-#       prompt: "User we want to run as."
-#       private: no
-#     - name: "bossjones__group"
-#       prompt: "Group we want to run as."
-#       private: no
-#   tags:
-#     - dircolors
-#   vars:
-#     bossjones__user: "{{boss__user}}"
-#     bossjones__group: "{{boss_group}}"
-#   become: yes
-#   become_user: "{{ bossjones__user }}"
-#   # become_method: sudo
-#   # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
-#   environment:
-#     SHELL: /bin/bash
-#   tasks:
-#     - name: clone dircolors
-#       git: repo="https://github.com/gibbling666/dircolors.git"
-#           dest="~{{ bossjones__user }}/.dircolors"
-#           update=no
-#           depth=1
-#       become: "{{ bossjones__user }}"
-#       become_user: "{{ bossjones__user }}"
+    - name: clone base16-iterm2
+      git: repo=https://github.com/chriskempson/base16-iterm2
+           dest=~{{ bossjones__user }}/dev/base16-iterm2
 

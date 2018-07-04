@@ -15,3 +15,5 @@ neovim
 gitpython
 flake8
 pylint
+pip-tools
+pipdeptree

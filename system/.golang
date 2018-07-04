@@ -1,0 +1,4 @@
+[ ! -s "$HOME/go" ] && mkdir -p $HOME/go
+export GOPATH=$HOME/go
+[ -s "/usr/local/go" ] && export GOROOT=/usr/local/go
+[ -s "/usr/local/go" ] && export PATH=$GOPATH/bin:$GOROOT/bin:$PATH

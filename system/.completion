@@ -1,6 +1,16 @@
 # Bash
 
-is-executable brew && [ -f $(brew --prefix)/share/bash-completion/bash_completion ] && . $(brew --prefix)/share/bash-completion/bash_completion
+unamestr=$(uname)
+
+# Mac OS X
+if [[ $unamestr == "Darwin" ]]; then
+    if [ "${BASH_VERSINFO}" -ge 4 ] && [ -f $(brew --prefix)/share/bash-completion/bash_completion ]; then
+      . $(brew --prefix)/share/bash-completion/bash_completion
+    fi
+
+    # NOTE: Old completion scripts, doesn't work with high sierra for some reason
+    # is-executable brew && [ -f $(brew --prefix)/share/bash-completion/bash_completion ] && . $(brew --prefix)/share/bash-completion/bash_completion
+fi
 
 # Dotfiles
 
