@@ -21,3 +21,31 @@ dash() {
   esac
   open "dash://$QUERY"
 }
+
+
+# SOURCE: https://github.com/wilmoore/dotfiles/blob/65399bdebd7d736c351bac2d05be26f796b4b952/active/.config/env/functions
+
+chomp () {
+  tr -d '\n'
+}
+
+# get keychain secret for a specific site/domain.
+keychain-secret-for () {
+  local domain="$(echo $1 | cut -d'/' -f3)"
+  ((security find-internet-password -gs $domain -a $2 1>&3) 2>&1 | cut -d'"' -f2) 3>&1 | tail -1
+}
+
+# get generic keychain password by name.
+find-generic-password () {
+  security find-generic-password -s $1 -w
+}
+
+# list mounted volumes
+volumes () {
+  df | grep '/Volumes/' | tr -s ' ' | cut -d ' ' -f 1,9- | awk -F '/Volumes/' '{ print $1,$2 }' | tr -s ' '
+}
+
+# untar a url
+untgz:url () {
+  curl -# -L $1 | tar xvz
+}
