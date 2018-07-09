@@ -70,6 +70,10 @@ ln -sfv "$DOTFILES_DIR/runcom/.pythonrc" ~
 ln -sfv "$DOTFILES_DIR/runcom/.agignore" ~
 ln -sfv "$DOTFILES_DIR/runcom/.10-powerline-symbols.conf" ~/.config/fontconfig/conf.d/10-powerline-symbols.conf
 
+ln -sfv "$DOTFILES_DIR/runcom/.tm-theme" ~
+ln -sfv "$DOTFILES_DIR/runcom/.tmux.conf" ~
+ln -sfv "$DOTFILES_DIR/runcom/.tmux.conf.local" ~
+
 e_header "Package managers & packages"
 
 # Package managers & packages

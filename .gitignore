@@ -48,3 +48,6 @@ ansible/roles/zzet.rbenv/
 # dotfiles cache
 .cache.sh.bak
 
+# work stuff for now
+system/.aliases.work
+bin/klam-ext
