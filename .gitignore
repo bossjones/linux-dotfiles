@@ -28,3 +28,22 @@ playbook.retry
 system/.custom
 .vscode
 .vscode/
+
+# ansible playbooks 
+ansible/hosts.private
+ansible/roles/avanov.pyenv/
+ansible/roles/elliotweiser.osx-command-line-tools/
+ansible/roles/geerlingguy.homebrew/
+ansible/roles/geerlingguy.mas/
+ansible/roles/mjanser.powerline/
+ansible/roles/nass600.powerline/
+ansible/roles/pablocrivella.nvm/
+ansible/roles/radamanth.node-nvm-ansible/
+ansible/roles/suzuki-shunsuke.pyenv-module/
+ansible/roles/tvieira.powerline-fonts/
+ansible/roles/ulimit/
+ansible/roles/viasite-ansible.zsh/
+ansible/roles/zzet.rbenv/
+
+# dotfiles cache
+.cache.sh.bak
