@@ -73,6 +73,7 @@ ln -sfv "$DOTFILES_DIR/runcom/.10-powerline-symbols.conf" ~/.config/fontconfig/c
 ln -sfv "$DOTFILES_DIR/runcom/.tm-theme" ~
 ln -sfv "$DOTFILES_DIR/runcom/.tmux.conf" ~
 ln -sfv "$DOTFILES_DIR/runcom/.tmux.conf.local" ~
+ln -sfv "$DOTFILES_DIR/runcom/.tmuxinator" ~
 
 e_header "Package managers & packages"
 

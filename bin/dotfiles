@@ -8,14 +8,15 @@ sub_help () {
   echo "Usage: $BIN_NAME <command>"
   echo
   echo "Commands:"
-  echo "   clean            Clean up caches (brew, npm, gem, rvm)"
-  echo "   dock             Apply macOS Dock settings"
-  echo "   edit             Open dotfiles in IDE ($DOTFILES_IDE) and Git GUI ($DOTFILES_GIT_GUI)"
-  echo "   help             This help message"
-  echo "   macos            Apply macOS system defaults"
-  echo "   test             Run tests"
-  echo "   update           Update packages and pkg managers (OS, brew, npm, gem)"
+  echo "   clean                  Clean up caches (brew, npm, gem, rvm)"
+  echo "   dock                   Apply macOS Dock settings"
+  echo "   edit                   Open dotfiles in IDE ($DOTFILES_IDE) and Git GUI ($DOTFILES_GIT_GUI)"
+  echo "   help                   This help message"
+  echo "   macos                  Apply macOS system defaults"
+  echo "   test                   Run tests"
+  echo "   update                 Update packages and pkg managers (OS, brew, npm, gem)"
   echo "   create_links           Update packages and pkg managers (OS, brew, npm, gem)"
+  echo "   install_tmux_upstream  Install tmux settings using the default ones provided by https://github.com/gpakosz/.tmux"
 }
 
 sub_edit () {
@@ -62,6 +63,14 @@ sub_completion () {
   echo "clean dock edit help macos test update"
 }
 
+sub_install_tmux_upstream() {
+  cd $HOME
+  rm -rfv ~/.tmux
+  git clone https://github.com/gpakosz/.tmux.git
+  ln -svf .tmux/.tmux.conf ~
+  cp -fv .tmux/.tmux.conf.local .
+}
+
 sub_create_links () {
   echo "Create symlinks for everything in ~/"
 
@@ -86,8 +95,9 @@ sub_create_links () {
   ln -sfv "$DOTFILES_DIR/runcom/.10-powerline-symbols.conf" ~/.config/fontconfig/conf.d/10-powerline-symbols.conf
 
   ln -sfv "$DOTFILES_DIR/runcom/.tm-theme" ~
-  ln -sfv "$DOTFILES_DIR/runcom/.tmux.conf" ~
+  ln -sfv "$DOTFILES_DIR/runcom/.tmux.conf" ~/.tmux/.tmux.conf
   ln -sfv "$DOTFILES_DIR/runcom/.tmux.conf.local" ~
+  ln -sfv "$DOTFILES_DIR/runcom/.tmuxinator" ~
 }
 
 case $COMMAND_NAME in
