@@ -169,6 +169,9 @@ brew cask install --appdir="/Applications" 1password
 brew install docker
 brew install boot2docker
 
+# https://facebook.github.io/PathPicker/
+brew install fpp
+
 # Install developer friendly quick look plugins; see https://github.com/sindresorhus/quick-look-plugins
 brew cask install qlcolorcode qlstephen qlmarkdown quicklook-json qlprettypatch quicklook-csv betterzipql qlimagesize webpquicklook suspicious-package
 

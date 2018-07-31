@@ -59,6 +59,7 @@ homebrew_installed_packages:
   - wrk
   - youtube-dl
   - zsh
+  - fpp
 
 homebrew_taps:
   - homebrew/core
