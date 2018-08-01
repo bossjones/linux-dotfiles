@@ -60,6 +60,9 @@ ln -sfv "$DOTFILES_DIR/git/.gitignore_global" ~
 
 # Secondary round
 
+mkdir -p ~/.ptpython
+mkdir -p ~/.config/fontconfig/conf.d
+
 ln -sfv "$DOTFILES_DIR/runcom/.irbrc" ~
 ln -sfv "$DOTFILES_DIR/runcom/.rspec" ~
 ln -sfv "$DOTFILES_DIR/runcom/.pryrc" ~
