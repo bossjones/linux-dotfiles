@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+sudo apt-get install -y atop ; \
+sudo apt-get install -y bmon ; \
+sudo apt-get install -y cmatrix ; \
+sudo apt-get install -y dnstop ; \
+sudo apt-get install -y ethstatus ; \
+sudo apt-get install -y glances ; \
+sudo apt-get install -y htop ; \
+sudo apt-get install -y ifstat ; \
+sudo apt-get install -y iotop ; \
+sudo apt-get install -y iptotal ; \
+sudo apt-get install -y iptraf-ng ; \
+sudo apt-get install -y itop ; \
+sudo apt-get install -y jnettop ; \
+sudo apt-get install -y kerneltop ; \
+sudo apt-get install -y latencytop ; \
+sudo apt-get install -y logtop ; \
+sudo apt-get install -y netmrg ; \
+sudo apt-get install -y nload ; \
+sudo apt-get install -y nmon ; \
+sudo apt-get install -y ntop ; \
+sudo apt-get install -y powertop ; \
+sudo apt-get install -y sagan ; \
+sudo apt-get install -y slurm ; \
+sudo apt-get install -y snetz ; \
+sudo apt-get install -y top ; \
+sudo apt-get install -y tiptop ; \
+sudo apt-get install -y vnstat
