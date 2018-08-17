@@ -66,3 +66,9 @@ alias killos="killfinder && killdock && killmenubar"
 alias chromekill="ps ux | grep '[C]hrome Helper --type=renderer' | grep -v extension-process | tr -s ' ' | cut -d ' ' -f2 | xargs kill"
 
 alias updatedb="sudo /usr/libexec/locate.updatedb"
+
+
+alias dc=docker-compose
+alias dm=docker-machine
+alias fl=flotilla
+alias devenv="eval \"\$(docker-machine env dev)\""
