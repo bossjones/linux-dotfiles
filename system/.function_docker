@@ -5,3 +5,19 @@ netdata() {
            -v /sys:/host/sys:ro \
            -p 19999:19999 titpetric/netdata
 }
+
+
+docker-clean() { docker rm $(docker ps -a -q); docker rmi $(docker images | grep "^<none>" | awk '{print $3}'); }
+de() {
+  docker exec -it $1 /bin/bash
+}
+
+function dm {
+  if [[ "$1" = "up" ]]; then
+    docker-machine start dev
+  elif [[ "$1" = "down" ]]; then
+    docker-machine stop dev
+  else
+    docker-machine $*
+  fi
+}
