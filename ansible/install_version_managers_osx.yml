@@ -192,6 +192,7 @@
     PYENV_ROOT: "$HOME/.pyenv"
     WORKON_HOME: "~/.virtualenvs"
     PROJECT_HOME: "~/dev"
+    PYTHON_CONFIGURE_OPTS: "--enable-shared"
   vars:
       pyenv_path: "~{{ bossjones__user }}/.pyenv"
       pyenv_owner: "{{ bossjones__user }}"

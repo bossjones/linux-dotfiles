@@ -17,6 +17,7 @@ sub_help () {
   echo "   update                 Update packages and pkg managers (OS, brew, npm, gem)"
   echo "   create_links           Update packages and pkg managers (OS, brew, npm, gem)"
   echo "   install_tmux_upstream  Install tmux settings using the default ones provided by https://github.com/gpakosz/.tmux"
+  echo "   iterm_color_schemes  Install https://github.com/mbadolato/iTerm2-Color-Schemes"
 }
 
 sub_edit () {
@@ -69,6 +70,10 @@ sub_install_tmux_upstream() {
   git clone https://github.com/gpakosz/.tmux.git
   ln -svf .tmux/.tmux.conf ~
   cp -fv .tmux/.tmux.conf.local .
+}
+
+sub_iterm_color_schemes() {
+  source "$DOTFILES_DIR/install/iterm2-colorschemes-install.sh"
 }
 
 sub_create_links () {
