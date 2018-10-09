@@ -1,0 +1,76 @@
+# Switch long/short prompt
+
+function list-work-functions() {
+  echo "Func: setup-docker()"
+  echo "Func: setup-ansible()"
+  echo "Func: setup-jungle()"
+  echo "Func: ansible-proxy()"
+}
+
+function setup-docker() {
+    docker-machine start dev
+    eval "$(docker-machine env dev)"
+    docker ps
+}
+
+
+function setup-ansible() {
+    _TIER=$1
+
+    # source: https://github.com/moby/moby/issues/21925#issuecomment-292807738
+    if [[ -z ${_TIER+x} ]]; then
+        echo "Usage: setup-ansible <TIER>"
+        echo "eg: setup-ansible stage"
+        exit 1
+    fi
+
+    cd ~/dev/behanceops/ansible/ && \
+    ssh-add ~/.ssh/cloudops-beh-app-${_TIER}.pem && \
+    pyenv activate ansible2 && \
+    source ~/.aws/${_TIER}.sh
+}
+
+
+function setup-jungle() {
+    _TIER=$1
+
+    # source: https://github.com/moby/moby/issues/21925#issuecomment-292807738
+    if [[ -z ${_TIER+x} ]]; then
+        echo "Usage: setup-ansible <TIER>"
+        echo "eg: setup-ansible stage"
+        exit 1
+    fi
+
+    cd ~/ && \
+    pyenv activate tools3 && \
+    source ~/.aws/${_TIER}.sh
+}
+
+
+function ansible-proxy() {
+    _PRODUCT=$1
+    _TIER=$2
+
+
+    # source: https://github.com/moby/moby/issues/21925#issuecomment-292807738
+    if [[ -z ${_PRODUCT+x} ]] || [[ -z ${_TIER+x} ]]; then
+        echo "Usage: ansible-proxy <PRODUCT> <TIER>"
+        echo "eg: ansible-proxy behancepersistent prod"
+        echo "Example URLS"
+        echo "pro2persistent-ue1-jump.prod-be-aws.net"
+        echo "behancepersistent-ue1-jump.prod-be-aws.net"
+        echo "behancepersistent-ue1-jump.stage-be-aws.net"
+        echo "pro2persistent-ue1-jump.stage-be-aws.net"
+        exit 1
+    fi
+
+    pkill -9 -f "ssh.*D1236.*${_PRODUCT}"
+    # ssh-add -D
+    # ssh-add ~/.ssh/cloudops-beh-app-${_TIER}.pem
+    ssh -vvv \
+    -o 'PasswordAuthentication no' -o 'UserKnownHostsFile /dev/null' -o 'StrictHostKeyChecking no' \
+    -F /dev/null -f -N -D1236 malcolm@${_PRODUCT}-ue1-jump.${_TIER}-be-aws.net &>/var/tmp/ethos_proxy.log
+    sleep 3
+    \cat /var/tmp/ethos_proxy.log
+    pgrep -f "ssh.*D1236.*${_PRODUCT}"
+}
