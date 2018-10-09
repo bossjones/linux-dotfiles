@@ -41,6 +41,7 @@
   pr = "!git push origin HEAD && hub pull-request -b"
   new = "!sh -c 'git pull --rebase  && git checkout -b feature-$1 origin/master' -"
   hotfix = "!sh -c 'git pull --rebase  && git checkout -b hotfix-$1 origin/production' -"
+  pu = push -u
 
 [color]
   ui = auto
