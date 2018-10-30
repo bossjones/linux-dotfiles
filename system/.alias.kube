@@ -1,0 +1,17 @@
+#kubectl aliases
+alias pods='kubectl get pods -o wide'
+alias pods-with-images="kubectl get pods -o custom-columns-file=$HOME/.kube/pods-custom-columns.txt"
+alias k='kubectl'
+alias nodes='kubectl get nodes -L species -L failure-domain.beta.kubernetes.io/zone'
+alias nodes-with-ips="kubectl get nodes -o custom-columns-file=$HOME/.kube/nodes-custom-columns.txt"
+alias pod='kubectl get pod -o yaml'
+
+
+function show_kube_aliases() {
+    echo "pods='kubectl get pods -o wide'"
+    echo "pods-with-images='kubectl get pods -o custom-columns-file=~/.kube/pods-custom-columns.txt'"
+    echo "k='kubectl'"
+    echo "nodes='kubectl get nodes -L species -L failure-domain.beta.kubernetes.io/zone'"
+    echo "nodes-with-ips='kubectl get nodes -o custom-columns-file=~/.kube/nodes-custom-columns.txt'"
+    echo "pod='kubectl get pod -o yaml'"
+}
