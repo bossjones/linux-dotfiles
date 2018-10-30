@@ -1,0 +1,13 @@
+# See whether you have an environment variable named KUBECONFIG. If so, save the current value of your KUBECONFIG environment variable, so you can restore it later.
+export _KUBE_CONFIG_LOCATION=~/.kube.configs
+
+# check if env var has length != to 0
+if [[ ! -z "${KUBECONFIG}" ]]; then
+  export  KUBECONFIG_SAVED=$KUBECONFIG
+fi
+
+# prepend the config locations
+[ -s "${_KUBE_CONFIG_LOCATION}" ] && for i in $(ls ${_KUBE_CONFIG_LOCATION}/ | xargs); do field_prepend KUBECONFIG ${_KUBE_CONFIG_LOCATION}/$i; done
+
+# Finally export this value
+export KUBECONFIG
