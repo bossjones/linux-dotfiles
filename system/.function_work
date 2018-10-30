@@ -69,8 +69,25 @@ function ansible-proxy() {
     # ssh-add ~/.ssh/cloudops-beh-app-${_TIER}.pem
     ssh -vvv \
     -o 'PasswordAuthentication no' -o 'UserKnownHostsFile /dev/null' -o 'StrictHostKeyChecking no' \
-    -F /dev/null -f -N -D1236 malcolm@${_PRODUCT}-ue1-jump.${_TIER}-be-aws.net &>/var/tmp/ethos_proxy.log
+    -F /dev/null -f -N -D1236 core@${_PRODUCT}-ue1-jump.${_TIER}-be-aws.net &>/var/tmp/ethos_proxy.log
     sleep 3
     \cat /var/tmp/ethos_proxy.log
     pgrep -f "ssh.*D1236.*${_PRODUCT}"
 }
+
+
+function ansible-bootstrap() {
+  _PRODUCT=$1
+  _TIER=$2
+
+  ansible-proxy ${_PRODUCT} ${_TIER}
+
+  cd ~/dev/behanceops/ansible/ && \
+  pyenv activate ansible2 && \
+  make bootstrap-coreos product=${_PRODUCT} && \
+  make toolbox product=${_PRODUCT} && \
+  make bashfunctions-only product=${_PRODUCT} && \
+  make install-ctop product=${_PRODUCT}
+}
+
+alias ssh-nc="ssh -o 'ProxyCommand=/usr/bin/nc -x localhost:1236 %h %p'"
