@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+if [ "$1" == "-h" ] || [ "$1" == "--help" ] || [ "$1" == "" ]; then
+    echo "Usage: $(basename $0) n command"
+    echo "Execute command n times or until it succeeds (exit code 0)."
+    exit $([ $1 ] || echo 1)
+fi
+
+control_c() {
+    echo "$(tput setaf 1)Killing process per user request.$(tput sgr0)"
+    [ $EXIT_CODE ] && kill $EXIT_CODE
+    exit
+}
+
+trap control_c SIGINT
+
+RETRY_MAX=$1
+shift
+for i in $(seq 1 $RETRY_MAX); do
+    [ "$i" != "1" ] && echo "$(tput setaf 3)Retrying (attempt #$i):" "$@" "$(tput sgr0)"
+    sleep 10
+    echo "sleep 10"
+    "$@"
+    EXIT_CODE=$?
+    [ "$EXIT_CODE" == "0" ] && break
+    echo "$(tput setaf 1)Command failed with code $EXIT_CODE.$(tput sgr0)"
+done
