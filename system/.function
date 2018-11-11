@@ -50,11 +50,11 @@ meteo() {
   curl -s "$LOCALE.wttr.in/$LOCATION"
 }
 
-# Markdown
+# # Markdown
 
-md() {
-  pandoc $1 | lynx -stdin -dump
-}
+# md() {
+#   pandoc $1 | lynx -stdin -dump
+# }
 
 # SOURCE: https://github.com/eliangcs/dotfiles/blob/master/.oh-my-zsh/custom/general.zsh
 # World clock
