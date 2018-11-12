@@ -172,3 +172,8 @@ function start_minikube() {
     minikube docker-env
     eval $(minikube docker-env)
 }
+
+function kcenv() {
+    minikube docker-env
+    eval $(minikube docker-env)
+}

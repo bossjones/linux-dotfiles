@@ -71,6 +71,15 @@ if [ -d "$DOTFILES_EXTRA_DIR" ]; then
   done
 fi
 
+# osx
+
+if [ -d "/usr/local/etc/bash_completion.d/" ]; then
+
+  for i in $(ls /usr/local/etc/bash_completion.d/ | xargs -n 1 basename); do
+    source /usr/local/etc/bash_completion.d/$i
+  done
+fi
+
 # Clean up
 
 unset READLINK CURRENT_SCRIPT SCRIPT_PATH DOTFILE EXTRAFILE
