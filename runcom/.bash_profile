@@ -46,7 +46,7 @@ DOTFILES_CACHE="$DOTFILES_DIR/.cache.sh"
 # rdebugrc
 # SOURCE: https://github.com/skwp/dotfiles/tree/master/ruby
 
-for DOTFILE in "$DOTFILES_DIR"/system/.{function,function_*,path,env,alias,alias.kube,completion,grep,prompt_bash_it,nvm,rbenv,rdebugrc,pyenv,cheatrc,powerline,custom,cargo,ccache,jenv,brew_env,golang,locales,terminal,fzf}; do
+for DOTFILE in "$DOTFILES_DIR"/system/.{function,function_*,path,env,alias,alias.kube,completion,grep,prompt_bash_it,nvm,rbenv,rdebugrc,pyenv,cheatrc,powerline,custom,cargo,ccache,jenv,brew_env,golang,locales,terminal,fzf,vmware_env}; do
   [ -f "$DOTFILE" ] && . "$DOTFILE"
 done
 
@@ -68,6 +68,15 @@ DOTFILES_EXTRA_DIR="$HOME/.extra"
 if [ -d "$DOTFILES_EXTRA_DIR" ]; then
   for EXTRAFILE in "$DOTFILES_EXTRA_DIR"/runcom/*.sh; do
     [ -f "$EXTRAFILE" ] && . "$EXTRAFILE"
+  done
+fi
+
+# osx
+
+if [ -d "/usr/local/etc/bash_completion.d/" ]; then
+
+  for i in $(ls /usr/local/etc/bash_completion.d/ | xargs -n 1 basename); do
+    source /usr/local/etc/bash_completion.d/$i
   done
 fi
 
