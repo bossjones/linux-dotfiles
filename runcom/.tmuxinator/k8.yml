@@ -1,0 +1,53 @@
+# ~/.tmuxinator/k8.yml
+
+# source: https://github.com/tmuxinator/tmuxinator/blob/master/spec/fixtures/sample.yml
+
+name: k8
+root: ~/dev/bossjones/boss-kubernetes-lab/
+
+# Runs on project start, always
+on_project_start: code .
+
+# Run on project start, the first time
+on_project_first_start: exec bash -l; eval "$(rbenv init -)"; rbenv shell 2.4.3 && nvm use stable; start_minikube; read -p "text" -t 40; read -p "Waiting 40 secs for Minikube to initalize...." -t 40; echo "Minikube initalized ...."
+
+# Run on project start, after the first time
+# on_project_restart: command
+
+# Run on project exit ( detaching from tmux session )
+# on_project_exit: command
+
+# Run on project stop
+on_project_stop: minikube stop
+
+# Runs in each window and pane before window/pane specific commands. Useful for setting up interpreter versions.
+pre_window: exec bash -l; eval "$(rbenv init -)"; rbenv shell 2.4.3 && nvm use stable; eval $(minikube docker-env);
+
+windows:
+  - neofetch:
+      layout: 9fa4,223x75,0,0{118x75,0,0[118x52,0,0{59x52,0,0,8,58x52,60,0,13},118x22,0,53,12],104x75,119,0[104x16,119,0,1,104x15,119,17,9,104x22,119,33,2,104x19,119,56,3]}
+      panes:
+        - neofetch:
+          - neofetch
+  - dashboard:
+      layout: 9fa4,223x75,0,0{118x75,0,0[118x52,0,0{59x52,0,0,8,58x52,60,0,13},118x22,0,53,12],104x75,119,0[104x16,119,0,1,104x15,119,17,9,104x22,119,33,2,104x19,119,56,3]}
+      panes:
+        - dashboard:
+          - minikube dashboard
+        - kubebox:
+          - kubebox
+  - logs:
+      layout: 9fa4,223x75,0,0{118x75,0,0[118x52,0,0{59x52,0,0,8,58x52,60,0,13},118x22,0,53,12],104x75,119,0[104x16,119,0,1,104x15,119,17,9,104x22,119,33,2,104x19,119,56,3]}
+      panes:
+        - logs:
+          - docker-loghose | ccze -A
+  - ctop:
+      layout: 9fa4,223x75,0,0{118x75,0,0[118x52,0,0{59x52,0,0,8,58x52,60,0,13},118x22,0,53,12],104x75,119,0[104x16,119,0,1,104x15,119,17,9,104x22,119,33,2,104x19,119,56,3]}
+      panes:
+        - ctop:
+          - ctop
+  - bash:
+      layout: 9fa4,223x75,0,0{118x75,0,0[118x52,0,0{59x52,0,0,8,58x52,60,0,13},118x22,0,53,12],104x75,119,0[104x16,119,0,1,104x15,119,17,9,104x22,119,33,2,104x19,119,56,3]}
+      panes:
+        - bash:
+          - #empty, will just run plain bash
