@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+
+tmux set -g status-right-length 150
+tmux set -ga status-right " | #(/bin/bash ~/.tmux/kube.tmux 250 red cyan)"

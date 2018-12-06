@@ -17,6 +17,8 @@ sub_help () {
   echo "   update                 Update packages and pkg managers (OS, brew, npm, gem)"
   echo "   create_links           Update packages and pkg managers (OS, brew, npm, gem)"
   echo "   install_tmux_upstream  Install tmux settings using the default ones provided by https://github.com/gpakosz/.tmux"
+  echo "   install_nested_tmux  Install best tmux settings using  https://github.com/samoshkin/tmux-config/"
+  echo "   install_bash_it_themes  Install custom bash_it themes"
   echo "   iterm_color_schemes  Install https://github.com/mbadolato/iTerm2-Color-Schemes"
 }
 
@@ -70,6 +72,25 @@ sub_install_tmux_upstream() {
   git clone https://github.com/gpakosz/.tmux.git
   ln -svf .tmux/.tmux.conf ~
   cp -fv .tmux/.tmux.conf.local .
+}
+
+# SOURCE: https://github.com/samoshkin/tmux-config/
+# SOURCE: https://medium.freecodecamp.org/tmux-in-practice-local-and-nested-remote-tmux-sessions-4f7ba5db8795
+sub_install_nested_tmux() {
+  cd $HOME
+  git clone https://github.com/samoshkin/tmux-config.git || (cd ~/tmux-config ; git pull)
+  cd $HOME
+  ./tmux-config/install.sh
+}
+
+sub_install_bash_it_themes() {
+  [ -d ~/.bash_it/themes/kube/ ] || mkdir -p ~/.bash_it/themes/kube/
+  ln -sfv "$DOTFILES_DIR/runcom/.bash_it/themes/kube/kube.theme.bash" ~/.bash_it/themes/kube/kube.theme.bash
+}
+
+sub_brew_bundle() {
+  cd $HOME
+  brew bundle dump --force --describe
 }
 
 sub_iterm_color_schemes() {
