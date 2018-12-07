@@ -1,0 +1,5 @@
+[ -f ~/.enhancd/init.sh ] && source ~/.enhancd/init.sh
+
+ENHANCD_FILTER=fzy:fzf:peco
+export ENHANCD_FILTER
+
