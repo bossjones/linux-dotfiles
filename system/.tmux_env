@@ -1,0 +1,5 @@
+# Only run this if you're in a tmux session, do it on login
+
+if [[ $TMUX ]]; then
+    bash -l
+fi
