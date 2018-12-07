@@ -3,7 +3,9 @@ export BASH_IT=$HOME/.bash_it
 
 # Lock and Load a custom theme file
 # location /.bash_it/themes/
-export BASH_IT_THEME='powerline-plain'
+# export BASH_IT_THEME='kube'
+# export BASH_IT_THEME='powerline-plain'
+export BASH_IT_THEME="${BASH_IT_THEME_OVERRIDE:-powerline-plain}"
 
 # Your place for hosting Git repos. I use this for private repos.
 export GIT_HOSTING='git@github.com'
@@ -25,3 +27,5 @@ complete -cf sudo
 if [ -e $BASH_IT/bash_it.sh ]; then
   source $BASH_IT/bash_it.sh
 fi
+
+# echo BLAH

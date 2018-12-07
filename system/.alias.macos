@@ -72,3 +72,4 @@ alias dc=docker-compose
 alias dm=docker-machine
 alias fl=flotilla
 alias devenv="eval \"\$(docker-machine env dev)\""
+alias enable_direnv="eval \"\$(direnv hook bash)\""

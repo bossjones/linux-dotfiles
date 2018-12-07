@@ -177,3 +177,7 @@ function kcenv() {
     minikube docker-env
     eval $(minikube docker-env)
 }
+
+
+alias kube-dump="kubectl cluster-info dump --all-namespaces --output-directory=./dump"
+alias kubedump="kubectl cluster-info dump --all-namespaces --output-directory=./dump"

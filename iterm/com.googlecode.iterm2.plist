@@ -26,6 +26,10 @@
 	<true/>
 	<key>Control</key>
 	<integer>1</integer>
+	<key>Coprocess MRU</key>
+	<array>
+		<string>reset</string>
+	</array>
 	<key>CopyLastNewline</key>
 	<false/>
 	<key>CopySelection</key>
@@ -382,18 +386,23 @@
 	</data>
 	<key>NSTableView Supports v2 KeyBingingTable</key>
 	<true/>
+	<key>NSToolbar Configuration com.apple.NSColorPanel</key>
+	<dict>
+		<key>TB Is Shown</key>
+		<integer>1</integer>
+	</dict>
 	<key>NSWindow Frame SUUpdateAlert</key>
 	<string>530 487 620 392 0 0 1680 1027 </string>
 	<key>NSWindow Frame SessionsPreferences</key>
 	<string>269 126 606 469 0 0 1680 1027 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>269 119 796 486 0 0 1680 1027 </string>
+	<string>269 93 918 512 0 0 1680 1027 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>0 43 1680 984 0 0 1680 1027 </string>
+	<string>0 43 2560 1374 0 0 2560 1417 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>0 650 570 377 0 0 1680 1027 </string>
+	<string>-1200 -480 1200 1897 -1200 -480 1200 1897 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
-	<string>233 78 570 377 0 0 1680 1027 </string>
+	<string>418 125 570 377 0 0 2560 1417 </string>
 	<key>New Bookmarks</key>
 	<array>
 		<dict>
@@ -5567,6 +5576,8 @@
 			<string>/Users/malcolm</string>
 		</dict>
 	</array>
+	<key>NoSyncCoprocessCommandsToIgnoreErrorOutput</key>
+	<array/>
 	<key>NoSyncHaveWarnedAboutPasteConfirmationChange</key>
 	<true/>
 	<key>NoSyncInstallationId</key>
@@ -5645,7 +5656,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2018-11-07T18:19:41Z</date>
+	<date>2018-11-12T17:51:10Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>SavePasteHistory</key>
@@ -13401,6 +13412,6 @@
 	<key>findRegex_iTerm</key>
 	<false/>
 	<key>iTerm Version</key>
-	<string>3.2.6beta2</string>
+	<string>3.2.6beta3</string>
 </dict>
 </plist>
