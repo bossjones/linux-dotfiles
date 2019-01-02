@@ -396,11 +396,13 @@
 	<key>NSWindow Frame SessionsPreferences</key>
 	<string>269 126 606 469 0 0 1680 1027 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>269 93 918 512 0 0 1680 1027 </string>
+	<string>247 222 937 514 0 0 2560 1417 </string>
+	<key>NSWindow Frame UKCrashReporter</key>
+	<string>230 833 592 584 0 0 2560 1417 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>0 43 2560 1374 0 0 2560 1417 </string>
+	<string>0 45 1277 1372 0 0 2560 1417 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>-1200 -480 1200 1897 -1200 -480 1200 1897 </string>
+	<string>240 650 570 377 0 0 1680 1027 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
 	<string>418 125 570 377 0 0 2560 1417 </string>
 	<key>New Bookmarks</key>
@@ -5452,7 +5454,7 @@
 			<key>Shortcut</key>
 			<string></string>
 			<key>Silence Bell</key>
-			<false/>
+			<true/>
 			<key>Smart Cursor Color</key>
 			<true/>
 			<key>Smart Selection Rules</key>
@@ -5656,7 +5658,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2018-11-12T17:51:10Z</date>
+	<date>2018-12-07T00:36:44Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>SavePasteHistory</key>
@@ -13412,6 +13414,6 @@
 	<key>findRegex_iTerm</key>
 	<false/>
 	<key>iTerm Version</key>
-	<string>3.2.6beta3</string>
+	<string>3.2.6beta4</string>
 </dict>
 </plist>
