@@ -19,6 +19,7 @@ sub_help () {
   echo "   install_tmux_upstream  Install tmux settings using the default ones provided by https://github.com/gpakosz/.tmux"
   echo "   install_nested_tmux  Install best tmux settings using  https://github.com/samoshkin/tmux-config/"
   echo "   install_bash_it_themes  Install custom bash_it themes"
+  echo "   install_direnvrc  Install direnvrc"
   echo "   iterm_color_schemes  Install https://github.com/mbadolato/iTerm2-Color-Schemes"
 }
 
@@ -86,6 +87,10 @@ sub_install_nested_tmux() {
 sub_install_bash_it_themes() {
   [ -d ~/.bash_it/themes/kube/ ] || mkdir -p ~/.bash_it/themes/kube/
   ln -sfv "$DOTFILES_DIR/runcom/.bash_it/themes/kube/kube.theme.bash" ~/.bash_it/themes/kube/kube.theme.bash
+}
+
+sub_install_direnvrc() {
+  ln -sfv "$DOTFILES_DIR/runcom/.direnvrc" ~
 }
 
 sub_brew_bundle() {
