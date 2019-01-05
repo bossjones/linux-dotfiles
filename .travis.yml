@@ -48,3 +48,12 @@ script:
   - cat ~/.dotfiles/ansible/provision.sh
   - source ~/.dotfiles/install.sh
   - "/bin/bash -l -c 'pyenv versions'"
+
+cache:
+  directories:
+    # - $HOME/.yarn-cache
+    # - ".eslintcache"
+    # - node_modules
+    - $HOME/.nvm
+    - $HOME/.rbenv
+    - $HOME/.pyenv

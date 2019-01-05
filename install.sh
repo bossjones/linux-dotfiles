@@ -1,5 +1,17 @@
 #!/usr/bin/env bash
 
+# https://stackoverflow.com/questions/5014823/how-to-profile-a-bash-shell-script-slow-startup
+profile_it_start () {
+  PS4='+ $(date "+%s.%N")\011 '
+  exec 3>&2 2>/tmp/bashstart.$$.log
+  set -x
+}
+
+profile_it_stop () {
+  set +x
+  exec 2>&3 3>&-
+}
+
 # OVERRIDES: Use relative directory if travis
 if [[ "${_TRAVIS_CI}x" == "x" ]]; then
   # NOTE: 6/3/2018 newly added

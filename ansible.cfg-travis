@@ -33,3 +33,13 @@ poll_interval = 5
 strategy_plugins = /Library/Python/2.7/site-packages/ansible_mitogen/plugins/strategy
 # strategy = mitogen_linear
 
+
+[ssh_connection]
+# NOTE: Occasionally users may be managing a remote system that doesn’t have SFTP enabled. If set to True, we can cause scp to be used to transfer remote files instead here's really no reason to change this unless problems are encountered, and then there’s also no real drawback to managing the switch. Most environments support SFTP by default and this doesn’t usually need to be changed.
+# scp_if_ssh = False
+
+# ssh_args = -o ForwardAgent=yes
+# host_key_checking = False
+# ssh_args = -C -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ForwardAgent=yes -o PasswordAuthentication=no -o ControlPath=~/.ansible/cp/ansible-ssh-%h-%p-%r -F ./ssh_config
+# ssh_args = -C -o PreferredAuthentications=publickey -o ControlMaster=auto -o ControlPersist=30m -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ForwardAgent=yes -o PasswordAuthentication=no -o ControlPath=~/.ansible/cp/ansible-ssh-%h-%p-%r -F ./ssh_config
+pipelining = True
