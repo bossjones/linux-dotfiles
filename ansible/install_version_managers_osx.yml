@@ -65,6 +65,7 @@
     - name: Ensure homebrew deps are installed
       homebrew: "name={{ item }} state=present"
       with_items:
+        - libffi
         - openssl
         - libyaml
         - python2
@@ -72,6 +73,7 @@
         - nodejs
         - rbenv
         - ruby-build
+        - readline
         - tree
         - coreutils
         - bats
