@@ -20,9 +20,13 @@ install:
 
   # Install Ansible.
   - sudo pip install ansible
+  - sudo pip install mitogen
+  - sudo python -c 'import sys; print "\n".join(sys.path)' | grep site-packages
 
   # Add ansible.cfg to pick up roles path.
   - "{ echo '[defaults]'; echo 'roles_path = ../'; } >> ansible.cfg"
+  - mv ansible.cfg-travis ansible.cfg
+  - cat ansible.cfg
 
   # Add a hosts file.
   - sudo mkdir -p /etc/ansible
