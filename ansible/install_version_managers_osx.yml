@@ -27,11 +27,12 @@
   #   - name: authenticate sudo
   #     ping:
   #     become: yes
-    pre_tasks:
-    - include_vars: "{{ item }}"
-      with_fileglob:
-        - ../config.yml
-      tags: ['always']
+  # FIXME: Probably need to create a config.yml first. Enable this later
+  # pre_tasks:
+  # - include_vars: "{{ item }}"
+  #   with_fileglob:
+  #     - ../config.yml
+  #   tags: ['always']
 
   roles:
     - role: elliotweiser.osx-command-line-tools
