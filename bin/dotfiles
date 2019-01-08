@@ -21,6 +21,7 @@ sub_help () {
   echo "   install_bash_it_themes  Install custom bash_it themes"
   echo "   install_direnvrc  Install direnvrc"
   echo "   iterm_color_schemes  Install https://github.com/mbadolato/iTerm2-Color-Schemes"
+  echo "   enable_local_bash_completion  Run source ~/.dotfiles/.bash_completion.d/*"
 }
 
 sub_edit () {
@@ -129,6 +130,15 @@ sub_create_links () {
   ln -sfv "$DOTFILES_DIR/runcom/.tmux.conf" ~/.tmux/.tmux.conf
   ln -sfv "$DOTFILES_DIR/runcom/.tmux.conf.local" ~
   ln -sfv "$DOTFILES_DIR/runcom/.tmuxinator" ~
+}
+
+sub_enable_local_bash_completion () {
+  if [ -d "~/.dotfiles/.bash_completion.d/" ]; then
+
+    for i in $(ls ~/.dotfiles/.bash_completion.d/ | xargs -n 1 basename); do
+      source ~/.dotfiles/.bash_completion.d/$i
+    done
+  fi
 }
 
 case $COMMAND_NAME in
