@@ -27,11 +27,12 @@
   #   - name: authenticate sudo
   #     ping:
   #     become: yes
-    pre_tasks:
-    - include_vars: "{{ item }}"
-      with_fileglob:
-        - ../config.yml
-      tags: ['always']
+  # FIXME: Probably need to create a config.yml first. Enable this later
+  # pre_tasks:
+  # - include_vars: "{{ item }}"
+  #   with_fileglob:
+  #     - ../config.yml
+  #   tags: ['always']
 
   roles:
     - role: elliotweiser.osx-command-line-tools
@@ -65,6 +66,7 @@
     - name: Ensure homebrew deps are installed
       homebrew: "name={{ item }} state=present"
       with_items:
+        - libffi
         - openssl
         - libyaml
         - python2
@@ -72,6 +74,7 @@
         - nodejs
         - rbenv
         - ruby-build
+        - readline
         - tree
         - coreutils
         - bats
@@ -391,6 +394,8 @@
         - pylint
         - isort
         - autopep8
+      # async: 60
+      # poll: 10
 
     - name: install virtualenvwrapper module in venv 2.7.14
       pip:
@@ -403,6 +408,8 @@
         - pylint
         - isort
         - autopep8
+      # async: 60
+      # poll: 10
 
     # -------------------------------------------
     # venv: jupyter3
@@ -417,11 +424,15 @@
         - jupyter
         - pip
         - setuptools
+      # async: 60
+      # poll: 10
 
     - name: install jupyter3 ipykernel
       shell: "{{pyenv_root}}/versions/jupyter3/bin/python -m ipykernel install --user"
       become: yes
       become_user: "{{ bossjones__user }}"
+      # async: 60
+      # poll: 10
 
     # -------------------------------------------
       # venv: ipython2
@@ -435,11 +446,15 @@
         - ipykernel
         - pip
         - setuptools
+      # async: 60
+      # poll: 10
 
     - name: install ipython2 ipykernel
       shell: "{{pyenv_root}}/versions/ipython2/bin/python -m ipykernel install --user"
       become: yes
       become_user: "{{ bossjones__user }}"
+      # async: 60
+      # poll: 10
 
     # -------------------------------------------
     # venv: tools3
@@ -472,6 +487,8 @@
         # Needed for cless ( man pages )
         # SOURCE: https://github.com/KevinOfNeu/colored-less-more-cat
         - Pygments
+      # async: 60
+      # poll: 10
 
     # -------------------------------------------
     # venv: tools2
@@ -500,6 +517,8 @@
         # Needed for cless ( man pages )
         # SOURCE: https://github.com/KevinOfNeu/colored-less-more-cat
         - Pygments
+      # async: 60
+      # poll: 10
 
     - name: install common modules in venv 3.6.5
       pip:
@@ -512,6 +531,8 @@
         - libtmux
         - tmuxp
         - pip
+      # async: 60
+      # poll: 10
 
       # Finally, it’s time to make all Python versions and special virtualenvs work with each other.
       # The above command establishes the PATH priority so scripts can be accessed in the right order without activating any virtualenv.

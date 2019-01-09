@@ -1,0 +1,40 @@
+# SOURCE: https://www.topbug.net/blog/2016/09/27/make-gnu-less-more-powerful/
+# SOURCE: https://www.topbug.net/blog/2013/04/14/install-and-use-gnu-command-line-tools-in-mac-os-x/
+# Set colors for less. Borrowed from https://wiki.archlinux.org/index.php/Color_output_in_console#less .
+export LESS='--quit-if-one-screen --ignore-case --status-column --LONG-PROMPT --RAW-CONTROL-CHARS --HILITE-UNREAD --tabs=4 --no-init --window=-4'
+# --quit-if-one-screen or -F: Exit if the entire file can be displayed in one screen. This is usually desirable as there is no incentive to stay in less if a single screen can display all the contents.
+# --ignore-case or -i: Cause search in less to ignore case unless an uppercase letter is present in the search pattern.
+# --status-column or -J: Display a status column on the left to indicate lines that match current search or indicate the first unread line after moving a full page.
+# --LONG-PROMPT or -M: Prompt more verbosely.
+# --RAW-CONTROL-CHARS or -R: Cause ANSI “color” escape sequences to be displayed in their raw form. This is for the color display explained later in the next section.
+# --HILITE-UNREAD or -W: Highlight the first unread line after scrolling the screen for more than one lines.
+# --tabs=4 or -x4: Display a tab as 4-character width, since most modern text files assume 4-character width for a tab. However, you can still change this to your preference if, for example, you frequently read Linux kernel source code which uses 8-character width for a tab.
+# --no-init or -X: Disable sending the termcap initialization and deinitialization strings to the terminal. The purpose here is to prevent clearing screen after exiting. If you do not want this feature and want to remove it, please keep in mind that --quit-if-one-screen also relies on this option to work properly. For a workaround, please check out here.
+# --window=-4 or -z-4: Change the default scrolling size to 4 lines fewer than the current screen size, so always keep 4 lines overlapping with previous screen when scrolling with the space key.
+# LESS_TERMCAP_mb=$(printf "\e[1;31m")
+
+# begin bold
+# export LESS_TERMCAP_mb=$(printf "\E[1;31m")
+# # begin blink
+# export LESS_TERMCAP_md=$(printf "\E[1;36m")
+# # reset bold/blink
+# export LESS_TERMCAP_me=$(printf "\E[0m")
+# # begin reverse video
+# export LESS_TERMCAP_so=$(printf "\E[01;44;33m")
+# # reset reverse video
+# export LESS_TERMCAP_se=$(printf "\E[0m")
+# # begin underline
+# export LESS_TERMCAP_us=$(printf "\E[1;32m")
+# # reset underline
+# export LESS_TERMCAP_ue=$(printf "\E[0m")
+# highlighting inside manpages and elsewhere
+
+export LESS_TERMCAP_mb=$'\E[01;31m'       # begin blinking
+export LESS_TERMCAP_md=$'\E[01;38;5;74m'  # begin bold
+export LESS_TERMCAP_me=$'\E[0m'           # end mode
+export LESS_TERMCAP_se=$'\E[0m'           # end standout-mode
+export LESS_TERMCAP_so=$'\E[38;5;246m'    # begin standout-mode - info box
+export LESS_TERMCAP_ue=$'\E[0m'           # end underline
+export LESS_TERMCAP_us=$'\E[04;38;5;146m' # begin underline
+
+# If we use cless then: https://github.com/tanakh/cless

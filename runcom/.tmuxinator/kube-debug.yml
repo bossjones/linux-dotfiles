@@ -1,0 +1,62 @@
+# ~/.tmuxinator/kube-debug.yml
+
+# source: https://github.com/tmuxinator/tmuxinator/blob/master/spec/fixtures/sample.yml
+
+name: kube-debug
+root: ~/dev/bossjones/kubernetes-cluster
+
+on_project_start: cd ~/dev/bossjones/kubernetes-cluster; vagrant up
+
+# Runs in each window and pane before window/pane specific commands. Useful for setting up interpreter versions.
+pre_window: eval "$(rbenv init -)"; rbenv shell 2.4.3 && nvm use stable
+
+windows:
+  - neofetch:
+      layout: 9fa4,223x75,0,0{118x75,0,0[118x52,0,0{59x52,0,0,8,58x52,60,0,13},118x22,0,53,12],104x75,119,0[104x16,119,0,1,104x15,119,17,9,104x22,119,33,2,104x19,119,56,3]}
+      panes:
+        - neofetch:
+          - neofetch
+
+  - kube-proxy:
+      layout: 9fa4,223x75,0,0{118x75,0,0[118x52,0,0{59x52,0,0,8,58x52,60,0,13},118x22,0,53,12],104x75,119,0[104x16,119,0,1,104x15,119,17,9,104x22,119,33,2,104x19,119,56,3]}
+      panes:
+        - kube-proxy:
+          -
+          - kubectl proxy
+          -
+  - logs:
+      layout: 9fa4,223x75,0,0{118x75,0,0[118x52,0,0{59x52,0,0,8,58x52,60,0,13},118x22,0,53,12],104x75,119,0[104x16,119,0,1,104x15,119,17,9,104x22,119,33,2,104x19,119,56,3]}
+      panes:
+        - debug1:
+          -
+        - kail:
+          - kail
+        - kubebox:
+          -
+          - kubebox
+          -
+  - ansible:
+      layout: 9fa4,223x75,0,0{118x75,0,0[118x52,0,0{59x52,0,0,8,58x52,60,0,13},118x22,0,53,12],104x75,119,0[104x16,119,0,1,104x15,119,17,9,104x22,119,33,2,104x19,119,56,3]}
+      panes:
+        - ansible:
+           - df -H
+  # SOURCE: http://www.admin-magazine.com/HPC/Articles/Useful-NFS-Options-for-Tuning-and-Management
+  - kubebox:
+      layout: 9fa4,223x75,0,0{118x75,0,0[118x52,0,0{59x52,0,0,8,58x52,60,0,13},118x22,0,53,12],104x75,119,0[104x16,119,0,1,104x15,119,17,9,104x22,119,33,2,104x19,119,56,3]}
+      panes:
+        - kubebox:
+          -
+          - kubebox
+          -
+  - vagrant-ssh:
+      layout: 9fa4,223x75,0,0{118x75,0,0[118x52,0,0{59x52,0,0,8,58x52,60,0,13},118x22,0,53,12],104x75,119,0[104x16,119,0,1,104x15,119,17,9,104x22,119,33,2,104x19,119,56,3]}
+      panes:
+        - ssh:
+          -
+          - vagrant status
+        - ssh:
+          -
+          - vagrant status
+        - ssh:
+          -
+          - vagrant status

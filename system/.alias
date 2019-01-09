@@ -141,3 +141,10 @@ alias my_ip='ifconfig en0 | grep "inet "  | cut -d" " -f2'
 # Ruby
 ########################################
 alias be='bundle exec'
+
+
+########################################
+# Fix Ncurses
+########################################
+
+alias reset='/usr/bin/reset'

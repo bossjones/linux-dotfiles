@@ -15,7 +15,7 @@
   version: 22b1f6514204607c9b6028c3369cea31e9935d67
   name: ulimit
 
-- src: https://github.com/pablocrivella/ansible-role-nvm
+- src: https://github.com/bossjones/ansible-role-nvm
   version: ca9c429ca388eb36daad9195354012158aa61e94
   name: pablocrivella.nvm
 

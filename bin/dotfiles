@@ -19,7 +19,10 @@ sub_help () {
   echo "   install_tmux_upstream  Install tmux settings using the default ones provided by https://github.com/gpakosz/.tmux"
   echo "   install_nested_tmux  Install best tmux settings using  https://github.com/samoshkin/tmux-config/"
   echo "   install_bash_it_themes  Install custom bash_it themes"
+  echo "   install_direnvrc  Install direnvrc"
   echo "   iterm_color_schemes  Install https://github.com/mbadolato/iTerm2-Color-Schemes"
+  echo "   enable_local_bash_completion  Run source ~/.dotfiles/.bash_completion.d/*"
+  echo "   create_i2csshrc  Symlink ~/.i2csshrc"
 }
 
 sub_edit () {
@@ -88,6 +91,10 @@ sub_install_bash_it_themes() {
   ln -sfv "$DOTFILES_DIR/runcom/.bash_it/themes/kube/kube.theme.bash" ~/.bash_it/themes/kube/kube.theme.bash
 }
 
+sub_install_direnvrc() {
+  ln -sfv "$DOTFILES_DIR/runcom/.direnvrc" ~
+}
+
 sub_brew_bundle() {
   cd $HOME
   brew bundle dump --force --describe
@@ -121,9 +128,24 @@ sub_create_links () {
   ln -sfv "$DOTFILES_DIR/runcom/.10-powerline-symbols.conf" ~/.config/fontconfig/conf.d/10-powerline-symbols.conf
 
   ln -sfv "$DOTFILES_DIR/runcom/.tm-theme" ~
-  ln -sfv "$DOTFILES_DIR/runcom/.tmux.conf" ~/.tmux/.tmux.conf
-  ln -sfv "$DOTFILES_DIR/runcom/.tmux.conf.local" ~
+  # ln -sfv "$DOTFILES_DIR/runcom/.tmux.conf" ~/.tmux/.tmux.conf
+  # ln -sfv "$DOTFILES_DIR/runcom/.tmux.conf.local" ~
   ln -sfv "$DOTFILES_DIR/runcom/.tmuxinator" ~
+}
+
+sub_create_i2csshrc () {
+  echo "Create .i2csshrc symlink @ ~/.i2csshrc"
+  ln -sfv "$DOTFILES_DIR/runcom/.i2csshrc" ~
+
+}
+
+sub_enable_local_bash_completion () {
+  if [ -d "~/.dotfiles/.bash_completion.d/" ]; then
+
+    for i in $(ls ~/.dotfiles/.bash_completion.d/ | xargs -n 1 basename); do
+      source ~/.dotfiles/.bash_completion.d/$i
+    done
+  fi
 }
 
 case $COMMAND_NAME in

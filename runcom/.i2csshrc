@@ -1,0 +1,26 @@
+---
+# SOURCE: https://github.com/SteamedFish/dotfiles/blob/master/.i2csshrc
+version: 2
+# Use this iTerm profile
+profile: tmux-base16-ocean-dark
+# Enable/disable broadcast on start
+# broadcast: true
+# Enable SSH agent forwarding
+# forward-agent: true
+
+# Use iTerm2.app instead of iTerm.app (only available globally)
+# iterm2: true
+# extra: -F=~/dev/bossjones/kubernetes-cluster/ssh_config
+tab-split: true
+clusters:
+  vagrant-kube:
+    # extra: -XF=~/dev/bossjones/kubernetes-cluster/ssh_config -Xi=~/.ssh/vagrant_id_rsa
+    direction: row
+    rows: 3
+    profile: tmux-base16-ocean-dark
+    login: vagrant
+    # Additional ssh parameters (e.g. -Xi=myidentity.pem)
+    hosts:
+      - k8s-head.hyenalab.home
+      - k8s-node-1.hyenalab.home
+      - k8s-node-2.hyenalab.home
