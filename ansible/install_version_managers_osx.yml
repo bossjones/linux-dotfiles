@@ -44,6 +44,7 @@
       environment:
         LD_LIBRARY_PATH: /usr/local/lib
         PKG_CONFIG_PATH: "/usr/local/opt/libffi/lib/pkgconfig"
+      ignore_errors: yes
 
     - role: mac-devtop
 
