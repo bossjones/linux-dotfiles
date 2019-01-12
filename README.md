@@ -43,3 +43,18 @@ docker run -it dotfiles:latest bash
 11  history
 
 ```
+
+
+# wip ~/.bashrc
+
+```
+source ~malcolm/.pyenv/.pyenvrc
+source ~malcolm/.pyenv/completions/pyenv.bash
+
+# tabtab source for serverless package
+# uninstall by removing these lines or running `tabtab uninstall serverless`
+[ -f /Users/malcolm/.nvm/versions/node/v10.3.0/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.bash ] && . /Users/malcolm/.nvm/versions/node/v10.3.0/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.bash
+# tabtab source for sls package
+# uninstall by removing these lines or running `tabtab uninstall sls`
+[ -f /Users/malcolm/.nvm/versions/node/v10.3.0/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.bash ] && . /Users/malcolm/.nvm/versions/node/v10.3.0/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.bash
+```
