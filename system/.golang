@@ -1,4 +1,11 @@
+# set -x
 [ ! -s "$HOME/go" ] && mkdir -p $HOME/go
 export GOPATH=$HOME/go
-[ -s "/usr/local/go" ] && export GOROOT=/usr/local/go
-[ -s "/usr/local/go" ] && export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
+[ -d "/usr/local/go" ] && export GOROOT=/usr/local/go
+
+if [ -d "$GOROOT/bin" ] && [ ! -z "${GOROOT}" ]; then
+    export PATH=$GOROOT/bin:$PATH
+fi
+
+[ -d "$GOPATH/bin" ] && export PATH=$GOPATH/bin:$PATH
+# set +x

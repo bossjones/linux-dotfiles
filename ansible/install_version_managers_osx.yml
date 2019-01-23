@@ -18,6 +18,7 @@
   # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
   environment:
     SHELL: /bin/bash
+    LD_LIBRARY_PATH: /usr/local/lib
   vars:
     bossjones__user: "{{boss__user}}"
     bossjones__group: "{{boss_group}}"
@@ -37,8 +38,14 @@
   roles:
     - role: elliotweiser.osx-command-line-tools
       tags: ['homebrew']
+
     - role: geerlingguy.homebrew
       tags: ['homebrew']
+      environment:
+        LD_LIBRARY_PATH: /usr/local/lib
+        PKG_CONFIG_PATH: "/usr/local/opt/libffi/lib/pkgconfig"
+      ignore_errors: yes
+
     - role: mac-devtop
 
 - hosts: localhost
@@ -88,6 +95,7 @@
         - fzf
         - hub
         - jq
+        - libffi
 
   # bats
   # battery
