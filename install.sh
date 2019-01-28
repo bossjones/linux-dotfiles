@@ -52,8 +52,10 @@ fi
 cp -fv "$DOTFILES_DIR/system/.osx" ~/.osx
 chmod +x ~/.osx
 
-e_header "Provision machine using ansible bootstrap.yml"
-command-exists ansible && bash "$DOTFILES_DIR/ansible/provision.sh"
+if [[ "${SKIP_DOTFILES_PROVISION}x" == "x" ]]; then
+  e_header "Provision machine using ansible bootstrap.yml"
+  command-exists ansible && bash "$DOTFILES_DIR/ansible/provision.sh"
+fi
 
 # Update dotfiles itself first
 e_header "Update dotfiles itself first"
@@ -85,9 +87,9 @@ ln -sfv "$DOTFILES_DIR/runcom/.pythonrc" ~
 ln -sfv "$DOTFILES_DIR/runcom/.agignore" ~
 ln -sfv "$DOTFILES_DIR/runcom/.10-powerline-symbols.conf" ~/.config/fontconfig/conf.d/10-powerline-symbols.conf
 
-ln -sfv "$DOTFILES_DIR/runcom/.tm-theme" ~
-ln -sfv "$DOTFILES_DIR/runcom/.tmux.conf" ~
-ln -sfv "$DOTFILES_DIR/runcom/.tmux.conf.local" ~
+# ln -sfv "$DOTFILES_DIR/runcom/.tm-theme" ~
+# ln -sfv "$DOTFILES_DIR/runcom/.tmux.conf" ~
+# ln -sfv "$DOTFILES_DIR/runcom/.tmux.conf.local" ~
 ln -sfv "$DOTFILES_DIR/runcom/.tmuxinator" ~
 
 e_header "Package managers & packages"

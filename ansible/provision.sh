@@ -4,6 +4,10 @@ set -x
 
 [[ "$CHECK_ONLY" ]] && export CHECK_ONLY=--check
 
+if [[ "${SKIP_DOTFILES_ANSIBLE_SKIP_LIST}x" == "x" ]]; then
+  export SKIP_DOTFILES_ANSIBLE_SKIP_LIST="zsh,nvm"
+fi
+
 unamestr=$(uname)
 
 if [[ $unamestr == "Darwin" ]]; then
@@ -64,11 +68,11 @@ if [[ $unamestr == "Darwin" ]]; then
   if [[ "${CHECK_ONLY}" = "1" ]]; then
     ansible-playbook -vvvv install_version_managers_osx.yml \
     --extra-vars \
-    "bossjones__user=${_USER} bossjones__group=${_GROUP}" --skip-tags="zsh,nvm" --check
+    "bossjones__user=${_USER} bossjones__group=${_GROUP}" --skip-tags="${SKIP_DOTFILES_ANSIBLE_SKIP_LIST}" --check
   else
     ansible-playbook -vvvv install_version_managers_osx.yml \
     --extra-vars \
-    "bossjones__user=${_USER} bossjones__group=${_GROUP}" --skip-tags="zsh,nvm"
+    "bossjones__user=${_USER} bossjones__group=${_GROUP}" --skip-tags="${SKIP_DOTFILES_ANSIBLE_SKIP_LIST}"
   fi
 elif [[ $unamestr == "Linux"  && -f $(which apt-get) ]]; then
   ansible-playbook install_version_managers.yml
@@ -84,7 +88,7 @@ elif [[ $unamestr == "Linux"  && -f $(which dnf) ]]; then
 
       ansible-playbook -vvvv install_version_managers_fedora.yml \
       --extra-vars \
-      "bossjones__user=${_USER} bossjones__group=${_GROUP}" --skip-tags="zsh,rbenv,nvm" --check
+      "bossjones__user=${_USER} bossjones__group=${_GROUP}" --skip-tags="${SKIP_DOTFILES_ANSIBLE_SKIP_LIST}" --check
     else
       ansible-playbook -vvvv bootstrap_fedora.yml \
       --extra-vars \
@@ -92,7 +96,7 @@ elif [[ $unamestr == "Linux"  && -f $(which dnf) ]]; then
 
       ansible-playbook -vvvv install_version_managers_fedora.yml \
       --extra-vars \
-      "bossjones__user=${_USER} bossjones__group=${_GROUP}" --skip-tags="zsh,rbenv,nvm"
+      "bossjones__user=${_USER} bossjones__group=${_GROUP}" --skip-tags="${SKIP_DOTFILES_ANSIBLE_SKIP_LIST}"
     fi
 
 fi

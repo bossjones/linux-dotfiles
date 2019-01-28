@@ -37,16 +37,23 @@
 
   roles:
     - role: elliotweiser.osx-command-line-tools
-      tags: ['homebrew']
+      tags:
+        - homebrew
+        - elliotweiser.osx-command-line-tools
 
     - role: geerlingguy.homebrew
-      tags: ['homebrew']
+      tags:
+        - homebrew
+        - elliotweiser.osx-command-line-tools
       environment:
         LD_LIBRARY_PATH: /usr/local/lib
         PKG_CONFIG_PATH: "/usr/local/opt/libffi/lib/pkgconfig"
       ignore_errors: yes
 
     - role: mac-devtop
+      tags:
+        - homebrew
+        - mac-devtop
 
 - hosts: localhost
   # NOTE: In order to populate special var ansible_pkg_mgr, need to enable gather_facts
@@ -388,6 +395,8 @@
     PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV: true
   roles:
     - role: suzuki-shunsuke.pyenv-module
+      tags:
+      - suzuki-shunsuke.pyenv-module
 
   tasks:
     - name: install virtualenvwrapper module in venv 3.6.5
@@ -598,38 +607,38 @@
 #       become: yes
 #       become_user: "{{ bossjones__user }}"
 
-# NOTE: This works, just might not be the right time for zsh yet
-# Install oh-my-zsh
-- hosts: localhost
-  gather_facts: True
-  become: yes
-  vars_prompt:
-    - name: "bossjones__user"
-      prompt: "User we want to run as."
-      private: no
-    - name: "bossjones__group"
-      prompt: "Group we want to run as."
-      private: no
-  tags:
-    - zsh
-  vars:
-    ansible_ssh_user: "{{ bossjones__user }}"
-    zsh_user: "{{ bossjones__user }}"
-    zsh_antigen_bundles_extras:
-      - nvm
-      - joel-porquet/zsh-dircolors-solarized
-      - virtualenvwrapper
-      - npm
-      - cswl/zsh-rbenv
-    zsh_autosuggestions_bind_key: "^U"
-  roles:
-    - viasite-ansible.zsh
-
-# TODO: Figure out if we want to enable this
-# # Switch to ZSH shell
-# if test -t 1; then
-# exec zsh
-# fi
+# # NOTE: This works, just might not be the right time for zsh yet
+# # Install oh-my-zsh
+# - hosts: localhost
+#   gather_facts: True
+#   become: yes
+#   vars_prompt:
+#     - name: "bossjones__user"
+#       prompt: "User we want to run as."
+#       private: no
+#     - name: "bossjones__group"
+#       prompt: "Group we want to run as."
+#       private: no
+#   tags:
+#     - zsh
+#   vars:
+#     ansible_ssh_user: "{{ bossjones__user }}"
+#     zsh_user: "{{ bossjones__user }}"
+#     zsh_antigen_bundles_extras:
+#       - nvm
+#       - joel-porquet/zsh-dircolors-solarized
+#       - virtualenvwrapper
+#       - npm
+#       - cswl/zsh-rbenv
+#     zsh_autosuggestions_bind_key: "^U"
+#   roles:
+#     - viasite-ansible.zsh
+#
+# # TODO: Figure out if we want to enable this
+# # # Switch to ZSH shell
+# # if test -t 1; then
+# # exec zsh
+# # fi
 
 
 # ####################################################################################################
@@ -646,6 +655,7 @@
       private: no
   tags:
     - powerline
+    - nass600.powerline
   become: yes
   # become_user: "{{ bossjones__user }}"
   # become: yes
@@ -730,6 +740,9 @@
 
       powerline_fonts_repo: "git://github.com/powerline/fonts.git"
       powerline_fonts_dir: "{{ powerline_config_dir }}/fonts"
+      tags:
+        - powerline
+        - nass600.powerline
 
 # ####################################################################################################
 # # CHEATSHEETS SETUP
@@ -841,10 +854,10 @@
         version: "{{ boss__bash_it_version }}"
       become: "{{ bossjones__user }}"
 
-    - name: "change shell to bash for {{ bossjones__user }}"
-      command: "chsh -s /bin/bash {{ bossjones__user }}"
-      become: yes
-      when: boss__bash_it_user_shell != "/bin/bash"
+    # - name: "change shell to bash for {{ bossjones__user }}"
+    #   command: "chsh -s /bin/bash {{ bossjones__user }}"
+    #   become: yes
+    #   when: boss__bash_it_user_shell != "/bin/bash"
 
     - name: "initialize bash_it directories for {{ bossjones__user }}"
       file:

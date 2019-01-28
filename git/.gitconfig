@@ -42,6 +42,7 @@
   new = "!sh -c 'git pull --rebase  && git checkout -b feature-$1 origin/master' -"
   hotfix = "!sh -c 'git pull --rebase  && git checkout -b hotfix-$1 origin/production' -"
   pu = push -u
+  set-upstream = !git branch --set-upstream-to=origin/`git symbolic-ref --short HEAD`
 
 [color]
   ui = auto
