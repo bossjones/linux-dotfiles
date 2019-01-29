@@ -515,6 +515,7 @@
       pip:
         name: "{{item}}"
         executable: "{{pyenv_root}}/versions/tools2/bin/pip"
+      ignore_errors: yes
       with_items:
         - rename
         - s3cmd
@@ -541,6 +542,7 @@
       pip:
         name: "{{item}}"
         executable: "{{pyenv_root}}/versions/3.6.5/bin/pip"
+      ignore_errors: yes
       with_items:
         # - powerline-status
         - setuptools
