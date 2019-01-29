@@ -486,7 +486,7 @@
         - gnucash-to-beancount
         - rows
         - awscli
-        - cheat
+        # - cheat
         - pdbpp
         - pylint
         - ptpython
@@ -570,6 +570,16 @@
 
     - name: pyenv global 3.6.5 2.7.14 jupyter3 ipython2 tools3 tools2
       shell: . {{ pyenv_path }}/.pyenvrc && pyenv global 3.6.5 2.7.14 jupyter3 ipython2 tools3 tools2
+
+    - name: pip install --upgrade pip for all pyenv
+      shell: . {{ pyenv_path }}/.pyenvrc && pyenv shell {{item}}; pip install --upgrade pip
+      with_items:
+      - '3.6.5'
+      - '2.7.14'
+      - jupyter3
+      - ipython2
+      - tools3
+      - tools2
 
 # Taken from this guy: https://medium.com/@henriquebastos/the-definitive-guide-to-setup-my-python-workspace-628d68552e14
 # pyenv virtualenv 3.6.0 jupyter3
