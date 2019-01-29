@@ -6,8 +6,8 @@ cache:
     # - node_modules
     - $HOME/.nvm
     - $HOME/.rbenv
-    - $HOME/.pyenv
-    - $HOME/.pip/cache
+    # - $HOME/.pyenv
+    # - $HOME/.pip/cache
 
 env:
   global:
