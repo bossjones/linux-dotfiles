@@ -2,7 +2,7 @@
 # Retrieve it from getconf, otherwise it's just current $PATH
 
 DOTFILES_CACHE="$DOTFILES_DIR/.cache.sh"
-\cat $DOTFILES_CACHE
+# \cat $DOTFILES_CACHE
 [ -f "$DOTFILES_CACHE" ] && . "$DOTFILES_CACHE"
 
 # temp access to dotfiles folder
