@@ -4,12 +4,14 @@
 
 # https://stackoverflow.com/questions/5014823/how-to-profile-a-bash-shell-script-slow-startup
 profile_it_start () {
+  echo "---------------------- PROFILING START ------------------------"
   PS4='+ $(date "+%s.%N")\011 '
   exec 3>&2 2>/tmp/bashstart.$$.log
   set -x
 }
 
 profile_it_stop () {
+  echo "---------------------- PROFILING STOPPED ------------------------"
   set +x
   exec 2>&3 3>&-
 }
@@ -17,10 +19,6 @@ profile_it_stop () {
 if [[ "${RUN_DOTFILES_PROFILER}x" != "x" ]]; then
   profile_it_start
 fi
-
-# PS4='+ $(date "+%s.%N")\011 '
-# exec 3>&2 2>/tmp/bashstart.$$.log
-# set -x
 
 # If not running interactively, don't do anything
 
@@ -121,6 +119,3 @@ export DOTFILES_DIR DOTFILES_EXTRA_DIR
 if [[ "${RUN_DOTFILES_PROFILER}x" != "x" ]]; then
   profile_it_stop
 fi
-
-# set +x
-# exec 2>&3 3>&-
