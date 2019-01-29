@@ -1,0 +1,17 @@
+pygmentize
+pry
+bundler
+ruby-debug-ide 0.6.0
+debase 0.2.2.beta10
+rcodetools
+rubocop
+fastri
+htmlbeautifier
+hirb
+gem-ctags
+travis
+excon
+pry-doc
+tmuxinator
+solargraph
+

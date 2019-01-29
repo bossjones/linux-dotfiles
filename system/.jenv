@@ -1,4 +1,6 @@
 # Init jenv
 # source: https://gist.github.com/tomysmile/a9a7aee85ff73454bd57e198ad90e614
-command-exists jenv && eval "$(jenv init -)"
+
+# FIXME: jenv slow as hell - https://github.com/jenv/jenv/issues/178
+# command-exists jenv && eval "$(jenv init -)"
 

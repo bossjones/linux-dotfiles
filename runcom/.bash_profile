@@ -1,3 +1,25 @@
+# This file is sourced by login shells only
+
+# https://stackoverflow.com/questions/5014823/how-to-profile-a-bash-shell-script-slow-startup
+profile_it_start () {
+  PS4='+ $(date "+%s.%N")\011 '
+  exec 3>&2 2>/tmp/bashstart.$$.log
+  set -x
+}
+
+profile_it_stop () {
+  set +x
+  exec 2>&3 3>&-
+}
+
+if [[ "${RUN_DOTFILES_PROFILER}x" != "x" ]]; then
+  profile_it_start
+fi
+
+# PS4='+ $(date "+%s.%N")\011 '
+# exec 3>&2 2>/tmp/bashstart.$$.log
+# set -x
+
 # If not running interactively, don't do anything
 
 [ -z "$PS1" ] && return
@@ -41,17 +63,23 @@ PATH="$DOTFILES_DIR/bin:$PATH"
 DOTFILES_CACHE="$DOTFILES_DIR/.cache.sh"
 [ -f "$DOTFILES_CACHE" ] && . "$DOTFILES_CACHE"
 
+# Add dotfiles dir to cache
+export DOTFILES_PATH_TO_DIR="${DOTFILES_DIR}"
+set-config "DOTFILES_PATH_TO_DIR" "$DOTFILES_PATH_TO_DIR" "$DOTFILES_CACHE"
+
 # Finally we can source the dotfiles (order matters)
 
 # rdebugrc
 # SOURCE: https://github.com/skwp/dotfiles/tree/master/ruby
 
-for DOTFILE in "$DOTFILES_DIR"/system/.{function,function_*,path,env,alias,alias.kube,completion,grep,prompt_bash_it,nvm,rbenv,rdebugrc,pyenv,cheatrc,powerline,custom,cargo,ccache,jenv,brew_env,golang,locales,terminal,fzf,vmware_env,tmux_env,less_env}; do
+for DOTFILE in "$DOTFILES_DIR"/system/.{function,function_*,path,env,alias,alias.kube,completion,grep,prompt_bash_it,nvm,rbenv,rdebugrc,pyenv,cheatrc,powerline,custom,cargo,ccache,jenv,brew_env,golang,locales,terminal,fzf,vmware_env,tmux_env,less_env,git_wrapper}; do
+  # The -f condition is true if the file ‘regularfile’ exists and is a regular file. A regular file means that it’s not a block or character device, or a directory. This way, you can make sure a usable file exists before doing something with it. You can even check if a file is readable!
   [ -f "$DOTFILE" ] && . "$DOTFILE"
 done
 
 if is-macos; then
   for DOTFILE in "$DOTFILES_DIR"/system/.{env,alias,function,php}.macos; do
+    # The -f condition is true if the file ‘regularfile’ exists and is a regular file. A regular file means that it’s not a block or character device, or a directory. This way, you can make sure a usable file exists before doing something with it. You can even check if a file is readable!
     [ -f "$DOTFILE" ] && . "$DOTFILE"
   done
 fi
@@ -87,3 +115,10 @@ unset READLINK CURRENT_SCRIPT SCRIPT_PATH DOTFILE EXTRAFILE
 # Export
 
 export DOTFILES_DIR DOTFILES_EXTRA_DIR
+
+if [[ "${RUN_DOTFILES_PROFILER}x" != "x" ]]; then
+  profile_it_stop
+fi
+
+# set +x
+# exec 2>&3 3>&-

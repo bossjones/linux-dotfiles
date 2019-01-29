@@ -7,8 +7,18 @@ netdata() {
 }
 
 
-docker-clean() { docker rm $(docker ps -a -q); docker rmi $(docker images | grep "^<none>" | awk '{print $3}'); }
+docker-clean() {
+  docker rm $(docker ps -a -q);
+  docker rmi $(docker images | grep "^<none>" | awk '{print $3}');
+}
+
 de() {
+
+  if [[ "${1}x" == "x" ]]; then
+    echo "bash function: de - you need to specify a container name please"
+    exit 1
+  fi
+
   docker exec -it $1 /bin/bash
 }
 

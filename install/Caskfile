@@ -1,0 +1,18 @@
+# SOURCE: https://github.com/webpro/dotfiles/blob/master/install/Caskfile
+tap "homebrew/cask"
+tap "homebrew/cask-drivers"
+tap "homebrew/cask-fonts"
+tap "homebrew/cask-versions"
+
+cask "visual-studio-code"
+
+
+# Quick Look Plugins (https://github.com/sindresorhus/quick-look-plugins)
+cask "qlcolorcode"
+cask "qlimagesize"
+cask "qlmarkdown"
+cask "qlstephen"
+cask "qlvideo"
+cask "quicklook-json"
+cask "suspicious-package"
+cask "webpquicklook"

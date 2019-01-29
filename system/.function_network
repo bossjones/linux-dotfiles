@@ -33,11 +33,11 @@ unshorten() {
   curl -sIL $1 | sed -n 's/Location: *//p'
 }
 
-# getip address
-getip() {
-  (traceroute "$1" 2>&1 | head -n 1 | cut -d\( -f 2 | cut -d\) -f 1)
-}
+# # getip address
+# getip() {
+#   (traceroute "$1" 2>&1 | head -n 1 | cut -d\( -f 2 | cut -d\) -f 1)
+# }
 
-icanhazip() {
-  curl ipv4.icanhazip.com
-}
+# icanhazip() {
+#   curl ipv4.icanhazip.com
+# }

@@ -39,6 +39,11 @@
   sts = status -sb
   unstage = reset --hard HEAD
   pr = "!git push origin HEAD && hub pull-request -b"
+  ; pr = "!f() { \
+  ;       BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD); \
+  ;       git push -u origin $BRANCH_NAME; \
+  ;       hub pull-request; \
+  ;   };f "
   new = "!sh -c 'git pull --rebase  && git checkout -b feature-$1 origin/master' -"
   hotfix = "!sh -c 'git pull --rebase  && git checkout -b hotfix-$1 origin/production' -"
   pu = push -u

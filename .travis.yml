@@ -52,55 +52,13 @@ matrix:
     xcode_sdk: macosx10.13
     # env: MY_RUBY_VERSION=""
 
-  # - name: "Test D-Feet High Sierra (10.13) and xcode9.3"
-  #   os: osx
-  #   sudo: required
-  #   language: objective-c
-  #   # 10.13 (see https://docs.travis-ci.com/user/osx-ci-environment/#OS-X-Version)
-  #   osx_image: xcode9.3
-  #   xcode_sdk: macosx10.13
-  #   env: TEST_D_FEET="1"
-
-  - name: "OS X El Capitan (10.11) and xcode8"
+  - name: "High Sierra (10.13) and xcode9.4"
     os: osx
     sudo: required
     language: objective-c
-    osx_image: xcode8
-    xcode_sdk: macosx10.11
-    env: MY_HOMEBREW_UPDATE="1"
+    osx_image: xcode9.4
+    xcode_sdk: macosx10.13
 
-
-  - name: "Sierra (10.12) and xcode8.3"
-    os: osx
-    sudo: required
-    language: objective-c
-    osx_image: xcode8.3
-    xcode_sdk: macosx10.12
-
-
-  - name: "Sierra (10.12) and xcode9"
-    os: osx
-    sudo: required
-    language: objective-c
-    osx_image: xcode9
-    xcode_sdk: macosx10.12
-    env: MY_HOMEBREW_UPDATE="1"
-
-
-  - name: "Sierra (10.12) and xcode9.1"
-    os: osx
-    sudo: required
-    language: objective-c
-    osx_image: xcode9.1
-    xcode_sdk: macosx10.12
-
-
-  - name: "Sierra (10.12) and xcode9.2"
-    os: osx
-    sudo: required
-    language: objective-c
-    osx_image: xcode9.2
-    xcode_sdk: macosx10.12
 
   - name: "High Sierra (10.13) and xcode9.4"
     os: osx
@@ -108,6 +66,13 @@ matrix:
     language: objective-c
     osx_image: xcode9.4
     xcode_sdk: macosx10.13
+
+  - name: "Mojave (10.14) and xcode9.4"
+    os: osx
+    sudo: required
+    language: objective-c
+    # osx_image: xcode9.4
+    xcode_sdk: macosx10.14
 
 # # SOURCE: https://github.com/geerlingguy/mac-dev-playbook/blob/df25444b3f08e1c5a2c7b941d0a49850514f9d98/.travis.yml
 # sudo: required
