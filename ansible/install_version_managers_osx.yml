@@ -386,6 +386,7 @@
   become: yes
   become_user: "{{ bossjones__user }}"
   environment:
+    CHEAT_PATH: /usr/local/share/cheat
     SHELL: /bin/bash
     PYENV_ROOT: "$HOME/.pyenv"
     # PYENV_VERSION: "3.5.2"
@@ -399,6 +400,16 @@
       - suzuki-shunsuke.pyenv-module
 
   tasks:
+
+
+    - name: "Create /usr/local/share/cheat"
+      file:
+        path: "/usr/local/share/cheat"
+        state: directory
+        owner: "{{ bossjones__user }}"
+      become: yes
+      become_user: "{{ bossjones__user }}"
+
     - name: install virtualenvwrapper module in venv 3.6.5
       pip:
         name: "{{item}}"
@@ -486,7 +497,7 @@
         - gnucash-to-beancount
         - rows
         - awscli
-        # - cheat
+        - cheat
         - pdbpp
         - pylint
         - ptpython
