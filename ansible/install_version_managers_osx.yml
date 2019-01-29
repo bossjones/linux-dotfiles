@@ -854,10 +854,10 @@
         version: "{{ boss__bash_it_version }}"
       become: "{{ bossjones__user }}"
 
-    # - name: "change shell to bash for {{ bossjones__user }}"
-    #   command: "chsh -s /bin/bash {{ bossjones__user }}"
-    #   become: yes
-    #   when: boss__bash_it_user_shell != "/bin/bash"
+    - name: "change shell to bash for {{ bossjones__user }}"
+      command: "chsh -s /bin/bash {{ bossjones__user }}"
+      become: yes
+      when: boss__bash_it_user_shell != "/bin/bash"
 
     - name: "initialize bash_it directories for {{ bossjones__user }}"
       file:

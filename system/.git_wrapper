@@ -1,4 +1,4 @@
-set -x
+# set -x
 
 # set -e
 
@@ -26,4 +26,4 @@ export PATH="${PATH_BEFORE}"
 
 unset PATH_BEFORE
 
-set +x
+# set +x
