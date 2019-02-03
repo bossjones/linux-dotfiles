@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 # set -x
-echo "------------------------------"
-echo "command-exists: ${1}"
-echo "------------------------------"
+# echo "------------------------------"
+# echo "command-exists: ${1}"
+# echo "------------------------------"
 
 # Check if a program exists from a Bash script
 # SOURCE: https://stackoverflow.com/questions/592620/check-if-a-program-exists-from-a-bash-script
