@@ -387,6 +387,7 @@
   become_user: "{{ bossjones__user }}"
   environment:
     CHEAT_PATH: /usr/local/share/cheat
+    CHEAT_GLOBAL_CONF_PATH: /usr/local/etc/cheat
     SHELL: /bin/bash
     PYENV_ROOT: "$HOME/.pyenv"
     # PYENV_VERSION: "3.5.2"
