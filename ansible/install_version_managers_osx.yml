@@ -411,6 +411,14 @@
       become: yes
       become_user: "{{ bossjones__user }}"
 
+    - name: "Create /usr/local/etc/cheat"
+      file:
+        path: "/usr/local/etc/cheat"
+        state: directory
+        owner: "{{ bossjones__user }}"
+      become: yes
+      become_user: "{{ bossjones__user }}"
+
     - name: install virtualenvwrapper module in venv 3.6.5
       pip:
         name: "{{item}}"
@@ -498,7 +506,7 @@
         - gnucash-to-beancount
         - rows
         - awscli
-        - cheat
+        # - cheat
         - pdbpp
         - pylint
         - ptpython
