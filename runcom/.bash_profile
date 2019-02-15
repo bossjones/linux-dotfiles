@@ -29,6 +29,7 @@ fi
 # INFO: BASH_SOURCE - An array variable whose members are the source filenames where the corresponding shell function names in the FUNCNAME array variable are defined. The shell function ${FUNCNAME[$i]} is defined in the file ${BASH_SOURCE[$i]} and called from ${BASH_SOURCE[$i+1]}
 
 [ -f "$HOME/.override" ] && . "$HOME/.override"
+[ -f "$HOME/.secret" ] && . "$HOME/.secret"
 
 unamestr=$(uname)
 
