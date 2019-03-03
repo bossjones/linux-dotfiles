@@ -1,4 +1,19 @@
 # Init jenv
 # source: https://gist.github.com/tomysmile/a9a7aee85ff73454bd57e198ad90e614
-command-exists jenv && eval "$(jenv init -)"
 
+
+DOTFILES_CACHE="$DOTFILES_DIR/.cache.sh"
+# \cat $DOTFILES_CACHE
+[ -f "$DOTFILES_CACHE" ] && . "$DOTFILES_CACHE"
+
+# temp access to dotfiles folder
+export PATH_BEFORE="${PATH}"
+export PATH="${DOTFILES_PATH_TO_DIR}/bin:$PATH"
+
+export JENV_ROOT="$HOME/.jenv"
+
+export PATH="${JENV_ROOT}/bin:$PATH"
+
+# FIXME: jenv slow as hell - https://github.com/jenv/jenv/issues/178
+command-exists jenv && eval "$(jenv init -)"
+# if which jenv > /dev/null; then eval "$(jenv init - bash)"; fi

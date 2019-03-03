@@ -1,9 +1,19 @@
 # Start with system path
 # Retrieve it from getconf, otherwise it's just current $PATH
 
+DOTFILES_CACHE="$DOTFILES_DIR/.cache.sh"
+# \cat $DOTFILES_CACHE
+[ -f "$DOTFILES_CACHE" ] && . "$DOTFILES_CACHE"
+
+# temp access to dotfiles folder
+export PATH_BEFORE="${PATH}"
+export PATH="${DOTFILES_PATH_TO_DIR}/bin:$PATH"
+
 is-executable getconf && PATH=$(`command -v getconf` PATH)
 
 # Prepend new items to path (if directory exists)
+
+export PATH="${DOTFILES_PATH_TO_DIR}/bin:$PATH"
 
 prepend-path "/bin"
 prepend-path "/usr/bin"
@@ -16,8 +26,11 @@ prepend-path "/usr/sbin"
 prepend-path "/usr/local/sbin"
 prepend-path "$HOME/.rbenv/bin"
 prepend-path "$HOME/.pyenv/bin"
-prepend-path "$HOME/.jenv/bin"
+if [[ "${_ENABLE_JENV}" == "enabled" ]]; then
+  command-exists jenv && prepend-path "$HOME/.jenv/bin"
+fi
 prepend-path "$HOME/.local/bin"
+prepend-path "$HOME/bin"
 prepend-path "$HOME/bin"
 
 # Remove duplicates (preserving prepended items)

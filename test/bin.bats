@@ -31,12 +31,12 @@
 	[ "$status" -eq 1 ]
 }
 
-# @test "set-config" {
-# 	run set-config KEY_A VALUE_1 MYFILE
-# 	run set-config KEY_B VALUE_2 MYFILE
-# 	run set-config KEY_A VALUE_3 MYFILE
-# 	ACTUAL=`cat MYFILE`
-# 	EXPECTED=$'export KEY_A="VALUE_3"\nexport KEY_B="VALUE_2"'
-# 	[ "$ACTUAL" = "$EXPECTED" ]
-# 	run rm MYFILE
-# }
+@test "set-config" {
+	run set-config KEY_A VALUE_1 MYFILE
+	run set-config KEY_B VALUE_2 MYFILE
+	run set-config KEY_A VALUE_3 MYFILE
+	ACTUAL=`cat MYFILE`
+	EXPECTED=$'export KEY_A="VALUE_3"\nexport KEY_B="VALUE_2"'
+	[ "$ACTUAL" = "$EXPECTED" ]
+	run rm MYFILE
+}

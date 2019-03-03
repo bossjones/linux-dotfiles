@@ -18,7 +18,11 @@ fi
 
 if grep -q "$1=" "$FILE"; then
   if [[ $unamestr == "Darwin" ]]; then
-    $SED_CMD -i '.bak' "s@$KEY=.*@$KEY=\"$VALUE\"@" "$FILE"
+    if [[ $SED_CMD == "/usr/local/bin/gsed" ]]; then
+      $SED_CMD -i "s@$KEY=.*@$KEY=\"$VALUE\"@" "$FILE"
+    else
+      $SED_CMD -i '.bak' "s@$KEY=.*@$KEY=\"$VALUE\"@" "$FILE"
+    fi
   else
     $SED_CMD "s@$KEY=.*@$KEY=\"$VALUE\"@" -i "$FILE"
   fi

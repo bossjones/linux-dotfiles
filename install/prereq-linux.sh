@@ -3,17 +3,19 @@
 unamestr=$(uname)
 
 if [[ $unamestr == "Darwin" ]]; then
-    cd ~/
-    sudo easy_install pip && \
-    sudo pip install ansible && \
+   cd ~/
+   if [[ "${SKIP_DOTFILES_PREREQ}x" == "x" ]]; then
+    sudo easy_install pip
+    sudo pip install ansible
     echo '[defaults]'>> ansible.cfg; \
-    echo 'roles_path = ../' >> ansible.cfg && \
-    sudo mkdir -p /etc/ansible && \
-    sudo touch /etc/ansible/hosts && \
-    echo -e '[local]\nlocalhost ansible_connection=local' | sudo tee -a /etc/ansible/hosts >  /dev/null && \
-    sudo chown -R $(id -u):$(id -g) /etc/ansible/ && \
+    echo 'roles_path = ../' >> ansible.cfg
+    sudo mkdir -p /etc/ansible
+    sudo touch /etc/ansible/hosts
+    echo -e '[local]\nlocalhost ansible_connection=local' | sudo tee -a /etc/ansible/hosts > /dev/null
+    sudo chown -R $(id -u):$(id -g) /etc/ansible/
     mkdir ~/dev; \
-    cd ~/dev
+   fi
+   cd ~/dev
 # debian, ubuntu, mint etc.
 elif [[ $unamestr == "Linux"  && -f $(which apt-get) ]]; then
     sudo apt-get update -yqq && \

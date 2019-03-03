@@ -39,9 +39,15 @@
   sts = status -sb
   unstage = reset --hard HEAD
   pr = "!git push origin HEAD && hub pull-request -b"
+  ; pr = "!f() { \
+  ;       BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD); \
+  ;       git push -u origin $BRANCH_NAME; \
+  ;       hub pull-request; \
+  ;   };f "
   new = "!sh -c 'git pull --rebase  && git checkout -b feature-$1 origin/master' -"
   hotfix = "!sh -c 'git pull --rebase  && git checkout -b hotfix-$1 origin/production' -"
   pu = push -u
+  set-upstream = !git branch --set-upstream-to=origin/`git symbolic-ref --short HEAD`
 
 [color]
   ui = auto
@@ -90,7 +96,7 @@
   indentHeuristic = true
   tool = Kaleidoscope
 [difftool "Kaleidoscope"]
-  cmd = ksdiff --partial-changeset --relative-path \"$MERGED\" -- \"$LOCAL\" \"$REMOTE\"
+  cmd = /usr/local/bin/ksdiff --partial-changeset --relative-path \"$MERGED\" -- \"$LOCAL\" \"$REMOTE\"
 [difftool "sourcetree"]
 	cmd = /usr/local/bin/ksdiff -w \"$LOCAL\" \"$REMOTE\"
 	path =
@@ -100,7 +106,7 @@
   conflictstyle = diff3
   defaultToUpstream = true
 [mergetool "Kaleidoscope"]
-  cmd = ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
+  cmd = /usr/local/bin/ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
   trustExitCode = true
 [mergetool "sourcetree"]
 	cmd = /usr/local/bin/ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot

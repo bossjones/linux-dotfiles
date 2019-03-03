@@ -1,0 +1,29 @@
+# set -x
+
+# set -e
+
+# Read cache
+
+DOTFILES_CACHE="$DOTFILES_DIR/.cache.sh"
+[ -f "$DOTFILES_CACHE" ] && . "$DOTFILES_CACHE"
+
+# temp access to dotfiles folder
+export PATH_BEFORE="${PATH}"
+export PATH="${DOTFILES_PATH_TO_DIR}/bin:$PATH"
+
+command-exists hub && eval "$(hub alias -s)" || echo "oops, looks like hub is not installed currently"
+
+# git () {
+#   if [ "pr" = "$1" ]; then
+#     hub pull-request
+#   else
+#     hub "$@"
+#   fi
+# }
+# set +e
+
+export PATH="${PATH_BEFORE}"
+
+unset PATH_BEFORE
+
+# set +x

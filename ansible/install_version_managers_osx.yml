@@ -37,16 +37,23 @@
 
   roles:
     - role: elliotweiser.osx-command-line-tools
-      tags: ['homebrew']
+      tags:
+        - homebrew
+        - elliotweiser.osx-command-line-tools
 
     - role: geerlingguy.homebrew
-      tags: ['homebrew']
+      tags:
+        - homebrew
+        - elliotweiser.osx-command-line-tools
       environment:
         LD_LIBRARY_PATH: /usr/local/lib
         PKG_CONFIG_PATH: "/usr/local/opt/libffi/lib/pkgconfig"
       ignore_errors: yes
 
     - role: mac-devtop
+      tags:
+        - homebrew
+        - mac-devtop
 
 - hosts: localhost
   # NOTE: In order to populate special var ansible_pkg_mgr, need to enable gather_facts
@@ -379,6 +386,8 @@
   become: yes
   become_user: "{{ bossjones__user }}"
   environment:
+    CHEAT_PATH: /usr/local/share/cheat
+    CHEAT_GLOBAL_CONF_PATH: /usr/local/etc/cheat
     SHELL: /bin/bash
     PYENV_ROOT: "$HOME/.pyenv"
     # PYENV_VERSION: "3.5.2"
@@ -388,8 +397,28 @@
     PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV: true
   roles:
     - role: suzuki-shunsuke.pyenv-module
+      tags:
+      - suzuki-shunsuke.pyenv-module
 
   tasks:
+
+
+    - name: "Create /usr/local/share/cheat"
+      file:
+        path: "/usr/local/share/cheat"
+        state: directory
+        owner: "{{ bossjones__user }}"
+      become: yes
+      become_user: "{{ bossjones__user }}"
+
+    - name: "Create /usr/local/etc/cheat"
+      file:
+        path: "/usr/local/etc/cheat"
+        state: directory
+        owner: "{{ bossjones__user }}"
+      become: yes
+      become_user: "{{ bossjones__user }}"
+
     - name: install virtualenvwrapper module in venv 3.6.5
       pip:
         name: "{{item}}"
@@ -477,7 +506,7 @@
         - gnucash-to-beancount
         - rows
         - awscli
-        - cheat
+        # - cheat
         - pdbpp
         - pylint
         - ptpython
@@ -506,6 +535,7 @@
       pip:
         name: "{{item}}"
         executable: "{{pyenv_root}}/versions/tools2/bin/pip"
+      ignore_errors: yes
       with_items:
         - rename
         - s3cmd
@@ -532,6 +562,7 @@
       pip:
         name: "{{item}}"
         executable: "{{pyenv_root}}/versions/3.6.5/bin/pip"
+      ignore_errors: yes
       with_items:
         # - powerline-status
         - setuptools
@@ -559,6 +590,16 @@
 
     - name: pyenv global 3.6.5 2.7.14 jupyter3 ipython2 tools3 tools2
       shell: . {{ pyenv_path }}/.pyenvrc && pyenv global 3.6.5 2.7.14 jupyter3 ipython2 tools3 tools2
+
+    - name: pip install --upgrade pip for all pyenv
+      shell: . {{ pyenv_path }}/.pyenvrc && pyenv shell {{item}}; pip install --upgrade pip
+      with_items:
+      - '3.6.5'
+      - '2.7.14'
+      - jupyter3
+      - ipython2
+      - tools3
+      - tools2
 
 # Taken from this guy: https://medium.com/@henriquebastos/the-definitive-guide-to-setup-my-python-workspace-628d68552e14
 # pyenv virtualenv 3.6.0 jupyter3
@@ -598,38 +639,38 @@
 #       become: yes
 #       become_user: "{{ bossjones__user }}"
 
-# NOTE: This works, just might not be the right time for zsh yet
-# Install oh-my-zsh
-- hosts: localhost
-  gather_facts: True
-  become: yes
-  vars_prompt:
-    - name: "bossjones__user"
-      prompt: "User we want to run as."
-      private: no
-    - name: "bossjones__group"
-      prompt: "Group we want to run as."
-      private: no
-  tags:
-    - zsh
-  vars:
-    ansible_ssh_user: "{{ bossjones__user }}"
-    zsh_user: "{{ bossjones__user }}"
-    zsh_antigen_bundles_extras:
-      - nvm
-      - joel-porquet/zsh-dircolors-solarized
-      - virtualenvwrapper
-      - npm
-      - cswl/zsh-rbenv
-    zsh_autosuggestions_bind_key: "^U"
-  roles:
-    - viasite-ansible.zsh
-
-# TODO: Figure out if we want to enable this
-# # Switch to ZSH shell
-# if test -t 1; then
-# exec zsh
-# fi
+# # NOTE: This works, just might not be the right time for zsh yet
+# # Install oh-my-zsh
+# - hosts: localhost
+#   gather_facts: True
+#   become: yes
+#   vars_prompt:
+#     - name: "bossjones__user"
+#       prompt: "User we want to run as."
+#       private: no
+#     - name: "bossjones__group"
+#       prompt: "Group we want to run as."
+#       private: no
+#   tags:
+#     - zsh
+#   vars:
+#     ansible_ssh_user: "{{ bossjones__user }}"
+#     zsh_user: "{{ bossjones__user }}"
+#     zsh_antigen_bundles_extras:
+#       - nvm
+#       - joel-porquet/zsh-dircolors-solarized
+#       - virtualenvwrapper
+#       - npm
+#       - cswl/zsh-rbenv
+#     zsh_autosuggestions_bind_key: "^U"
+#   roles:
+#     - viasite-ansible.zsh
+#
+# # TODO: Figure out if we want to enable this
+# # # Switch to ZSH shell
+# # if test -t 1; then
+# # exec zsh
+# # fi
 
 
 # ####################################################################################################
@@ -646,6 +687,7 @@
       private: no
   tags:
     - powerline
+    - nass600.powerline
   become: yes
   # become_user: "{{ bossjones__user }}"
   # become: yes
@@ -730,6 +772,9 @@
 
       powerline_fonts_repo: "git://github.com/powerline/fonts.git"
       powerline_fonts_dir: "{{ powerline_config_dir }}/fonts"
+      tags:
+        - powerline
+        - nass600.powerline
 
 # ####################################################################################################
 # # CHEATSHEETS SETUP

@@ -51,3 +51,4 @@ ansible/roles/zzet.rbenv/
 # work stuff for now
 system/.aliases.work
 bin/klam-ext
+ansible/try.sh
