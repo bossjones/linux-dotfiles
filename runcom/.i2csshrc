@@ -36,7 +36,7 @@ clusters:
       - borg-worker-01.scarlettlab.home
       - borg-worker-02.scarlettlab.home
   scarlett-k8-homelab:
-    # extra: -XF=~/dev/bossjones/kubernetes-cluster/ssh_config -Xi=~/.ssh/vagrant_id_rsa
+    # extra: -XF=~/dev/bossjones/kubernetes-cluster/ssh_config -Xi=~/.ssh/id_rsa
     direction: row
     rows: 3
     profile: tmux-base16-ocean-dark
