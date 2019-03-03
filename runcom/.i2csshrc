@@ -35,3 +35,16 @@ clusters:
       - borg-queen-01.scarlettlab.home
       - borg-worker-01.scarlettlab.home
       - borg-worker-02.scarlettlab.home
+  scarlett-k8-homelab:
+    # extra: -XF=~/dev/bossjones/kubernetes-cluster/ssh_config -Xi=~/.ssh/vagrant_id_rsa
+    direction: row
+    rows: 3
+    profile: tmux-base16-ocean-dark
+    login: pi
+    # Additional ssh parameters (e.g. -Xi=myidentity.pem)
+    hosts:
+      - scarlett-k8-master-01.scarlettlab.home
+      - scarlett-k8-node-01.scarlettlab.home
+      - scarlett-k8-node-02.scarlettlab.home
+      - scarlett-k8-node-03.scarlettlab.home
+      - scarlett-k8-node-04.scarlettlab.home
