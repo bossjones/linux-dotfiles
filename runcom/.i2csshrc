@@ -56,6 +56,6 @@ clusters:
     login: vagrant
     # Additional ssh parameters (e.g. -Xi=myidentity.pem)
     hosts:
-      - k3lab-master-01.scarlettlab.home
-      - k3lab-node-01.scarlettlab.home
-      - k3lab-node-02.scarlettlab.home
+      - k3lab-master-01.hyenalab.home
+      - k3lab-node-01.hyenalab.home
+      - k3lab-node-02.hyenalab.home
