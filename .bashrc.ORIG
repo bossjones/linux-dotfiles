@@ -91,7 +91,7 @@ if [ -f /etc/bashrc ]; then
 fi
 
 # Set my editor and git editor
-export EDITOR="vim"
+export EDITOR="code"
 export GIT_EDITOR='vim'
 
 # virtualenv

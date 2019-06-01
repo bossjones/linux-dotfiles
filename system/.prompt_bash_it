@@ -10,8 +10,9 @@ export BASH_IT_THEME="${BASH_IT_THEME_OVERRIDE:-powerline-plain}"
 # Your place for hosting Git repos. I use this for private repos.
 export GIT_HOSTING='git@github.com'
 
+# SOURCE: https://docs.pipenv.org/en/latest/advanced/
 # Set my editor and git editor
-export EDITOR="vim"
+export EDITOR="code"
 export GIT_EDITOR='vim'
 
 # Set this to false to turn off version control status checking within the prompt for all themes
