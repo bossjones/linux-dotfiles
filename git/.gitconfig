@@ -7,6 +7,7 @@
 
 [include]
   path = .gitconfig.token
+  path = .gitconfig.hub
 
 [core]
   excludesfile = ~/.gitignore_global
