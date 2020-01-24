@@ -1,5 +1,7 @@
 # SOURCE: https://github.com/direnv/direnv/wiki/Python
 
+export PYENV_ROOT=${HOME}/.pyenv
+
 # use a certain pyenv version
 use_python() {
     if [ -n "$(which pyenv)" ]; then
