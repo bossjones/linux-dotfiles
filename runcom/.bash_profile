@@ -76,13 +76,13 @@ set-config "DOTFILES_PATH_TO_DIR" "$DOTFILES_PATH_TO_DIR" "$DOTFILES_CACHE"
 # SOURCE: https://github.com/skwp/dotfiles/tree/master/ruby
 
 for DOTFILE in "$DOTFILES_DIR"/system/.{function,function_*,path,env,alias,alias.kube,completion,grep,prompt_bash_it,nvm,rbenv,rdebugrc,pyenv,cheatrc,powerline,custom,cargo,ccache,jenv,brew_env,golang,locales,terminal,fzf,vmware_env,tmux_env,less_env,git_wrapper}; do
-  # The -f condition is true if the file ‘regularfile’ exists and is a regular file. A regular file means that it’s not a block or character device, or a directory. This way, you can make sure a usable file exists before doing something with it. You can even check if a file is readable!
+  # The -f condition is true if the file 'regularfile' exists and is a regular file. A regular file means that it's not a block or character device, or a directory. This way, you can make sure a usable file exists before doing something with it. You can even check if a file is readable!
   [ -f "${DOTFILE}" ] && . "${DOTFILE}"
 done
 
 if is-macos; then
   for DOTFILE in "$DOTFILES_DIR"/system/.{env,alias,function,php}.macos; do
-    # The -f condition is true if the file ‘regularfile’ exists and is a regular file. A regular file means that it’s not a block or character device, or a directory. This way, you can make sure a usable file exists before doing something with it. You can even check if a file is readable!
+    # The -f condition is true if the file 'regularfile' exists and is a regular file. A regular file means that it's not a block or character device, or a directory. This way, you can make sure a usable file exists before doing something with it. You can even check if a file is readable!
     [ -f "$DOTFILE" ] && . "$DOTFILE"
   done
 fi

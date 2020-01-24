@@ -49,6 +49,7 @@
   hotfix = "!sh -c 'git pull --rebase  && git checkout -b hotfix-$1 origin/production' -"
   pu = push -u
   set-upstream = !git branch --set-upstream-to=origin/`git symbolic-ref --short HEAD`
+	add-commit = !git add -A && git commit
 
 [color]
   ui = auto
