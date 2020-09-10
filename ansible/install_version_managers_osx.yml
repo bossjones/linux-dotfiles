@@ -103,6 +103,7 @@
         - hub
         - jq
         - libffi
+        - unzip
 
   # bats
   # battery

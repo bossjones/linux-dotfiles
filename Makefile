@@ -282,3 +282,12 @@ extra_install:
 	ls -lta $(PWD)/extra/
 	cp -afv $(PWD)/extra/install.sh ~/.extra/install.sh
 	chmod +x ~/.extra/install.sh
+
+tmux_config:
+	bash $(PWD)/install/tmux-conf.sh
+
+asdf_install:
+	bash $(PWD)/install/asdf.sh
+
+vscode_install:
+	bash $(PWD)/install/vs-code.sh

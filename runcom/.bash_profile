@@ -169,3 +169,5 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 
 
+
+export PATH="$HOME/.asdf/installs/poetry/1.0.10/bin:$PATH"
