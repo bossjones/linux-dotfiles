@@ -15,7 +15,7 @@ pre: |
 # pre: cd ~/dev/bossjones/scarlett-ansible; make vagrant-up; sleep 35
 
 # Runs in each window and pane before window/pane specific commands. Useful for setting up interpreter versions.
-pre_window: eval "$(rbenv init -)"; rbenv shell 2.4.2 && workon aws-tools && source ~/.aws/stage.sh
+pre_window: eval "$(rbenv init -)"; rbenv shell 2.6.6 && workon aws-tools && source ~/.aws/stage.sh
 
 windows:
   - coreos:

@@ -30,9 +30,9 @@
       rbenv:
         env: user
         version: v1.1.1
-        default_ruby: 2.4.2
+        default_ruby: 2.6.6
         rubies:
-        - version: 2.4.2
+        - version: 2.6.6
       rbenv_users:
       - "{{ bossjones__user }}"
       rbenv_repo: "https://github.com/rbenv/rbenv.git"

@@ -274,3 +274,11 @@ cp-config-travis:
 
 install:
 	install -d . ~/.dotfiles
+
+extra_install:
+	mkdir ~/.extra || true
+	mkdir ~/.extra/install || true
+	mkdir ~/.extra/runcom || true
+	ls -lta $(PWD)/extra/
+	cp -afv $(PWD)/extra/install.sh ~/.extra/install.sh
+	chmod +x ~/.extra/install.sh

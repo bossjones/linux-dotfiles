@@ -3,7 +3,7 @@
 name: monitor
 root: ~/
 
-pre_window: eval "$(rbenv init -)"; rbenv shell 2.4.2; . /usr/local/opt/dvm/dvm.sh; . $DVM_DIR/bash_completion
+pre_window: eval "$(rbenv init -)"; rbenv shell 2.6.6; . /usr/local/opt/dvm/dvm.sh; . $DVM_DIR/bash_completion
 
 windows:
   - neofetch:

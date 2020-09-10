@@ -127,14 +127,14 @@ e_header "Run tests"
 
 # Run tests
 
-e_header "Where is test folder"
+# e_header "Where is test folder"
 
-if is-executable bats; then bats "$DOTFILES_DIR"/test/*.bats; else echo "Skipped: tests (missing: bats)"; fi
+# if is-executable bats; then bats "$DOTFILES_DIR"/test/*.bats; else echo "Skipped: tests (missing: bats)"; fi
 
 e_header "Install extra stuff"
 
 # Install extra stuff
 
-if [ -d "$DOTFILES_EXTRA_DIR" -a -f "$DOTFILES_EXTRA_DIR/install.sh" ]; then
-  . "$DOTFILES_EXTRA_DIR/install.sh"
-fi
+# if [ -d "$DOTFILES_EXTRA_DIR" -a -f "$DOTFILES_EXTRA_DIR/install.sh" ]; then
+#   . "$DOTFILES_EXTRA_DIR/install.sh"
+# fi

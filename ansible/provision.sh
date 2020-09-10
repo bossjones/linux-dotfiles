@@ -54,7 +54,7 @@ elif [[ $unamestr == "Linux"  && -f $(which apt-get) ]]; then
 
     ansible-playbook -vvvv bootstrap_xenial.yml \
     --extra-vars \
-    "bossjones__user=${_USER} bossjones__group=${_GROUP}"
+    "bossjones__user=${_USER} bossjones__group=${_GROUP} configure_sudoers=false"
 fi
 
 # TODO: Add variable files for different machines
@@ -68,11 +68,11 @@ if [[ $unamestr == "Darwin" ]]; then
   if [[ "${CHECK_ONLY}" = "1" ]]; then
     ansible-playbook -vvvv install_version_managers_osx.yml \
     --extra-vars \
-    "bossjones__user=${_USER} bossjones__group=${_GROUP}" --skip-tags="${SKIP_DOTFILES_ANSIBLE_SKIP_LIST}" --check
+    "bossjones__user=${_USER} bossjones__group=${_GROUP} configure_sudoers=false" --skip-tags="${SKIP_DOTFILES_ANSIBLE_SKIP_LIST}" --check
   else
     ansible-playbook -vvvv install_version_managers_osx.yml \
     --extra-vars \
-    "bossjones__user=${_USER} bossjones__group=${_GROUP}" --skip-tags="${SKIP_DOTFILES_ANSIBLE_SKIP_LIST}"
+    "bossjones__user=${_USER} bossjones__group=${_GROUP} configure_sudoers=false" --skip-tags="${SKIP_DOTFILES_ANSIBLE_SKIP_LIST}"
   fi
 elif [[ $unamestr == "Linux"  && -f $(which apt-get) ]]; then
   ansible-playbook install_version_managers.yml
@@ -84,19 +84,19 @@ elif [[ $unamestr == "Linux"  && -f $(which dnf) ]]; then
     if [[ "${CHECK_ONLY}" = "1" ]]; then
       ansible-playbook -vvvv bootstrap_fedora.yml \
       --extra-vars \
-      "bossjones__user=${_USER} bossjones__group=${_GROUP}" --check
+      "bossjones__user=${_USER} bossjones__group=${_GROUP} configure_sudoers=false" --check
 
       ansible-playbook -vvvv install_version_managers_fedora.yml \
       --extra-vars \
-      "bossjones__user=${_USER} bossjones__group=${_GROUP}" --skip-tags="${SKIP_DOTFILES_ANSIBLE_SKIP_LIST}" --check
+      "bossjones__user=${_USER} bossjones__group=${_GROUP} configure_sudoers=false" --skip-tags="${SKIP_DOTFILES_ANSIBLE_SKIP_LIST}" --check
     else
       ansible-playbook -vvvv bootstrap_fedora.yml \
       --extra-vars \
-      "bossjones__user=${_USER} bossjones__group=${_GROUP}"
+      "bossjones__user=${_USER} bossjones__group=${_GROUP} configure_sudoers=false"
 
       ansible-playbook -vvvv install_version_managers_fedora.yml \
       --extra-vars \
-      "bossjones__user=${_USER} bossjones__group=${_GROUP}" --skip-tags="${SKIP_DOTFILES_ANSIBLE_SKIP_LIST}"
+      "bossjones__user=${_USER} bossjones__group=${_GROUP} configure_sudoers=false" --skip-tags="${SKIP_DOTFILES_ANSIBLE_SKIP_LIST}"
     fi
 
 fi

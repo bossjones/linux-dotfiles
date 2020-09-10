@@ -1,18 +1,18 @@
-ipython
-pdbpp
-isort
-pip
-setuptools
-wheel
-powerline
-ptpython
-jedi
-mistune
-psutil
-setproctitle
-neovim
-gitpython
-flake8
-pylint
+# ipython
+# pdbpp
+# isort
+# pip
+# setuptools
+# wheel
+# powerline
+# ptpython
+# jedi
+# mistune
+# psutil
+# setproctitle
+# neovim
+# gitpython
+# flake8
+# pylint
 pip-tools
 pipdeptree
