@@ -11,4 +11,5 @@ if [ "$(fnm ls | grep -i ${_NODE_VERSION_TO_INSTALL} | wc -l)" = "0" ]; then
     fnm use ${_NODE_VERSION_TO_INSTALL}
     fnm default ${_NODE_VERSION_TO_INSTALL}
     fnm current
+    npm install -g vtop whereami figlet-cli get-port-cli getmac speed-test spoof wireless-tools yaml-lint pathogen-pm gtop npm diff-so-fancy docker-enter jsonlint pure-prompt
 fi

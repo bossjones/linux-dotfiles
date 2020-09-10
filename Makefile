@@ -291,3 +291,7 @@ asdf_install:
 
 vscode_install:
 	bash $(PWD)/install/vs-code.sh
+
+npm_install:
+	npm install -g vtop whereami figlet-cli get-port-cli getmac speed-test spoof wireless-tools yaml-lint pathogen-pm gtop npm diff-so-fancy docker-enter jsonlint pure-prompt
+	
