@@ -76,13 +76,13 @@ set-config "DOTFILES_PATH_TO_DIR" "$DOTFILES_PATH_TO_DIR" "$DOTFILES_CACHE"
 # SOURCE: https://github.com/skwp/dotfiles/tree/master/ruby
 
 for DOTFILE in "$DOTFILES_DIR"/system/.{function,function_*,path,env,alias,alias.kube,completion,grep,prompt_bash_it,nvm,rbenv,rdebugrc,pyenv,cheatrc,powerline,custom,cargo,ccache,jenv,brew_env,golang,locales,terminal,fzf,vmware_env,tmux_env,less_env,git_wrapper}; do
-  # The -f condition is true if the file ‘regularfile’ exists and is a regular file. A regular file means that it’s not a block or character device, or a directory. This way, you can make sure a usable file exists before doing something with it. You can even check if a file is readable!
+  # The -f condition is true if the file 'regularfile' exists and is a regular file. A regular file means that it's not a block or character device, or a directory. This way, you can make sure a usable file exists before doing something with it. You can even check if a file is readable!
   [ -f "${DOTFILE}" ] && . "${DOTFILE}"
 done
 
 if is-macos; then
   for DOTFILE in "$DOTFILES_DIR"/system/.{env,alias,function,php}.macos; do
-    # The -f condition is true if the file ‘regularfile’ exists and is a regular file. A regular file means that it’s not a block or character device, or a directory. This way, you can make sure a usable file exists before doing something with it. You can even check if a file is readable!
+    # The -f condition is true if the file 'regularfile' exists and is a regular file. A regular file means that it's not a block or character device, or a directory. This way, you can make sure a usable file exists before doing something with it. You can even check if a file is readable!
     [ -f "$DOTFILE" ] && . "$DOTFILE"
   done
 fi
@@ -122,3 +122,52 @@ export DOTFILES_DIR DOTFILES_EXTRA_DIR
 if [[ "${RUN_DOTFILES_PROFILER}x" != "x" ]]; then
   profile_it_stop
 fi
+
+#########################################################################################################
+# bash history stuff - START
+#########################################################################################################
+# Case-insensitive globbing (used in pathname expansion)
+shopt -s nocaseglob
+
+# load the last 5000 lines into memory
+HISTSIZE=50000000
+# save 10000 lines to disk
+HISTFILESIZE=$HISTSIZE
+# Append to the Bash history file, rather than overwriting it
+shopt -s histappend
+# have bash immediately add commands to our history instead of waiting for the end of each session
+export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+
+# Autocorrect typos in path names when using `cd`
+shopt -s cdspell
+
+# Enable some Bash 4 features when possible:
+# * `autocd`, e.g. `**/qux` will enter `./foo/bar/baz/qux`
+# * Recursive globbing, e.g. `echo **/*.txt`
+for option in autocd globstar; do
+  shopt -s "$option" 2> /dev/null
+done
+
+################################################################
+# NOTE: New stuff
+# check the window size after each command and, if necessary,
+# update the values of LINES and COLUMNS.
+shopt -s checkwinsize
+#########################################################################################################
+# bash history stuff - END
+#########################################################################################################
+
+[[ -s "/Users/malcolm/.gvm/scripts/gvm" ]] && source "/Users/malcolm/.gvm/scripts/gvm"
+
+
+# export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
+[ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+
+
+
+export PATH="$HOME/.asdf/installs/poetry/1.0.10/bin:$PATH"

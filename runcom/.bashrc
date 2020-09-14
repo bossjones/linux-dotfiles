@@ -174,3 +174,38 @@
 # if [[ -r "$shell_config/local.sh" ]]; then
 #     source "$shell_config/local.sh"
 # fi
+
+# --------------------------------------------------------------------
+# NOTE: currently this is what is in my bashrc (Sept 8, 2019)
+# --------------------------------------------------------------------
+# [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+# # added by travis gem
+# [ -f /Users/malcolm/.travis/travis.sh ] && source /Users/malcolm/.travis/travis.sh
+
+
+# # System-wide .bashrc file for interactive bash(1) shells.
+# if [ -z "$PS1" ]; then
+#    return
+# fi
+
+# PS1='\h:\W \u\$ '
+# # Make bash check its window size after a process completes
+# shopt -s checkwinsize
+
+# [ -r "/etc/bashrc_$TERM_PROGRAM" ] && . "/etc/bashrc_$TERM_PROGRAM"
+
+
+# export PATH="/usr/local/bin:$PATH"
+# export PATH="/usr/local/sbin:$PATH"
+
+
+# export PYENV_ROOT="$HOME/.pyenv"
+# export PATH="$PYENV_ROOT/bin:$PATH"
+# export WORKON_HOME=~/.virtualenvs
+# export PROJECT_HOME=~/dev
+# eval "$(pyenv init -)"
+# pyenv virtualenvwrapper_lazy
+
+# source ~malcolm/.pyenv/.pyenvrc
+# source ~malcolm/.pyenv/completions/pyenv.bash

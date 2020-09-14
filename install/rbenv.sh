@@ -36,11 +36,11 @@ packages=(
 
 eval "$(rbenv init -)"
 
-if [ ! -d ~/.rbenv/versions/2.4.2 ]
+if [ ! -d ~/.rbenv/versions/2.6.6 ]
 then
-  rbenv install 2.4.2
+  rbenv install 2.6.6
 
-  rbenv shell 2.4.2
+  rbenv shell 2.6.6
 
   gem install "${packages[@]}"
 fi

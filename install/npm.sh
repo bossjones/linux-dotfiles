@@ -55,6 +55,7 @@ then
     diff-so-fancy
     docker-enter
     jsonlint
+    pure-prompt
   )
 
   npm install -g "${packages[@]}"

@@ -83,7 +83,7 @@
         - libffi
         - openssl
         - libyaml
-        - python2
+        # - python2
         - nvm
         - nodejs
         - rbenv
@@ -103,6 +103,7 @@
         - hub
         - jq
         - libffi
+        - unzip
 
   # bats
   # battery
@@ -216,22 +217,22 @@
       pyenv_owner: "{{ bossjones__user }}"
       pyenv_group: "{{ bossjones__group }}"
       pyenv_setting_path: "{% if pyenv_env == 'user' %}~/.bashrc{% else %}/etc/profile.d/pyenv.sh{% endif %}"
-      pyenv_update_git_install: no
+      pyenv_update_git_install: yes
       pyenv_enable_autocompletion: yes
       pyenv_update: no
       pyenv_env: "user"
       pyenv_python_versions:
-        - "3.6.5"
-        - "2.7.14"
+        - "3.7.8"
+        - "2.7.16"
       pyenv_virtualenvs:
         - venv_name: "jupyter3"
-          py_version: "3.6.5"
+          py_version: "3.7.8"
         - venv_name: "tools3"
-          py_version: "3.6.5"
+          py_version: "3.7.8"
         - venv_name: "ipython2"
-          py_version: "2.7.14"
+          py_version: "2.7.16"
         - venv_name: "tools2"
-          py_version: "2.7.14"
+          py_version: "2.7.16"
   pre_tasks:
     - name: Ensure homebrew deps are installed
       homebrew: "name={{ item }} state=present"
@@ -239,6 +240,7 @@
         - pyenv
         - pyenv-virtualenv
         - pyenv-virtualenvwrapper
+        # - pyenv-pip-migrate
 
     - name: "Create directory:~/{{ bossjones__user }}/.pyenv"
       file:
@@ -330,7 +332,7 @@
       become: yes
       become_user: "{{ bossjones__user }}"
 
-    - name: Clone pyenv-update
+    - name: Clone pyenv-pip-update
       git:
         repo: https://github.com/massongit/pyenv-pip-update
         dest: "~{{ bossjones__user }}/.pyenv/plugins/pyenv-pip-update"
@@ -357,10 +359,10 @@
       become: yes
       become_user: "{{ bossjones__user }}"
 
-    - name: Clone pyenv-update
+    - name: Clone pyenv-which-ext
       git:
-        repo: https://github.com/pyenv/pyenv-update
-        dest: "~{{ bossjones__user }}/.pyenv/plugins/pyenv-update"
+        repo: https://github.com/pyenv/pyenv-which-ext
+        dest: "~{{ bossjones__user }}/.pyenv/plugins/pyenv-which-ext"
         version: "master"
         update: "{{ pyenv_update_git_install }}"
       become: yes
@@ -419,10 +421,10 @@
       become: yes
       become_user: "{{ bossjones__user }}"
 
-    - name: install virtualenvwrapper module in venv 3.6.5
+    - name: install virtualenvwrapper module in venv 3.7.8
       pip:
         name: "{{item}}"
-        executable: "{{pyenv_root}}/versions/3.6.5/bin/pip"
+        executable: "{{pyenv_root}}/versions/3.7.8/bin/pip"
       with_items:
         - virtualenvwrapper
         - pip
@@ -431,13 +433,15 @@
         - pylint
         - isort
         - autopep8
+        - pip-tools
+        - pipdeptree
       # async: 60
       # poll: 10
 
-    - name: install virtualenvwrapper module in venv 2.7.14
+    - name: install virtualenvwrapper module in venv 2.7.16
       pip:
         name: "{{item}}"
-        executable: "{{pyenv_root}}/versions/2.7.14/bin/pip"
+        executable: "{{pyenv_root}}/versions/2.7.16/bin/pip"
       with_items:
         - virtualenvwrapper
         - pip
@@ -445,6 +449,8 @@
         - pylint
         - isort
         - autopep8
+        - pip-tools
+        - pipdeptree
       # async: 60
       # poll: 10
 
@@ -461,6 +467,8 @@
         - jupyter
         - pip
         - setuptools
+        - pip-tools
+        - pipdeptree
       # async: 60
       # poll: 10
 
@@ -483,6 +491,8 @@
         - ipykernel
         - pip
         - setuptools
+        - pip-tools
+        - pipdeptree
       # async: 60
       # poll: 10
 
@@ -524,6 +534,8 @@
         # Needed for cless ( man pages )
         # SOURCE: https://github.com/KevinOfNeu/colored-less-more-cat
         - Pygments
+        - pip-tools
+        - pipdeptree
       # async: 60
       # poll: 10
 
@@ -555,13 +567,15 @@
         # Needed for cless ( man pages )
         # SOURCE: https://github.com/KevinOfNeu/colored-less-more-cat
         - Pygments
+        - pip-tools
+        - pipdeptree
       # async: 60
       # poll: 10
 
-    - name: install common modules in venv 3.6.5
+    - name: install common modules in venv 3.7.8
       pip:
         name: "{{item}}"
-        executable: "{{pyenv_root}}/versions/3.6.5/bin/pip"
+        executable: "{{pyenv_root}}/versions/3.7.8/bin/pip"
       ignore_errors: yes
       with_items:
         # - powerline-status
@@ -570,32 +584,34 @@
         - libtmux
         - tmuxp
         - pip
+        - pip-tools
+        - pipdeptree
       # async: 60
       # poll: 10
 
       # Finally, it’s time to make all Python versions and special virtualenvs work with each other.
       # The above command establishes the PATH priority so scripts can be accessed in the right order without activating any virtualenv.
       # pyenv global 3.6.0 2.7.13 jupyter3 ipython2 tools3 tools2
-    # - name: pyenv global 3.6.5 2.7.14 jupyter3 ipython2 tools3 tools2
+    # - name: pyenv global 3.7.8 2.7.16 jupyter3 ipython2 tools3 tools2
     #   pyenv:
     #     subcommand: global
     #     versions:
-    #     - 3.6.5
-    #     - 2.7.14
+    #     - 3.7.8
+    #     - 2.7.16
     #     - jupyter3
     #     - ipython2
     #     - tools3
     #     - tools2
     #     pyenv_root: "~/.pyenv"
 
-    - name: pyenv global 3.6.5 2.7.14 jupyter3 ipython2 tools3 tools2
-      shell: . {{ pyenv_path }}/.pyenvrc && pyenv global 3.6.5 2.7.14 jupyter3 ipython2 tools3 tools2
+    - name: pyenv global 3.7.8 2.7.16 jupyter3 ipython2 tools3 tools2
+      shell: . {{ pyenv_path }}/.pyenvrc && pyenv global 3.7.8 2.7.16 jupyter3 ipython2 tools3 tools2
 
     - name: pip install --upgrade pip for all pyenv
       shell: . {{ pyenv_path }}/.pyenvrc && pyenv shell {{item}}; pip install --upgrade pip
       with_items:
-      - '3.6.5'
-      - '2.7.14'
+      - '3.7.8'
+      - '2.7.16'
       - jupyter3
       - ipython2
       - tools3
@@ -776,37 +792,37 @@
         - powerline
         - nass600.powerline
 
+# # ####################################################################################################
+# # # CHEATSHEETS SETUP
 # ####################################################################################################
-# # CHEATSHEETS SETUP
-####################################################################################################
-- hosts: localhost
-  gather_facts: True
-  vars_prompt:
-    - name: "bossjones__user"
-      prompt: "User we want to run as."
-      private: no
-    - name: "bossjones__group"
-      prompt: "Group we want to run as."
-      private: no
-  tags:
-    - cheat
-  vars:
-    bossjones__user: "{{boss__user}}"
-    bossjones__group: "{{boss_group}}"
-    cheatsheet_update: yes
-  become: yes
-  become_user: "{{ bossjones__user }}"
-  # become_method: sudo
-  # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
-  environment:
-    SHELL: /bin/bash
-  tasks:
-    - name: Clone pyenv-doctor
-      git:
-        repo: https://github.com/bossjones/boss-cheatsheets
-        dest: "~{{ bossjones__user }}/.cheat"
-        version: "master"
-        update: "{{ cheatsheet_update }}"
+# - hosts: localhost
+#   gather_facts: True
+#   vars_prompt:
+#     - name: "bossjones__user"
+#       prompt: "User we want to run as."
+#       private: no
+#     - name: "bossjones__group"
+#       prompt: "Group we want to run as."
+#       private: no
+#   tags:
+#     - cheat
+#   vars:
+#     bossjones__user: "{{boss__user}}"
+#     bossjones__group: "{{boss_group}}"
+#     cheatsheet_update: yes
+#   become: yes
+#   become_user: "{{ bossjones__user }}"
+#   # become_method: sudo
+#   # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
+#   environment:
+#     SHELL: /bin/bash
+#   tasks:
+#     - name: Clone pyenv-doctor
+#       git:
+#         repo: https://github.com/bossjones/boss-cheatsheets
+#         dest: "~{{ bossjones__user }}/.cheat"
+#         version: "master"
+#         update: "{{ cheatsheet_update }}"
 
 # ####################################################################################################
 # # BASH-IT SETUP

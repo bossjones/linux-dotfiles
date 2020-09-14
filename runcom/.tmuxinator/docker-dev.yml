@@ -13,7 +13,7 @@ root: ~/
 # pre: cd ~/dev/bossjones/scarlett-ansible; make vagrant-up; sleep 35
 
 # Runs in each window and pane before window/pane specific commands. Useful for setting up interpreter versions.
-pre_window: eval "$(rbenv init -)"; rbenv shell 2.4.2; eval $(docker-machine env dev); source ~/.aws/dev.sh
+pre_window: eval "$(rbenv init -)"; rbenv shell 2.6.6; eval $(docker-machine env dev); source ~/.aws/dev.sh
 
 # Pass command line options to tmux. Useful for specifying a different tmux.conf.
 # tmux_options: -f ~/.tmux.mac.conf
@@ -30,16 +30,16 @@ windows:
       panes:
         - master:
           - sleep 3s
-          - rbenv shell 2.4.2; eval $(docker-machine env dev); source ~/.aws/dev.sh
+          - rbenv shell 2.6.6; eval $(docker-machine env dev); source ~/.aws/dev.sh
           - docker ps
           - echo "one pane"
         - slave1:
           - sleep 6s
-          - rbenv shell 2.4.2; eval $(docker-machine env dev); source ~/.aws/dev.sh
+          - rbenv shell 2.6.6; eval $(docker-machine env dev); source ~/.aws/dev.sh
           - docker ps
           - echo "two pane"
         - slave2:
           - sleep 9s
-          - rbenv shell 2.4.2; eval $(docker-machine env dev); source ~/.aws/dev.sh
+          - rbenv shell 2.6.6; eval $(docker-machine env dev); source ~/.aws/dev.sh
           - docker ps
           - echo "two pane"

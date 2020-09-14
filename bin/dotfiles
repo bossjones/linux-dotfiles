@@ -70,7 +70,7 @@ sub_completion () {
 }
 
 sub_install_tmux_upstream() {
-  cd $HOME
+  cd ${HOME}
   rm -rfv ~/.tmux
   git clone https://github.com/gpakosz/.tmux.git
   ln -svf .tmux/.tmux.conf ~

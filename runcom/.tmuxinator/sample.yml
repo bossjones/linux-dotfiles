@@ -4,7 +4,7 @@ name: sample
 root: ~/dev
 
 # Runs in each window and pane before window/pane specific commands. Useful for setting up interpreter versions.
-pre_window: eval "$(rbenv init -)"; rbenv shell 2.4.2;
+pre_window: eval "$(rbenv init -)"; rbenv shell 2.6.6;
 
 
 windows:

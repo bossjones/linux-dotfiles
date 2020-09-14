@@ -156,7 +156,7 @@ def install_desktop():
     #ln -s ${HOME}/dotfiles/modulefiles ${HOME}/local
 
     #Slack
-    sudo apt install -y ${HOME}"/dotfiles/private/src/slack-desktop-2.4.2-amd64.deb"
+    sudo apt install -y ${HOME}"/dotfiles/private/src/slack-desktop-2.6.6-amd64.deb"
 
     #Freesurfer
     #sudo apt install -y tcsh

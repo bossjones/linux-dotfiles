@@ -274,3 +274,24 @@ cp-config-travis:
 
 install:
 	install -d . ~/.dotfiles
+
+extra_install:
+	mkdir ~/.extra || true
+	mkdir ~/.extra/install || true
+	mkdir ~/.extra/runcom || true
+	ls -lta $(PWD)/extra/
+	cp -afv $(PWD)/extra/install.sh ~/.extra/install.sh
+	chmod +x ~/.extra/install.sh
+
+tmux_config:
+	bash $(PWD)/install/tmux-conf.sh
+
+asdf_install:
+	bash $(PWD)/install/asdf.sh
+
+vscode_install:
+	bash $(PWD)/install/vs-code.sh
+
+npm_install:
+	npm install -g vtop whereami figlet-cli get-port-cli getmac speed-test spoof wireless-tools yaml-lint pathogen-pm gtop npm diff-so-fancy docker-enter jsonlint pure-prompt
+	
