@@ -52,6 +52,7 @@ jobs:
           date -u
           mkdir build
           date +%s > build/stamp
+          python3 -m venv .venv
           source .venv/bin/activate
           pip install ansible | tee -a depslog
           pip install mitogen | tee -a depslog
