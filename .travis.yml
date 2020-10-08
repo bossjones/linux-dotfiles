@@ -1,128 +1,135 @@
-# ---
-# cache:
-#   directories:
-#     # - $HOME/.yarn-cache
-#     # - ".eslintcache"
-#     # - node_modules
-#     - $HOME/.nvm
-#     - $HOME/.rbenv
-#     # - $HOME/.pyenv
-#     # - $HOME/.pip/cache
+---
+cache:
+  directories:
+    # - $HOME/.yarn-cache
+    # - ".eslintcache"
+    # - node_modules
+    - $HOME/.nvm
+    - $HOME/.rbenv
+    # - $HOME/.pyenv
+    # - $HOME/.pip/cache
+
+env:
+  global:
+    # - PYTHON_CONFIGURE_OPTS="--enable-shared"
+    # - PYENV_ROOT="$HOME/.pyenv"
+    # - PATH="$PYENV_ROOT/bin:$PYENV_ROOT/shims:$PATH"
+    # - PYENV_VERSION=3.7.0
+    - _USER=travis
+    - _GROUP=staff
+    - _TRAVIS_CI=1
 
 # env:
 #   global:
-#     # - PYTHON_CONFIGURE_OPTS="--enable-shared"
-#     # - PYENV_ROOT="$HOME/.pyenv"
-#     # - PATH="$PYENV_ROOT/bin:$PYENV_ROOT/shims:$PATH"
-#     # - PYENV_VERSION=3.7.0
-#     - _USER=travis
-#     - _GROUP=staff
-#     - _TRAVIS_CI=1
+#   - LC_CTYPE=en_US.UTF-8
+#   - LANG=en_US.UTF-8
+#   - LANGUAGE=en_US.UTF-8
 
-# # env:
-# #   global:
-# #   - LC_CTYPE=en_US.UTF-8
-# #   - LANG=en_US.UTF-8
-# #   - LANGUAGE=en_US.UTF-8
-
-# # FIXME: Enable this
-# # matrix:
-# #   fast_finish: true
-# #   allow_failures:
-# #     - osx_image: xcode8
-
-
-# # Reference:
-# #   https://docs.travis-ci.com/user/reference/osx/
-# #   https://docs.travis-ci.com/user/languages/objective-c/
-# #   https://docs.travis-ci.com/user/build-stages/
-# #   https://github.com/ReactiveCocoa/ReactiveSwift/blob/master/.travis.yml
-
-
-# # --------------------------
+# FIXME: Enable this
 # matrix:
-#   include:
-#   # ORIGINAL WORKING VERSION
-#   - name: "High Sierra (10.13) and xcode9.3"
-#     os: osx
-#     sudo: required
-#     language: objective-c
-#     # 10.13 (see https://docs.travis-ci.com/user/osx-ci-environment/#OS-X-Version)
-#     osx_image: xcode9.3
-#     xcode_sdk: macosx10.13
-#     # env: MY_RUBY_VERSION=""
-
-#   - name: "High Sierra (10.13) and xcode9.4"
-#     os: osx
-#     sudo: required
-#     language: objective-c
-#     osx_image: xcode9.4
-#     xcode_sdk: macosx10.13
+#   fast_finish: true
+#   allow_failures:
+#     - osx_image: xcode8
 
 
-#   - name: "High Sierra (10.13) and xcode9.4"
-#     os: osx
-#     sudo: required
-#     language: objective-c
-#     osx_image: xcode9.4
-#     xcode_sdk: macosx10.13
+# Reference:
+#   https://docs.travis-ci.com/user/reference/osx/
+#   https://docs.travis-ci.com/user/languages/objective-c/
+#   https://docs.travis-ci.com/user/build-stages/
+#   https://github.com/ReactiveCocoa/ReactiveSwift/blob/master/.travis.yml
 
-#   - name: "Mojave (10.14) and xcode9.4"
-#     os: osx
-#     sudo: required
-#     language: objective-c
-#     # osx_image: xcode9.4
-#     xcode_sdk: macosx10.14
 
-# # # SOURCE: https://github.com/geerlingguy/mac-dev-playbook/blob/df25444b3f08e1c5a2c7b941d0a49850514f9d98/.travis.yml
-# # sudo: required
-# # language: objective-c
-# # # 10.13 (see https://docs.travis-ci.com/user/osx-ci-environment/#OS-X-Version)
-# # osx_image: xcode9.3
+# --------------------------
+matrix:
+  include:
+  # ORIGINAL WORKING VERSION
+  # - name: "High Sierra (10.13) and xcode9.3"
+  #   os: osx
+  #   sudo: required
+  #   language: objective-c
+  #   # 10.13 (see https://docs.travis-ci.com/user/osx-ci-environment/#OS-X-Version)
+  #   osx_image: xcode9.3
+  #   xcode_sdk: macosx10.13
+  #   # env: MY_RUBY_VERSION=""
 
-# before_install:
-#   # Uninstall existing Homebrew installation.
-#   - curl -sLO https://raw.githubusercontent.com/Homebrew/install/master/uninstall
-#   - chmod +x ./uninstall
-#   - ./uninstall --force
-#   - sudo rm -rf /usr/local/Homebrew
-#   - sudo rm -rf /usr/local/Caskroom
-#   - sudo rm -rf /usr/local/bin/brew
+  # - name: "High Sierra (10.13) and xcode9.4"
+  #   os: osx
+  #   sudo: required
+  #   language: objective-c
+  #   osx_image: xcode9.4
+  #   xcode_sdk: macosx10.13
 
-# install:
-#   # Install pip.
-#   - sudo easy_install pip
 
-#   # Install Ansible.
-#   - sudo pip install ansible
-#   - sudo pip install mitogen
-#   - sudo python -c 'import sys; print "\n".join(sys.path)' | grep site-packages
+  # - name: "High Sierra (10.13) and xcode9.4"
+  #   os: osx
+  #   sudo: required
+  #   language: objective-c
+  #   osx_image: xcode9.4
+  #   xcode_sdk: macosx10.13
 
-#   # Add ansible.cfg to pick up roles path.
-#   - "{ echo '[defaults]'; echo 'roles_path = ../'; } >> ansible.cfg"
-#   - mv ansible.cfg-travis ansible.cfg
-#   - cat ansible.cfg
+  - name: "Mojave (10.14) and xcode9.4"
+    os: osx
+    sudo: required
+    language: objective-c
+    # osx_image: xcode9.4
+    xcode_sdk: macosx10.14
 
-#   # Add a hosts file.
-#   - sudo mkdir -p /etc/ansible
-#   - sudo touch /etc/ansible/hosts
-#   - "echo -e '[local]\nlocalhost ansible_connection=local' | sudo tee -a /etc/ansible/hosts > /dev/null"
+  - name: "catalina (10.15) and xcode11.6"
+    os: osx
+    sudo: required
+    language: objective-c
+    # osx_image: xcode11.6
+    xcode_sdk: macosx10.15
 
-# script:
-#   - _USER=travis
-#   - _GROUP=staff
-#   - _TRAVIS_CI=1
-#   - echo $_USER
-#   - echo $_GROUP
-#   # Test the playbook.
-#   # - "travis_wait 30 source install.sh"
-#   - cp -a $(pwd) ~/.dotfiles
-#   - ls -lta ~/.dotfiles
-#   - make sed-travis
-#   # - make cp-config-travis
-#   - cat ~/.dotfiles/ansible/provision.sh
-#   - source ~/.dotfiles/install.sh
-#   - "/bin/bash -l -c 'pyenv versions'"
+# # SOURCE: https://github.com/geerlingguy/mac-dev-playbook/blob/df25444b3f08e1c5a2c7b941d0a49850514f9d98/.travis.yml
+# sudo: required
+# language: objective-c
+# # 10.13 (see https://docs.travis-ci.com/user/osx-ci-environment/#OS-X-Version)
+# osx_image: xcode9.3
 
-# # after_success:
-# # - ""
+before_install:
+  # Uninstall existing Homebrew installation.
+  - curl -sLO https://raw.githubusercontent.com/Homebrew/install/master/uninstall
+  - chmod +x ./uninstall
+  - ./uninstall --force
+  - sudo rm -rf /usr/local/Homebrew
+  - sudo rm -rf /usr/local/Caskroom
+  - sudo rm -rf /usr/local/bin/brew
+
+install:
+  # Install pip.
+  - sudo easy_install pip
+
+  # Install Ansible.
+  - sudo pip install ansible
+  - sudo pip install mitogen
+  - sudo python -c 'import sys; print "\n".join(sys.path)' | grep site-packages
+
+  # Add ansible.cfg to pick up roles path.
+  - "{ echo '[defaults]'; echo 'roles_path = ../'; } >> ansible.cfg"
+  - mv ansible.cfg-travis ansible.cfg
+  - cat ansible.cfg
+
+  # Add a hosts file.
+  - sudo mkdir -p /etc/ansible
+  - sudo touch /etc/ansible/hosts
+  - "echo -e '[local]\nlocalhost ansible_connection=local' | sudo tee -a /etc/ansible/hosts > /dev/null"
+
+script:
+  - _USER=travis
+  - _GROUP=staff
+  - _TRAVIS_CI=1
+  - echo $_USER
+  - echo $_GROUP
+  # Test the playbook.
+  # - "travis_wait 30 source install.sh"
+  - cp -a $(pwd) ~/.dotfiles
+  - ls -lta ~/.dotfiles
+  - make sed-travis
+  # - make cp-config-travis
+  - cat ~/.dotfiles/ansible/provision.sh
+  - source ~/.dotfiles/install.sh
+  - "/bin/bash -l -c 'pyenv versions'"
+
+# after_success:
+# - ""
