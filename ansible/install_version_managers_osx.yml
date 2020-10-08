@@ -589,7 +589,7 @@
       # async: 60
       # poll: 10
 
-      # Finally, it’s time to make all Python versions and special virtualenvs work with each other.
+      # Finally, it's time to make all Python versions and special virtualenvs work with each other.
       # The above command establishes the PATH priority so scripts can be accessed in the right order without activating any virtualenv.
       # pyenv global 3.6.0 2.7.13 jupyter3 ipython2 tools3 tools2
     # - name: pyenv global 3.7.8 2.7.16 jupyter3 ipython2 tools3 tools2

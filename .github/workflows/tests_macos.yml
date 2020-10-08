@@ -49,6 +49,9 @@ jobs:
           _GROUP: staff
           _TRAVIS_CI: 1
         run: |
+          date -u
+          mkdir build
+          date +%s > build/stamp
           source .venv/bin/activate
           pip install ansible | tee -a depslog
           pip install mitogen | tee -a depslog
@@ -66,6 +69,8 @@ jobs:
           sudo mkdir -p /etc/ansible
           sudo touch /etc/ansible/hosts
           echo -e '[local]\nlocalhost ansible_connection=local' | sudo tee -a /etc/ansible/hosts > /dev/null
+
+          # zsh -c 'echo "Completed installation of dependencies in $(printf "%0.2f" $(($[$(date +%s)-$(cat build/stamp)]/$((60.))))) minutes"'
 
       - name: Run tests
         env:
@@ -87,3 +92,7 @@ jobs:
           "/bin/bash -l -c 'pyenv versions'"
       # - name: Upload coverage to Codecov
       #   uses: codecov/codecov-action@v1
+      - name: Finish build
+        run: |
+          date -u
+          # zsh -c 'echo "Build completed in $(printf "%0.2f" $(($[$(date +%s)-$(cat build/stamp)]/$((60.))))) minutes"'
