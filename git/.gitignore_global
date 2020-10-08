@@ -8,7 +8,7 @@ bower_components
 npm-debug.log
 .vagrant
 **/.*.swp
-**/.ropeproject
+# **/.ropeproject
 **/.cache
 *.pyc
 .cache
