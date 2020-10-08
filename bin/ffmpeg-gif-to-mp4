@@ -9,6 +9,6 @@ export input_file="${1}"
 export full_path_input_file="$(pwd)/${1}"
 export full_path_output_file="$(uuidgen).mp4"
 
-ffmpeg -safe 0 -i ${full_path_input_file} -movflags faststart -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" ${full_path_output_file}
+ffmpeg -i ${full_path_input_file} -movflags faststart -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" ${full_path_output_file}
 
-ffmpeg-loop ${full_path_output_file}
+ffmpeg-loop "${full_path_output_file}"
