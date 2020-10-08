@@ -26,7 +26,12 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install poetry
-        run: pip install poetry==1.0
+        run: |
+          pip install poetry==1.0
+          python3 -m venv .venv
+          source .venv/bin/activate
+          pip install ansible | tee -a depslog
+          pip install mitogen | tee -a depslog
       - uses: actions/cache@v1
         id: cache-dev-deps
         with:
@@ -52,10 +57,7 @@ jobs:
           date -u
           mkdir build
           date +%s > build/stamp
-          python3 -m venv .venv
           source .venv/bin/activate
-          pip install ansible | tee -a depslog
-          pip install mitogen | tee -a depslog
           python -c 'import sys; print "\n".join(sys.path)' | grep site-packages | tee -a depslog
 
           date -u
