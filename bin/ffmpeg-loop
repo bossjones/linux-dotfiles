@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+if [[ x"$1" = x"" ]]; then
+    echo " [ffmpeg-loop] missing file to loop, try with ffmpeg-loop <FILENAME>"
+    exit 1
+fi
+
+export input_file="${1}"
+export full_path_input_file="$(pwd)/${1}"
+export full_path_output_file="loop_$(uuidgen).mp4"
+
+ffmpeg -f concat -safe 0 -i <(for i in {1..4}; do printf "file '%s'\n" ${full_path_input_file}; done) -c copy ${full_path_output_file}
+
+
+
