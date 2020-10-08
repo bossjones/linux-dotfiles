@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+if [[ x"$1" = x"" ]]; then
+    echo " [ffmpeg-gif-to-mp4] missing file to convert from gif to mp4, try with ffmpeg-gif-to-mp4 <FILENAME>"
+    exit 1
+fi
+
+export input_file="${1}"
+export full_path_input_file="$(pwd)/${1}"
+export full_path_output_file="$(uuidgen).mp4"
+
+ffmpeg -safe 0 -i ${full_path_input_file} -movflags faststart -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" ${full_path_output_file}
+
+ffmpeg-loop ${full_path_output_file}

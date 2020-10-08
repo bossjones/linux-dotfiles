@@ -101,8 +101,8 @@ install:
   - sudo easy_install pip
 
   # Install Ansible.
-  - sudo pip install ansible
-  - sudo pip install mitogen
+  - sudo pip install ansible --ignore-installed PyYAML
+  - sudo pip install mitogen --ignore-installed PyYAML
   - sudo python -c 'import sys; print "\n".join(sys.path)' | grep site-packages
 
   # Add ansible.cfg to pick up roles path.
