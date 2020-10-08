@@ -58,7 +58,7 @@ jobs:
           mkdir build
           date +%s > build/stamp
           source .venv/bin/activate
-          python -c 'import sys; print "\n".join(sys.path)' | grep site-packages | tee -a depslog
+          python -c 'import sys; print("\n").join(sys.path)' | grep site-packages | tee -a depslog
 
           date -u
           echo "----====Deps====----"
