@@ -80,7 +80,7 @@ echo -e " ${BLUE}[ffmpeg-watermark]${NOCOLOR} tmpfile=${tmpfile}"
 # https://openwritings.net/pg/ffmpeg/ffmpeg-add-logo-video
 cat << EOF > "${tmpfile}"
 # https://github.com/koalaman/shellcheck/wiki/SC2155
-dimensions=\$(echo "\$(ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=s=x:p=0 ${full_path_input_file})" | $awk_bin 'BEGIN {FS="x"} {print int(\$1/5)"x"int(\$2/5)}' | tee /tmp/dimensions.txt)
+dimensions=\$(echo "\$(ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=s=x:p=0 ${full_path_input_file})" | $awk_bin 'BEGIN {FS="x"} {print int(\$1/3)"x"int(\$2/3)}' | tee /tmp/dimensions.txt)
 # export dimensions
 echo -e " ${BLUE}[ffmpeg-watermark]${NOCOLOR} dimensions=\$(\head -1 /tmp/dimensions.txt)"
 
