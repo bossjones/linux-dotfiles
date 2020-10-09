@@ -25,13 +25,8 @@ export LIGHTPURPLE='\033[1;35m'
 export LIGHTCYAN='\033[1;36m'
 export WHITE='\033[1;37m'
 
-# [ -f "$(which gawk)" ] && echo -e " ${GREEN}[ffmpeg-watermark]${NOCOLOR} good to go with gawk" || echo -e " ${RED}[ffmpeg-watermark]${NOCOLOR} missing gawk command, please install with brew install gawk" && exit 1
-# [ -f "$(which gsed)" ] && echo -e " ${GREEN}[ffmpeg-watermark]${NOCOLOR} good to go with gsed" || echo -e " ${RED}[ffmpeg-watermark]${NOCOLOR} missing gsed command, please install with brew install gsed" && exit 1
-
 export awk_bin="$(which gawk)"
 export sed_bin="$(which gsed)"
-
-# alias whichpill='echo -e "You take the ${BLUE}blue pill${NOCOLOR}-the story ends, you wake up in bed and believe whatever you want to believe. You take the ${RED}red pill${NOCOLOR}-you stay in Wonderland, and I show you how deep the rabbit hole goes. Remember: all I'm offering is the ${YELLOW}truth${NOCOLOR}. Nothing more."';
 
 while getopts ":hf:t:" opt; do
   case ${opt} in
@@ -52,47 +47,32 @@ while getopts ":hf:t:" opt; do
   esac
 done
 
-
-# if [[ x"$1" = x"" ]]; then
-#     echo -e " ${BLUE}[ffmpeg-watermark]${NOCOLOR} missing file to convert from gif to mp4, try with ffmpeg-watermark <FILENAME> <WATERMARK TEXT>"
-#     exit 1
-# fi
-
-# if [[ x"$2" = x"" ]]; then
-#     echo -e " ${BLUE}[ffmpeg-watermark]${NOCOLOR} missing file to convert from gif to mp4, try with ffmpeg-watermark <FILENAME> <WATERMARK TEXT>"
-#     exit 1
-# fi
-
 export input_file="${filename_val}"
 export full_path_input_file="$(pwd)/${filename_val}"
 export full_path_output_file="watermark-$(uuidgen).mp4"
 export watermark_text=${text_val}
+export font_location='/Volumes/Macintosh HD/System/Library/Fonts/Helvetica.ttc'
 
 tmpfile=$(mktemp /tmp/abc-script.XXXXXX)
 echo -e " ${BLUE}[ffmpeg-watermark]${NOCOLOR} tmpfile=${tmpfile}"
 
-# cat <<'EOF' > "${tmpfile}"
-# ffmpeg -i ${full_path_input_file} -vf "drawtext=text='${watermark_text}':fontcolor=white:fontsize=75:x=1002:y=100:" ${full_path_output_file}
-# EOF
-# ffmpeg -i ${full_path_input_file} -i logo.png -filter_complex "[0:v][1:v]overlay=10:10,drawtext=text='${watermark_text}'" -c:a copy -movflags +faststart ${full_path_output_file}
 
 # https://superuser.com/questions/809820/scale-watermark-overlay-by-video-size-with-ffmpeg
 # https://openwritings.net/pg/ffmpeg/ffmpeg-add-logo-video
-cat << EOF > "${tmpfile}"
 # https://github.com/koalaman/shellcheck/wiki/SC2155
-dimensions=\$(echo "\$(ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=s=x:p=0 ${full_path_input_file})" | $awk_bin 'BEGIN {FS="x"} {print int(\$1/3)"x"int(\$2/3)}' | tee /tmp/dimensions.txt)
-# export dimensions
-echo -e " ${BLUE}[ffmpeg-watermark]${NOCOLOR} dimensions=\$(\head -1 /tmp/dimensions.txt)"
+cat << EOF > "${tmpfile}"
+dimensions=\$(echo "\$(ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=s=x:p=0 ${full_path_input_file})" | $awk_bin 'BEGIN {FS="x"} {print int(\$1/4)"x"int(\$2/4)}' | tee /tmp/dimensions.txt)
 
 echo -e " ${BLUE}[ffmpeg-watermark]${NOCOLOR} dimensions=\$(\head -1 /tmp/dimensions.txt)"
-ffmpeg -hide_banner -loglevel warning -i ${full_path_input_file} -i logo.png -filter_complex "[1:v] scale=\$(\head -1 /tmp/dimensions.txt) [logo1]; [0:v][logo1] overlay=x=main_w*0.01:y=main_h*0.01" -y -b 1600k -c:v libx264 -profile high -level 4.1 -c:a libfaac -q:a 128k ${full_path_output_file} 2>&1 > /dev/null
+
+echo -e " ${BLUE}[ffmpeg-watermark]${NOCOLOR} dimensions=\$(\head -1 /tmp/dimensions.txt | cut -d"x" -f1):-1"
+
+ffmpeg -hide_banner -loglevel warning -i ${full_path_input_file} -vf drawtext="fontfile=$font_location: \
+text='${watermark_text}': fontcolor=white: fontsize=14: box=1: boxcolor=black@0.5: \
+boxborderw=5: x=(w-text_w)-10: y=(h-text_h)-10" -c:a libfaac -q:a 128k ${full_path_output_file} 2>&1 > /dev/null
 
 rm /tmp/dimensions.txt
 EOF
-# overlay=5:5
-# overlay=x=main_w*0.01:y=main_h*0.01
-# convert logo.png -resize 86x86  resize_logo.png
-# ffmpeg -i input.mp4 -framerate 30000/1001 -loop 1 -i biglogo.png -filter_complex "[1:v][0:v]scale2ref=iw/1:-1[ovrl][0v]; [0v][ovrl]overlay=0:0[v]" -map "[v] ; [1:v] fade=out:st=2:d=1:alpha=1 [ov]" -map 0:a -c:v libx264 -c:a copy -shortest Bigout.mp4
 
 echo -e " ${BLUE}[ffmpeg-watermark]${NOCOLOR} cat ${tmpfile}"
 cat "${tmpfile}"
@@ -100,8 +80,3 @@ cat "${tmpfile}"
 bash -x "${tmpfile}"
 
 rm "$tmpfile"
-
-
-
-# ffmpeg -i /Users/malcolm/Downloads/tryit/loop_D771AC52-FDFE-4368-8655-A199EE14EDEA.mp4 -vf "drawtext=text='@iamprofessorEX':fontcolor=white:fontsize=75:x=1002:y=100:" watermark-3A7FF249-2B0B-4A87-A3A6-9979ACB00AE0.mp4
-# convert -size 100x100 xc:#990000 whatever.png
