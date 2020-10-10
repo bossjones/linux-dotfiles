@@ -64,7 +64,7 @@ jobs:
           echo "----====Deps====----"
 
           # Add ansible.cfg to pick up roles path.
-          "{ echo '[defaults]'; echo 'roles_path = ../'; } >> ansible.cfg"
+          # "{ echo '[defaults]'; echo 'roles_path = ../'; } >> ansible.cfg"
           mv ansible.cfg-travis ansible.cfg
           cat ansible.cfg
 
