@@ -28,12 +28,15 @@ export LIGHTPURPLE='\033[1;35m'
 export LIGHTCYAN='\033[1;36m'
 export WHITE='\033[1;37m'
 
-while getopts ":hf:" opt; do
+while getopts ":hf:c:" opt; do
   case ${opt} in
     h ) # process option h
       ;;
     f ) # process option f
       filename_val=$OPTARG
+      ;;
+    c ) # common_name
+      common_name=$OPTARG
       ;;
     \? )
       echo "Invalid option: $OPTARG" 1>&2
@@ -46,7 +49,15 @@ done
 
 export input_file="${filename_val}"
 export full_path_input_file="$(pwd)/${filename_val}"
-export full_path_output_file="tiktok-$(uuidgen).mp4"
+export get_extension=$(echo ${input_file} | cut -d"." -f2)
+
+export full_path_output_file="$(uuidgen).${get_extension}"
+# generate a common name when one isn't passed in from outside the script
+if [[ x"$common_name" = x"" ]]; then
+    export fname_common="$(uuidgen).${get_extension}"
+    export full_path_input_file="${fname_common}"
+    export full_path_output_file-"tiktok-${fname_common}"
+fi
 export font_location='/Volumes/Macintosh HD/System/Library/Fonts/Helvetica.ttc'
 
 tmpfile=$(mktemp /tmp/abc-script.XXXXXX)
@@ -63,12 +74,14 @@ cat << EOF > "${tmpfile}"
 
 # ffmpeg -i ${full_path_input_file} -filter:v "crop=1280:720:0:(in_h-out_h)/2 +((in_h-out_h)/2)*sin(t)" -y ${full_path_output_file}
 
-ffmpeg -i ${full_path_input_file} -vf "scale=1080:1920:force_original_aspect_ratio=decrease,pad=1080:1920:-1:-1:color=white" ${full_path_output_file}
+
+echo -e " ${GREEN}[ffmpeg-tiktok]${NOCOLOR} ${CYAN}tiktok${NOCOLOR} video ${YELLOW}1080:1920 (1080 x 1920px)${NOCOLOR}"
+ffmpeg -hide_banner -loglevel warning -i ${full_path_input_file} -vf "scale=1080:1920:force_original_aspect_ratio=decrease,pad=1080:1920:-1:-1:color=white" ${full_path_output_file}
 EOF
 
 echo -e " ${BLUE}[ffmpeg-tiktok]${NOCOLOR} cat ${tmpfile}"
 cat "${tmpfile}"
 
-bash -x "${tmpfile}"
+bash "${tmpfile}"
 
 rm "$tmpfile"

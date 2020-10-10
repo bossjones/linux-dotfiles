@@ -50,9 +50,9 @@ jobs:
       - name: Install dependencies
         if: steps.cache-dev-deps.outputs.cache-hit != 'true'
         env:
-          _USER: travis
+          _USER: runner
           _GROUP: staff
-          _TRAVIS_CI: 1
+          # _TRAVIS_CI: 1
         run: |
           date -u
           mkdir build
@@ -77,14 +77,14 @@ jobs:
 
       - name: Run tests
         env:
-          _USER: travis
+          _USER: runner
           _GROUP: staff
           # _TRAVIS_CI: 1
         run: |
           source .venv/bin/activate
-          _USER=travis
+          _USER=runner
           _GROUP=staff
-          _TRAVIS_CI=1
+          # _TRAVIS_CI=1
           echo $_USER
           echo $_GROUP
           cp -a $(pwd) ~/.dotfiles

@@ -28,7 +28,9 @@ export WHITE='\033[1;37m'
 export awk_bin="$(which gawk)"
 export sed_bin="$(which gsed)"
 
-while getopts ":hf:t:" opt; do
+export delete_orig=false
+
+while getopts ":hf:t:c:d" opt; do
   case ${opt} in
     h ) # process option h
       ;;
@@ -37,6 +39,12 @@ while getopts ":hf:t:" opt; do
       ;;
     t ) # process option t
       text_val=$OPTARG
+      ;;
+    d ) # process option t
+      delete_orig=true
+      ;;
+    c ) # common_name
+      common_name=$OPTARG
       ;;
     \? )
       echo "Invalid option: $OPTARG" 1>&2
@@ -47,9 +55,26 @@ while getopts ":hf:t:" opt; do
   esac
 done
 
+
+
 export input_file="${filename_val}"
 export full_path_input_file="$(pwd)/${filename_val}"
-export full_path_output_file="watermark-$(uuidgen).mp4"
+export get_extension=$(echo ${input_file} | cut -d"." -f2)
+export base_name=$(echo ${input_file} | cut -d"." -f1)
+
+export full_path_output_file="watermark-$(uuidgen).${get_extension}"
+# generate a common name when one isn't passed in from outside the script
+
+if [[ x"$common_name" != x"" ]]; then
+    export fname_common="${common_name}.${get_extension}"
+    export full_path_input_file="${fname_common}"
+    export full_path_output_file-"watermark-${base_name}.${get_extension}"
+fi
+
+
+# export input_file="${filename_val}"
+# export full_path_input_file="$(pwd)/${filename_val}"
+# export full_path_output_file="watermark-$(uuidgen).mp4"
 export watermark_text=${text_val}
 export font_location='/Volumes/Macintosh HD/System/Library/Fonts/Helvetica.ttc'
 

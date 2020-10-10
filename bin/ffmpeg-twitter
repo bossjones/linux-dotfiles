@@ -68,7 +68,7 @@ echo -e " ${BLUE}[ffmpeg-twitter]${NOCOLOR} will set the width of the output ima
 # It still doesn't change the aspect ratio (visually) when I open it with a GUI player (the resolution seems lower though). However, from the command line, mediainfo seems to suggest that the output resolution is now 1280x720:
 
 cat << EOF > "${tmpfile}"
-ffmpeg -i ${full_path_input_file} -filter:v "scale='min(1280,iw)':min'(720,ih)':force_original_aspect_ratio=decrease,pad=1280:720:(ow-iw)/2:(oh-ih)/2" -pix_fmt yuv420p ${full_path_output_file}
+ffmpeg -hide_banner -loglevel warning -i ${full_path_input_file} -filter:v "scale='min(1280,iw)':min'(720,ih)':force_original_aspect_ratio=decrease,pad=1280:720:(ow-iw)/2:(oh-ih)/2" -pix_fmt yuv420p ${full_path_output_file}
 EOF
 
 echo -e " ${BLUE}[ffmpeg-twitter]${NOCOLOR} cat ${tmpfile}"
