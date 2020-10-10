@@ -89,6 +89,7 @@ jobs:
           echo $_GROUP
           cp -a $(pwd) ~/.dotfiles
           ls -lta ~/.dotfiles
+          cd ~/.dotfiles
           make sed-travis
           cat ~/.dotfiles/ansible/provision.sh
           source ~/.dotfiles/install.sh
