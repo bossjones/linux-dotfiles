@@ -79,7 +79,7 @@ jobs:
         env:
           _USER: travis
           _GROUP: staff
-          _TRAVIS_CI: 1
+          # _TRAVIS_CI: 1
         run: |
           source .venv/bin/activate
           _USER=travis
