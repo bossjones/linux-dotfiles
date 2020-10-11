@@ -90,19 +90,24 @@ jobs:
           cp -a $(pwd) ~/.dotfiles
           ls -lta ~/.dotfiles
           cd ~/.dotfiles
-          make bin_install
           make sed-travis
           cat ~/.dotfiles/ansible/provision.sh
           source ~/.dotfiles/install.sh
           "/bin/bash -l -c 'pyenv versions'"
+      # - name: Upload coverage to Codecov
+      #   uses: codecov/codecov-action@v1
+      - name: Finish build
+        env:
+          _USER: runner
+          _GROUP: staff
+          # _TRAVIS_CI: 1
+        run: |
+          date -u
+          # zsh -c 'echo "Build completed in $(printf "%0.2f" $(($[$(date +%s)-$(cat build/stamp)]/$((60.))))) minutes"'
+          cd ~/.dotfiles
+          make bin_install
           cd ~/.dotfiles/test/fixtures
           brew install ffmpeg || true
           brew install gawk || true
           brew install gsed || true
           ffmpeg-all-batch -t "@reactionmemesTV"
-      # - name: Upload coverage to Codecov
-      #   uses: codecov/codecov-action@v1
-      - name: Finish build
-        run: |
-          date -u
-          # zsh -c 'echo "Build completed in $(printf "%0.2f" $(($[$(date +%s)-$(cat build/stamp)]/$((60.))))) minutes"'
