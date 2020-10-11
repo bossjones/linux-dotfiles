@@ -86,5 +86,5 @@ for filename in ./*mp4*; do echo ffmpeg-batch-process -f "$filename" -t $waterma
 # for filename in ./*png*; do echo ffmpeg-batch-process -f "$filename" -t $watermark_text; done >> all.txt
 cat all.txt
 echo -e " ${GREEN}[ffmpeg-mv]${NOCOLOR} ${CYAN}running${NOCOLOR} move commands\n"
-bash -x all.txt
+bash all.txt
 rm all.txt
