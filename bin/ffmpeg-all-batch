@@ -58,7 +58,8 @@ echo -e " ${GREEN}[ffmpeg-all-batch]${NOCOLOR} ${CYAN}running${NOCOLOR} ffmpeg-a
 rm -fv all.txt
 touch all.txt
 echo -e " ${GREEN}[ffmpeg-all-batch]${NOCOLOR} ${CYAN}rename all invalid file names${NOCOLOR}\n"
-find . -depth 1 -name "*\(*" -exec sh -c 'f="{}"; mv -- "$f" "$(uuidgen).$(basename -- $f | cut -d"." -f2)"' \;
+# find . -depth 1 -name "*\(*" -exec sh -c 'f="{}"; mv -- "$f" "$(uuidgen).$(basename -- $f | cut -d"." -f2)"' \;
+find . -depth 1 -name "*\(*" -exec sh -c 'f="{}"; mv -fv -- "$f" "$(uuidgen).$(basename -- "${f}" | cut -d"." -f2)"' \;
 for filename in ./*mp4*; do echo ffmpeg-batch-process -f "$filename" -t $watermark_text; done >> all.txt
 # for filename in ./*jpg*; do echo ffmpeg-batch-process -f "$filename" -t $watermark_text; done >> all.txt
 # for filename in ./*jpeg*; do echo ffmpeg-batch-process -f "$filename" -t $watermark_text; done >> all.txt
