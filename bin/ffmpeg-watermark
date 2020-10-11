@@ -59,7 +59,7 @@ done
 
 # export input_file="${filename_val}"
 # export full_path_input_file="$(pwd)/${filename_val}"
-# export get_extension=$(echo ${input_file} | cut -d"." -f2)
+# export get_extension=$(basename -- $input_file | cut -d"." -f2)
 # export base_name=$(echo ${input_file} | cut -d"." -f1)
 
 # export full_path_output_file="watermark-$(uuidgen).${get_extension}"
@@ -77,7 +77,7 @@ if [[ x"$common_name" = x"" ]]; then
     echo -e " ${BLUE}[ffmpeg-watermark]${NOCOLOR} common_name='is empty'"
     export input_file="${filename_val}"
     export full_path_input_file="$(pwd)/${input_file}"
-    export get_extension=$(echo ${input_file} | cut -d"." -f2)
+    export get_extension=$(basename -- $input_file | cut -d"." -f2)
     export fname_common="$(uuidgen).${get_extension}"
     export full_path_input_file="${fname_common}"
     export full_path_output_file="watermark-$RANDOM-${fname_common}"
@@ -86,7 +86,7 @@ else
     echo -e " ${BLUE}[ffmpeg-watermark]${NOCOLOR} common_name='set', overriding variable names"
     export input_file="${filename_val}"
     export full_path_input_file="$(pwd)/${input_file}"
-    export get_extension=$(echo ${input_file} | cut -d"." -f2)
+    export get_extension=$(basename -- $input_file | cut -d"." -f2)
     export fname_common="${common_name}"
     basename "$input_file"
     input_file_without_extension="$(basename -- $input_file | cut -d"." -f1)"
@@ -116,7 +116,7 @@ echo -e " ${BLUE}[ffmpeg-watermark]${NOCOLOR} dimensions=\$(\head -1 /tmp/dimens
 
 echo -e " ${BLUE}[ffmpeg-watermark]${NOCOLOR} dimensions=\$(\head -1 /tmp/dimensions.txt | cut -d"x" -f1):-1"
 
-echo -e " ${GREEN}[ffmpeg-watermark]${NOCOLOR} ${CYAN}watermark${NOCOLOR} video/img ${YELLOW}full_path_input_file:${full_path_input_file}${NOCOLOR} writing out ${YELLOW}file:${full_path_output_file}{NOCOLOR}"
+echo -e " ${GREEN}[ffmpeg-watermark]${NOCOLOR} ${CYAN}watermark${NOCOLOR} video/img ${YELLOW}full_path_input_file:${full_path_input_file}${NOCOLOR} writing out ${YELLOW}file:${full_path_output_file}${NOCOLOR}"
 
 ffmpeg -hide_banner -loglevel warning -i ${full_path_input_file} -vf drawtext="fontfile=$font_location: \
 text='${watermark_text}': fontcolor=white: fontsize=14: box=1: boxcolor=black@0.5: \

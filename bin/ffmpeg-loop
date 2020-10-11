@@ -49,14 +49,14 @@ done
 
 # export input_file="${filename_val}"
 # export full_path_input_file="$(pwd)/${filename_val}"
-# export get_extension=$(echo ${input_file} | cut -d"." -f2)
+# export get_extension=$(basename -- $input_file | cut -d"." -f2)
 
 # generate a common name when one isn't passed in from outside the script
 if [[ x"$common_name" = x"" ]]; then
     echo -e " ${BLUE}[ffmpeg-loop]${NOCOLOR} common_name='is empty'"
     export input_file="${filename_val}"
     export full_path_input_file="$(pwd)/${input_file}"
-    export get_extension=$(echo ${input_file} | cut -d"." -f2)
+    export get_extension=$(basename -- $input_file | cut -d"." -f2)
     export fname_common="$(uuidgen).${get_extension}"
     export full_path_input_file="${fname_common}"
     export full_path_output_file="loop-${fname_common}"
@@ -65,7 +65,7 @@ else
     echo -e " ${BLUE}[ffmpeg-loop]${NOCOLOR} common_name='set', overriding variable names"
     export input_file="${filename_val}"
     export full_path_input_file="$(pwd)/${input_file}"
-    export get_extension=$(echo ${input_file} | cut -d"." -f2)
+    export get_extension=$(basename -- $input_file | cut -d"." -f2)
     export fname_common="${common_name}"
     export full_path_output_file="loop-${fname_common}"
 fi
@@ -75,7 +75,7 @@ tmpfile=$(mktemp /tmp/abc-script.XXXXXX)
 echo -e " ${BLUE}[ffmpeg-loop]${NOCOLOR} tmpfile=${tmpfile}"
 
 cat << EOF > "${tmpfile}"
-echo -e " ${GREEN}[ffmpeg-loop]${NOCOLOR} ${CYAN}looping${NOCOLOR} video ${YELLOW}full_path_input_file:${full_path_input_file}${NOCOLOR} writing out ${YELLOW}file:${full_path_output_file}{NOCOLOR}"
+echo -e " ${GREEN}[ffmpeg-loop]${NOCOLOR} ${CYAN}looping${NOCOLOR} video ${YELLOW}full_path_input_file:${full_path_input_file}${NOCOLOR} writing out ${YELLOW}file:${full_path_output_file}${NOCOLOR}"
 ffmpeg -hide_banner -loglevel warning -f concat -safe 0 -i <(for i in {1..4}; do printf "file '%s'\n" ${full_path_input_file}; done) -c copy ${full_path_output_file}
 EOF
 

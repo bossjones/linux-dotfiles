@@ -49,7 +49,7 @@ done
 
 export input_file="${filename_val}"
 export full_path_input_file="$(pwd)/${filename_val}"
-export get_extension=$(echo ${input_file} | cut -d"." -f2)
+export get_extension=$(basename -- $input_file | cut -d"." -f2)
 export full_path_output_file="square-$(uuidgen).${get_extension}"
 
 tmpfile=$(mktemp /tmp/abc-script.XXXXXX)

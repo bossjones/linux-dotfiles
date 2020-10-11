@@ -65,7 +65,7 @@ export full_path_output_file="blur-$(uuidgen).mp4"
 ############################
 export input_file="${filename_val}"
 export full_path_input_file="$(pwd)/${filename_val}"
-export get_extension=$(echo ${input_file} | cut -d"." -f2)
+export get_extension=$(basename -- $input_file | cut -d"." -f2)
 export full_path_output_file="$(uuidgen).${get_extension}"
 # generate a common name when one isn't passed in from outside the script
 if [[ x"$common_name" = x"" ]]; then

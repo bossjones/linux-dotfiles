@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -x
+# set -x
 
 # https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
 # set -euox pipefail
@@ -75,7 +75,8 @@ fi
 
 export input_file="${filename_val}"
 export full_path_input_file="${filename_val}"
-export get_extension=$(echo ${input_file} | cut -d"." -f2)
+
+export get_extension=$(basename -- $input_file | cut -d"." -f2)
 export fname_common="$(uuidgen).${get_extension}"
 
 if [ "$loop_video_flag" = true ] ; then
@@ -115,12 +116,11 @@ echo -e " ${GREEN}[ffmpeg-batch-process]${NOCOLOR} ${CYAN}cmd${NOCOLOR} ffmpeg-t
 ffmpeg-tiktok -f ${full_path_input_file} -c ${fname_common}
 
 echo -e " ${GREEN}[ffmpeg-batch-process]${NOCOLOR} ${CYAN}running${NOCOLOR} ffmpeg-watermark\n"
-for filename in ./*${common_name_without_extension}*; do echo ffmpeg-watermark -f "\$filename" -c ${fname_common} -t $watermark_text; done > loop.txt
+for filename in ./*${common_name_without_extension}*; do echo ffmpeg-watermark -f "\$filename" -c ${fname_common} -t \"$watermark_text\"; done > loop.txt
 cat loop.txt
 bash  loop.txt
 
 rm loop.txt
-
 EOF
 
 
@@ -152,6 +152,5 @@ echo -e "\n"
 bash "${tmpfile}"
 
 rm "$tmpfile"
-
 
 # 720x576

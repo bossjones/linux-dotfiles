@@ -190,7 +190,7 @@ if [[ x"$common_name" = x"" ]]; then
     echo -e " ${BLUE}[ffmpeg-tiktok]${NOCOLOR} common_name='is empty'"
     export input_file="${filename_val}"
     export full_path_input_file="$(pwd)/${input_file}"
-    export get_extension=$(echo ${input_file} | cut -d"." -f2)
+    export get_extension=$(basename -- $input_file | cut -d"." -f2)
     export fname_common="$(uuidgen).${get_extension}"
     export full_path_input_file="${fname_common}"
     export full_path_output_file="tiktok-${fname_common}"
@@ -199,7 +199,7 @@ else
     echo -e " ${BLUE}[ffmpeg-tiktok]${NOCOLOR} common_name='set', overriding variable names"
     export input_file="${filename_val}"
     export full_path_input_file="$(pwd)/${input_file}"
-    export get_extension=$(echo ${input_file} | cut -d"." -f2)
+    export get_extension=$(basename -- $input_file | cut -d"." -f2)
     export fname_common="${common_name}"
     export full_path_output_file="tiktok-${fname_common}"
 fi
