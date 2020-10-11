@@ -179,3 +179,54 @@ cat "${tmpfile}"
 bash -x "${tmpfile}"
 
 rm "$tmpfile"
+
+
+
+---------------------------
+
+
+# generate a common name when one isn't passed in from outside the script
+if [[ x"$common_name" = x"" ]]; then
+    echo -e " ${BLUE}[ffmpeg-tiktok]${NOCOLOR} common_name='is empty'"
+    export input_file="${filename_val}"
+    export full_path_input_file="$(pwd)/${input_file}"
+    export get_extension=$(echo ${input_file} | cut -d"." -f2)
+    export fname_common="$(uuidgen).${get_extension}"
+    export full_path_input_file="${fname_common}"
+    export full_path_output_file="tiktok-${fname_common}"
+    # export full_path_input_file="$(pwd)/${fname_common}"
+else
+    echo -e " ${BLUE}[ffmpeg-tiktok]${NOCOLOR} common_name='set', overriding variable names"
+    export input_file="${filename_val}"
+    export full_path_input_file="$(pwd)/${input_file}"
+    export get_extension=$(echo ${input_file} | cut -d"." -f2)
+    export fname_common="${common_name}"
+    export full_path_output_file="tiktok-${fname_common}"
+fi
+export font_location='/Volumes/Macintosh HD/System/Library/Fonts/Helvetica.ttc'
+
+tmpfile=$(mktemp /tmp/abc-script.XXXXXX)
+echo -e " ${BLUE}[ffmpeg-tiktok]${NOCOLOR} tmpfile=${tmpfile}"
+echo -e " ${BLUE}[ffmpeg-tiktok]${NOCOLOR} will set the width of the output image to 1920 pixels and will calculate the height of the output image according to the aspect ratio of the input video."
+
+# https://superuser.com/questions/547296/resizing-videos-with-ffmpeg-avconv-to-fit-into-static-sized-player
+# https://superuser.com/questions/690021/video-padding-using-ffmpeg/690211
+# https://github.com/jackliston1998/project-jimin/blob/217c593f873331c01c81daa7fc232433ea9efd13/editor.py
+# https://stackoverflow.com/questions/54526345/ffmpeg-how-to-move-the-video-without-stretching-it
+cat << EOF > "${tmpfile}"
+# ffmpeg -i ${full_path_input_file} -filter:v 'crop=9/16*in_h:in_h' ${full_path_output_file}
+# ffmpeg -i ${full_path_input_file} -filter:v "crop=640:360:0:(in_h-out_h)/2 +((in_h-out_h)/2)*sin(t),scale=640:360" ${full_path_output_file}
+
+# ffmpeg -i ${full_path_input_file} -filter:v "crop=1280:720:0:(in_h-out_h)/2 +((in_h-out_h)/2)*sin(t)" -y ${full_path_output_file}
+
+
+echo -e " ${GREEN}[ffmpeg-tiktok]${NOCOLOR} ${CYAN}tiktok${NOCOLOR} video ${YELLOW}1080:1920 (1080 x 1920px)${NOCOLOR}"
+ffmpeg -hide_banner -loglevel warning -i ${full_path_input_file} -vf "scale=1080:1920:force_original_aspect_ratio=decrease,pad=1080:1920:-1:-1:color=white" ${full_path_output_file}
+EOF
+
+echo -e " ${BLUE}[ffmpeg-tiktok]${NOCOLOR} cat ${tmpfile}"
+cat "${tmpfile}"
+
+bash "${tmpfile}"
+
+rm "$tmpfile"

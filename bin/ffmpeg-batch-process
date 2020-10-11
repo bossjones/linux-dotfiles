@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+PS4='(${BASH_SOURCE}:${LINENO}): ${FUNCNAME[0]} - [${SHLVL},${BASH_SUBSHELL}, $?]'
+
 # https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
 # set -euox pipefail
 set -ex
@@ -50,6 +52,8 @@ while getopts ":hf:dt:" opt; do
   esac
 done
 
+
+# Step 1. Get duration of video to determine if we need to loop it.
 echo -e " ${GREEN}[ffmpeg-batch-process]${NOCOLOR} ${YELLOW}checking if file needs to be looped first..${NOCOLOR}"
 
 video_duration=$(ffmpeg-duration -f "${filename_val}")
@@ -65,9 +69,11 @@ export get_extension=$(echo ${input_file} | cut -d"." -f2)
 export fname_common="$(uuidgen).${get_extension}"
 
 if [ "$loop_video_flag" = true ] ; then
-    echo -e " ${BLUE}[ffmpeg-batch-process]${NOCOLOR} loop_video_flag=${loop_video_flag}, looping ...."
+    echo -e " ${YELLOW}[ffmpeg-batch-process]${NOCOLOR} loop_video_flag=${loop_video_flag}, looping .... ${YELLOW}cmd: ffmpeg-loop -f $input_file -c $fname_common${NOCOLOR}"
     ffmpeg-loop -f $input_file -c $fname_common
     export input_file="loop-$fname_common"
+    export full_path_input_file="$(pwd)/${input_file}"
+    echo -e " ${YELLOW}[ffmpeg-batch-process]${NOCOLOR} verify variable ${GREEN}full_path_input_file=${full_path_input_file}${NOCOLOR}"
 fi
 
 # export input_file="${filename_val}"
@@ -79,8 +85,10 @@ fi
 # if [[ x"$common_name" = x"" ]]; then
 #     export fname_common="$(uuidgen).${get_extension}"
 #     export full_path_input_file="${fname_common}"
-#     export full_path_output_file-"loop-${fname_common}"
+#     export full_path_output_file="loop-${fname_common}"
 # fi
+
+export common_name_without_extension=$(echo $fname_common | cut -d"." -f1)
 
 
 export watermark_text=${text_val}
@@ -102,15 +110,16 @@ ffmpeg-instagram-all-sizes -f ${full_path_input_file} -c ${fname_common}
 echo -e " ${GREEN}[ffmpeg-batch-process]${NOCOLOR} ${CYAN}running${NOCOLOR} ffmpeg-tiktok\n"
 ffmpeg-tiktok -f ${full_path_input_file} -c ${fname_common}
 
-
-for filename in ./*${fname_common}*; do echo ffmpeg-watermark -f \"$filename\"; done > loop.txt
-
+echo -e " ${GREEN}[ffmpeg-batch-process]${NOCOLOR} ${CYAN}running${NOCOLOR} ffmpeg-watermark\n"
+for filename in ./*${common_name_without_extension}*; do echo ffmpeg-watermark -f "\$filename" -c ${fname_common}; done > loop.txt
 cat loop.txt
 bash -x loop.txt
 
 rm loop.txt
 
 EOF
+
+
 # ffmpeg -hide_banner -loglevel warning -i ${full_path_input_file} -vf "scale=950:500:force_original_aspect_ratio=decrease,pad=1080:608:-1:-1:color=white,setdar=1.91:1" ig-landscape-608-${fname_common}
 
 # echo -e " ${GREEN}[ffmpeg-batch-process]${NOCOLOR} ${CYAN}landscape${NOCOLOR} photos ${YELLOW}1.91:1 (1080 x 608px)${NOCOLOR}"
@@ -132,7 +141,7 @@ EOF
 
 echo -e " ${BLUE}[ffmpeg-batch-process]${NOCOLOR} cat ${tmpfile}"
 
-bash "${tmpfile}"
+# bash "${tmpfile}"
 
 rm "$tmpfile"
 

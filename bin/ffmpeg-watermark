@@ -57,19 +57,40 @@ done
 
 
 
-export input_file="${filename_val}"
-export full_path_input_file="$(pwd)/${filename_val}"
-export get_extension=$(echo ${input_file} | cut -d"." -f2)
-export base_name=$(echo ${input_file} | cut -d"." -f1)
+# export input_file="${filename_val}"
+# export full_path_input_file="$(pwd)/${filename_val}"
+# export get_extension=$(echo ${input_file} | cut -d"." -f2)
+# export base_name=$(echo ${input_file} | cut -d"." -f1)
 
-export full_path_output_file="watermark-$(uuidgen).${get_extension}"
+# export full_path_output_file="watermark-$(uuidgen).${get_extension}"
+# # generate a common name when one isn't passed in from outside the script
+
+# if [[ x"$common_name" != x"" ]]; then
+#     export fname_common="${common_name}.${get_extension}"
+#     # export full_path_input_file="${fname_common}"
+#     export full_path_output_file="watermark-${base_name}.${get_extension}"
+# fi
+
+
 # generate a common name when one isn't passed in from outside the script
-
-if [[ x"$common_name" != x"" ]]; then
-    export fname_common="${common_name}.${get_extension}"
+if [[ x"$common_name" = x"" ]]; then
+    echo -e " ${BLUE}[ffmpeg-watermark]${NOCOLOR} common_name='is empty'"
+    export input_file="${filename_val}"
+    export full_path_input_file="$(pwd)/${input_file}"
+    export get_extension=$(echo ${input_file} | cut -d"." -f2)
+    export fname_common="$(uuidgen).${get_extension}"
     export full_path_input_file="${fname_common}"
-    export full_path_output_file-"watermark-${base_name}.${get_extension}"
+    export full_path_output_file="watermark-$RANDOM-${fname_common}"
+    # export full_path_input_file="$(pwd)/${fname_common}"
+else
+    echo -e " ${BLUE}[ffmpeg-watermark]${NOCOLOR} common_name='set', overriding variable names"
+    export input_file="${filename_val}"
+    export full_path_input_file="$(pwd)/${input_file}"
+    export get_extension=$(echo ${input_file} | cut -d"." -f2)
+    export fname_common="${common_name}"
+    export full_path_output_file="watermark-$RANDOM-${fname_common}"
 fi
+export font_location='/Volumes/Macintosh HD/System/Library/Fonts/Helvetica.ttc'
 
 
 # export input_file="${filename_val}"
@@ -91,6 +112,8 @@ dimensions=\$(echo "\$(ffprobe -v error -select_streams v:0 -show_entries stream
 echo -e " ${BLUE}[ffmpeg-watermark]${NOCOLOR} dimensions=\$(\head -1 /tmp/dimensions.txt)"
 
 echo -e " ${BLUE}[ffmpeg-watermark]${NOCOLOR} dimensions=\$(\head -1 /tmp/dimensions.txt | cut -d"x" -f1):-1"
+
+echo -e " ${GREEN}[ffmpeg-watermark]${NOCOLOR} ${CYAN}watermark${NOCOLOR} video/img ${YELLOW}full_path_input_file:${full_path_input_file}${NOCOLOR} writing out ${YELLOW}file:${full_path_output_file}{NOCOLOR}"
 
 ffmpeg -hide_banner -loglevel warning -i ${full_path_input_file} -vf drawtext="fontfile=$font_location: \
 text='${watermark_text}': fontcolor=white: fontsize=14: box=1: boxcolor=black@0.5: \

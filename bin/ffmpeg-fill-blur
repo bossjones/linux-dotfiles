@@ -48,6 +48,20 @@ export input_file="${filename_val}"
 export full_path_input_file="$(pwd)/${filename_val}"
 export full_path_output_file="blur-$(uuidgen).mp4"
 
+############################
+export input_file="${filename_val}"
+export full_path_input_file="$(pwd)/${filename_val}"
+export get_extension=$(echo ${input_file} | cut -d"." -f2)
+export full_path_output_file="blur-$(uuidgen).${get_extension}"
+# generate a common name when one isn't passed in from outside the script
+if [[ x"$common_name" = x"" ]]; then
+    export fname_common="$(uuidgen).${get_extension}"
+    # export full_path_input_file="${fname_common}"
+    export full_path_output_file="loop-${fname_common}"
+    # export full_path_input_file="$(pwd)/${fname_common}"
+fi
+
+
 echo -e " ${BLUE}[ffmpeg-blur]${NOCOLOR} tmpfile=${tmpfile}"
 echo -e " ${BLUE}[ffmpeg-blur]${NOCOLOR} will set the width of the output image to 1920 pixels and will calculate the height of the output image according to the aspect ratio of the input video."
 
