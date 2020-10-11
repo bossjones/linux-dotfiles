@@ -81,10 +81,10 @@ echo -e " ${GREEN}[ffmpeg-all-batch]${NOCOLOR} ${CYAN}running${NOCOLOR} ffmpeg-m
 rm -fv loop.txt
 touch loop.txt
 for filename in ./*mp4*; do echo ffmpeg-batch-process -f "$filename" -t $watermark_text; done >> all.txt
-for filename in ./*jpg*; do echo ffmpeg-batch-process -f "$filename" -t $watermark_text; done >> all.txt
-for filename in ./*jpeg*; do echo ffmpeg-batch-process -f "$filename" -t $watermark_text; done >> all.txt
-for filename in ./*png*; do echo ffmpeg-batch-process -f "$filename" -t $watermark_text; done >> all.txt
+# for filename in ./*jpg*; do echo ffmpeg-batch-process -f "$filename" -t $watermark_text; done >> all.txt
+# for filename in ./*jpeg*; do echo ffmpeg-batch-process -f "$filename" -t $watermark_text; done >> all.txt
+# for filename in ./*png*; do echo ffmpeg-batch-process -f "$filename" -t $watermark_text; done >> all.txt
 cat all.txt
 echo -e " ${GREEN}[ffmpeg-mv]${NOCOLOR} ${CYAN}running${NOCOLOR} move commands\n"
-# bash -x all.txt
+bash -x all.txt
 rm all.txt
