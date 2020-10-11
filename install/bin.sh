@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+mkdir -p ~/bin || true
 chmod +x $(PWD)/bin/fzf*
 chmod +x $(PWD)/bin/ffmpeg*
 chmod +x $(PWD)/bin/image*
