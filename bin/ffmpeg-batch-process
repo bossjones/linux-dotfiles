@@ -73,7 +73,7 @@ if [ "$loop_video_flag" = true ] ; then
     ffmpeg-loop -f $input_file -c $fname_common
     export input_file="loop-$fname_common"
     export full_path_input_file="$(pwd)/${input_file}"
-    echo -e " ${YELLOW}[ffmpeg-batch-process]${NOCOLOR} verify variable ${GREEN}full_path_input_file=${full_path_input_file}${NOCOLOR}"
+    echo -e " ${YELLOW}[ffmpeg-batch-process] verify variable${NOCOLOR} ${GREEN}full_path_input_file=${full_path_input_file}${NOCOLOR}"
 fi
 
 # export input_file="${filename_val}"
@@ -88,7 +88,8 @@ fi
 #     export full_path_output_file="loop-${fname_common}"
 # fi
 
-export common_name_without_extension=$(echo $fname_common | cut -d"." -f1)
+export common_name_without_extension="$(echo $fname_common | cut -d "." -f1)"
+echo -e " ${BLUE}[ffmpeg-batch-process]${NOCOLOR} common_name_without_extension=${common_name_without_extension}"
 
 
 export watermark_text=${text_val}
@@ -111,7 +112,7 @@ echo -e " ${GREEN}[ffmpeg-batch-process]${NOCOLOR} ${CYAN}running${NOCOLOR} ffmp
 ffmpeg-tiktok -f ${full_path_input_file} -c ${fname_common}
 
 echo -e " ${GREEN}[ffmpeg-batch-process]${NOCOLOR} ${CYAN}running${NOCOLOR} ffmpeg-watermark\n"
-for filename in ./*${common_name_without_extension}*; do echo ffmpeg-watermark -f "\$filename" -c ${fname_common}; done > loop.txt
+for filename in ./*${common_name_without_extension}*; do echo ffmpeg-watermark -f "\$filename" -c ${fname_common} -t $watermark_text; done > loop.txt
 cat loop.txt
 bash -x loop.txt
 
