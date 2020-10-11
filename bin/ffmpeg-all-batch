@@ -57,6 +57,9 @@ export watermark_text=${text_val}
 echo -e " ${GREEN}[ffmpeg-all-batch]${NOCOLOR} ${CYAN}running${NOCOLOR} ffmpeg-all-batch\n"
 rm -fv loop.txt
 touch loop.txt
+
+echo -e " ${GREEN}[ffmpeg-all-batch]${NOCOLOR} ${CYAN}rename all invalid file names${NOCOLOR}\n"
+find . -depth 1 -name "*\(*" -exec sh -c 'f="{}"; mv -- "$f" "$(uuidgen).$(basename -- $f | cut -d"." -f2)"' \;
 for filename in ./*mp4*; do echo ffmpeg-batch-process -f "$filename" -t $watermark_text; done >> all.txt
 # for filename in ./*jpg*; do echo ffmpeg-batch-process -f "$filename" -t $watermark_text; done >> all.txt
 # for filename in ./*jpeg*; do echo ffmpeg-batch-process -f "$filename" -t $watermark_text; done >> all.txt
