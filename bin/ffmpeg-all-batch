@@ -1,0 +1,90 @@
+#!/usr/bin/env bash
+
+# https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
+# set -euox pipefail
+set -e
+
+# https://gist.github.com/jonsuh/3c89c004888dfc7352be
+# ----------------------------------
+# Colors
+# ----------------------------------
+export NOCOLOR='\033[0m'
+export RED='\033[0;31m'
+export GREEN='\033[0;32m'
+export ORANGE='\033[0;33m'
+export BLUE='\033[0;34m'
+export MAD_BLUE='\e[34m'
+export PURPLE='\033[0;35m'
+export CYAN='\033[0;36m'
+export LIGHTGRAY='\033[0;37m'
+export DARKGRAY='\033[1;30m'
+export LIGHTRED='\033[1;31m'
+export LIGHTGREEN='\033[1;32m'
+export YELLOW='\033[1;33m'
+export LIGHTBLUE='\033[1;34m'
+export LIGHTPURPLE='\033[1;35m'
+export LIGHTCYAN='\033[1;36m'
+export WHITE='\033[1;37m'
+
+export delete_orig=false
+while getopts ":hdt:v" opt; do
+  case ${opt} in
+    h ) # process option h
+      echo " Usage: "
+      echo " Example: ffmpeg-all-batch -t \"@iamprofessorEX\""
+      ;;
+    t ) # process option t
+      text_val=$OPTARG
+      ;;
+    d ) # process option f
+      delete_orig=true
+      ;;
+    v ) # process option f
+      verbose=true
+      PS4='(${BASH_SOURCE}:${LINENO}): ${FUNCNAME[0]} - [${SHLVL},${BASH_SUBSHELL}, $?]'
+      ;;
+    \? )
+      echo "Invalid option: $OPTARG" 1>&2
+      ;;
+    : )
+      echo "Invalid option: $OPTARG requires an argument" 1>&2
+      ;;
+  esac
+done
+
+# generate a common name when one isn't passed in from outside the script
+if [[ x"$common_name" = x"" ]]; then
+    echo -e " ${BLUE}[ffmpeg-all-batch]${NOCOLOR} common_name='is empty'"
+    export input_file="${filename_val}"
+    export full_path_input_file="$(pwd)/${input_file}"
+    export get_extension=$(echo ${input_file} | cut -d"." -f2)
+    export fname_common="$(uuidgen).${get_extension}"
+    export full_path_input_file="${fname_common}"
+    export full_path_output_file="watermark-$RANDOM-${fname_common}"
+    # export full_path_input_file="$(pwd)/${fname_common}"
+else
+    echo -e " ${BLUE}[ffmpeg-all-batch]${NOCOLOR} common_name='set', overriding variable names"
+    export input_file="${filename_val}"
+    export full_path_input_file="$(pwd)/${input_file}"
+    export get_extension=$(echo ${input_file} | cut -d"." -f2)
+    export fname_common="${common_name}"
+    basename "$input_file"
+    input_file_without_extension="$(basename -- $input_file | cut -d"." -f1)"
+    echo -e " ${BLUE}[ffmpeg-all-batch]${NOCOLOR} ${YELLOW}input_file_without_extension=$input_file_without_extension${NOCOLOR}"
+    export full_path_output_file="watermark-$input_file_without_extension-${fname_common}"
+fi
+export font_location='/Volumes/Macintosh HD/System/Library/Fonts/Helvetica.ttc'
+
+export watermark_text=${text_val}
+
+echo -e " ${GREEN}[ffmpeg-all-batch]${NOCOLOR} ${CYAN}running${NOCOLOR} ffmpeg-mv\n"
+rm -fv loop.txt
+touch loop.txt
+for filename in ./*mp4*; do echo ffmpeg-batch-process -f "$filename" -t $watermark_text; done >> all.txt
+for filename in ./*jpg*; do echo ffmpeg-batch-process -f "$filename" -t $watermark_text; done >> all.txt
+for filename in ./*jpeg*; do echo ffmpeg-batch-process -f "$filename" -t $watermark_text; done >> all.txt
+for filename in ./*png*; do echo ffmpeg-batch-process -f "$filename" -t $watermark_text; done >> all.txt
+cat all.txt
+echo -e " ${GREEN}[ffmpeg-mv]${NOCOLOR} ${CYAN}running${NOCOLOR} move commands\n"
+# bash -x all.txt
+rm all.txt
