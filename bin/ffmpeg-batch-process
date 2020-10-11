@@ -1,10 +1,9 @@
 #!/usr/bin/env bash
 
-PS4='(${BASH_SOURCE}:${LINENO}): ${FUNCNAME[0]} - [${SHLVL},${BASH_SUBSHELL}, $?]'
 
 # https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
 # set -euox pipefail
-set -ex
+set -e
 
 # https://gist.github.com/jonsuh/3c89c004888dfc7352be
 # ----------------------------------
@@ -29,8 +28,9 @@ export LIGHTCYAN='\033[1;36m'
 export WHITE='\033[1;37m'
 
 delete_orig=false
+verbose=false
 
-while getopts ":hf:dt:" opt; do
+while getopts ":hf:dt:v" opt; do
   case ${opt} in
     h ) # process option h
       ;;
@@ -42,6 +42,10 @@ while getopts ":hf:dt:" opt; do
       ;;
     d ) # process option f
       delete_orig=true
+      ;;
+    v ) # process option f
+      verbose=true
+      PS4='(${BASH_SOURCE}:${LINENO}): ${FUNCNAME[0]} - [${SHLVL},${BASH_SUBSHELL}, $?]'
       ;;
     \? )
       echo "Invalid option: $OPTARG" 1>&2
@@ -64,7 +68,7 @@ if [ "15" -gt "$video_duration" ]; then
 fi
 
 export input_file="${filename_val}"
-export full_path_input_file="$(pwd)/${filename_val}"
+export full_path_input_file="${filename_val}"
 export get_extension=$(echo ${input_file} | cut -d"." -f2)
 export fname_common="$(uuidgen).${get_extension}"
 
@@ -72,25 +76,16 @@ if [ "$loop_video_flag" = true ] ; then
     echo -e " ${YELLOW}[ffmpeg-batch-process]${NOCOLOR} loop_video_flag=${loop_video_flag}, looping .... ${YELLOW}cmd: ffmpeg-loop -f $input_file -c $fname_common${NOCOLOR}"
     ffmpeg-loop -f $input_file -c $fname_common
     export input_file="loop-$fname_common"
-    export full_path_input_file="$(pwd)/${input_file}"
+    export full_path_input_file="${input_file}"
     echo -e " ${YELLOW}[ffmpeg-batch-process] verify variable${NOCOLOR} ${GREEN}full_path_input_file=${full_path_input_file}${NOCOLOR}"
+    echo -e " ${YELLOW}[ffmpeg-batch-process] running${NOCOLOR} ${GREEN}ls -lta $input_file${NOCOLOR}\n"
+    ls -lta $input_file
 fi
 
-# export input_file="${filename_val}"
-# export full_path_input_file="$(pwd)/${filename_val}"
-# export get_extension=$(echo ${input_file} | cut -d"." -f2)
-
-# export full_path_output_file="$(uuidgen).${get_extension}"
-# # generate a common name when one isn't passed in from outside the script
-# if [[ x"$common_name" = x"" ]]; then
-#     export fname_common="$(uuidgen).${get_extension}"
-#     export full_path_input_file="${fname_common}"
-#     export full_path_output_file="loop-${fname_common}"
-# fi
-
+# set +e
 export common_name_without_extension="$(echo $fname_common | cut -d "." -f1)"
 echo -e " ${BLUE}[ffmpeg-batch-process]${NOCOLOR} common_name_without_extension=${common_name_without_extension}"
-
+# set -e
 
 export watermark_text=${text_val}
 export font_location='/Volumes/Macintosh HD/System/Library/Fonts/Helvetica.ttc'
@@ -106,9 +101,11 @@ echo -e " ${BLUE}[ffmpeg-batch-process]${NOCOLOR} will set the width of the outp
 cat << EOF > "${tmpfile}"
 
 echo -e " ${GREEN}[ffmpeg-batch-process]${NOCOLOR} ${CYAN}running${NOCOLOR} ffmpeg-instagram-all-sizes\n"
+echo -e " ${GREEN}[ffmpeg-batch-process]${NOCOLOR} ${CYAN}cmd${NOCOLOR} ffmpeg-instagram-all-sizes -f ${full_path_input_file} -c ${fname_common}\n"
 ffmpeg-instagram-all-sizes -f ${full_path_input_file} -c ${fname_common}
 
 echo -e " ${GREEN}[ffmpeg-batch-process]${NOCOLOR} ${CYAN}running${NOCOLOR} ffmpeg-tiktok\n"
+echo -e " ${GREEN}[ffmpeg-batch-process]${NOCOLOR} ${CYAN}cmd${NOCOLOR} ffmpeg-tiktok -f ${full_path_input_file} -c ${fname_common}\n"
 ffmpeg-tiktok -f ${full_path_input_file} -c ${fname_common}
 
 echo -e " ${GREEN}[ffmpeg-batch-process]${NOCOLOR} ${CYAN}running${NOCOLOR} ffmpeg-watermark\n"
@@ -140,9 +137,13 @@ EOF
 # ig-portrait-1080x1350-${fname_common}
 # ig-stories-1080x1920-${fname_common}
 
-echo -e " ${BLUE}[ffmpeg-batch-process]${NOCOLOR} cat ${tmpfile}"
+echo -e " ${BLUE}[ffmpeg-batch-process]${NOCOLOR} cat ${tmpfile}\n"
 
-# bash "${tmpfile}"
+cat ${tmpfile}
+
+echo -e "\n"
+
+bash "${tmpfile}"
 
 rm "$tmpfile"
 

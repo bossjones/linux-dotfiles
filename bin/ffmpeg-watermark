@@ -88,7 +88,10 @@ else
     export full_path_input_file="$(pwd)/${input_file}"
     export get_extension=$(echo ${input_file} | cut -d"." -f2)
     export fname_common="${common_name}"
-    export full_path_output_file="watermark-$RANDOM-${fname_common}"
+    basename "$input_file"
+    input_file_without_extension="$(basename -- $input_file | cut -d"." -f1)"
+    echo -e " ${BLUE}[ffmpeg-watermark]${NOCOLOR} ${YELLOW}input_file_without_extension=$input_file_without_extension${NOCOLOR}"
+    export full_path_output_file="watermark-$input_file_without_extension-${fname_common}"
 fi
 export font_location='/Volumes/Macintosh HD/System/Library/Fonts/Helvetica.ttc'
 

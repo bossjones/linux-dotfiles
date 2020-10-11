@@ -89,13 +89,11 @@ echo -e " ${BLUE}[ffmpeg-tiktok]${NOCOLOR} will set the width of the output imag
 # https://superuser.com/questions/690021/video-padding-using-ffmpeg/690211
 # https://github.com/jackliston1998/project-jimin/blob/217c593f873331c01c81daa7fc232433ea9efd13/editor.py
 # https://stackoverflow.com/questions/54526345/ffmpeg-how-to-move-the-video-without-stretching-it
-cat << EOF > "${tmpfile}"
 # ffmpeg -i ${full_path_input_file} -filter:v 'crop=9/16*in_h:in_h' ${full_path_output_file}
 # ffmpeg -i ${full_path_input_file} -filter:v "crop=640:360:0:(in_h-out_h)/2 +((in_h-out_h)/2)*sin(t),scale=640:360" ${full_path_output_file}
 
 # ffmpeg -i ${full_path_input_file} -filter:v "crop=1280:720:0:(in_h-out_h)/2 +((in_h-out_h)/2)*sin(t)" -y ${full_path_output_file}
-
-
+cat << EOF > "${tmpfile}"0
 echo -e " ${GREEN}[ffmpeg-tiktok]${NOCOLOR} ${CYAN}tiktok${NOCOLOR} video ${YELLOW}1080:1920 (1080 x 1920px)${NOCOLOR} video ${YELLOW}full_path_input_file:${full_path_input_file}${NOCOLOR} writing out ${YELLOW}file:${full_path_output_file}{NOCOLOR}"
 
 ffmpeg -hide_banner -loglevel warning -i ${full_path_input_file} -vf "scale=1080:1920:force_original_aspect_ratio=decrease,pad=1080:1920:-1:-1:color=white" ${full_path_output_file}
