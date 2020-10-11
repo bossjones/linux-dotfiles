@@ -75,12 +75,14 @@ tmpfile=$(mktemp /tmp/abc-script.XXXXXX)
 echo -e " ${BLUE}[imagemagick-ig-resize]${NOCOLOR} tmpfile=${tmpfile}"
 
 cat << EOF > "${tmpfile}"
-convert -background white -gravity center ${full_path_input_file} -resize ${size_val} -extent ${size_val} ${full_path_output_file}
+aspectcrop -a 2:1 ${full_path_input_file} ${full_path_output_file}
+
+
 EOF
 
 echo -e " ${BLUE}[imagemagick-ig-resize]${NOCOLOR} cat ${tmpfile}"
 cat "${tmpfile}"
 
-bash -x "${tmpfile}"
+bash  "${tmpfile}"
 
 rm "$tmpfile"

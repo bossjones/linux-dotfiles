@@ -62,6 +62,6 @@ EOF
 echo -e " ${BLUE}[imagemagick-square]${NOCOLOR} cat ${tmpfile}"
 cat "${tmpfile}"
 
-bash -x "${tmpfile}"
+bash  "${tmpfile}"
 
 rm "$tmpfile"

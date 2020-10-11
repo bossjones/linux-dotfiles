@@ -74,6 +74,6 @@ EOF
 echo -e " ${BLUE}[ffmpeg-twitter]${NOCOLOR} cat ${tmpfile}"
 cat "${tmpfile}"
 
-bash -x "${tmpfile}"
+bash  "${tmpfile}"
 
 rm "$tmpfile"

@@ -111,7 +111,7 @@ ffmpeg-tiktok -f ${full_path_input_file} -c ${fname_common}
 echo -e " ${GREEN}[ffmpeg-batch-process]${NOCOLOR} ${CYAN}running${NOCOLOR} ffmpeg-watermark\n"
 for filename in ./*${common_name_without_extension}*; do echo ffmpeg-watermark -f "\$filename" -c ${fname_common} -t $watermark_text; done > loop.txt
 cat loop.txt
-bash -x loop.txt
+bash  loop.txt
 
 rm loop.txt
 

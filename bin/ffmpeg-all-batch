@@ -52,29 +52,6 @@ while getopts ":hdt:v" opt; do
   esac
 done
 
-# generate a common name when one isn't passed in from outside the script
-if [[ x"$common_name" = x"" ]]; then
-    echo -e " ${BLUE}[ffmpeg-all-batch]${NOCOLOR} common_name='is empty'"
-    export input_file="${filename_val}"
-    export full_path_input_file="$(pwd)/${input_file}"
-    export get_extension=$(echo ${input_file} | cut -d"." -f2)
-    export fname_common="$(uuidgen).${get_extension}"
-    export full_path_input_file="${fname_common}"
-    export full_path_output_file="watermark-$RANDOM-${fname_common}"
-    # export full_path_input_file="$(pwd)/${fname_common}"
-else
-    echo -e " ${BLUE}[ffmpeg-all-batch]${NOCOLOR} common_name='set', overriding variable names"
-    export input_file="${filename_val}"
-    export full_path_input_file="$(pwd)/${input_file}"
-    export get_extension=$(echo ${input_file} | cut -d"." -f2)
-    export fname_common="${common_name}"
-    basename "$input_file"
-    input_file_without_extension="$(basename -- $input_file | cut -d"." -f1)"
-    echo -e " ${BLUE}[ffmpeg-all-batch]${NOCOLOR} ${YELLOW}input_file_without_extension=$input_file_without_extension${NOCOLOR}"
-    export full_path_output_file="watermark-$input_file_without_extension-${fname_common}"
-fi
-export font_location='/Volumes/Macintosh HD/System/Library/Fonts/Helvetica.ttc'
-
 export watermark_text=${text_val}
 
 echo -e " ${GREEN}[ffmpeg-all-batch]${NOCOLOR} ${CYAN}running${NOCOLOR} ffmpeg-mv\n"
