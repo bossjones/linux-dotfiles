@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+set -x
 
 # https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
 # set -euox pipefail
@@ -55,6 +56,11 @@ while getopts ":hf:dt:v" opt; do
       ;;
   esac
 done
+
+if [[ "$verbose" = "true" ]]; then
+  echo -e " ${GREEN}[ffmpeg-batch-process]${NOCOLOR} ${YELLOW}verbose mode detected${NOCOLOR}"
+  PS4='(${BASH_SOURCE}:${LINENO}): ${FUNCNAME[0]} - [${SHLVL},${BASH_SUBSHELL}, $?]'
+fi
 
 
 # Step 1. Get duration of video to determine if we need to loop it.

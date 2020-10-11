@@ -54,7 +54,7 @@ done
 
 export watermark_text=${text_val}
 
-echo -e " ${GREEN}[ffmpeg-all-batch]${NOCOLOR} ${CYAN}running${NOCOLOR} ffmpeg-mv\n"
+echo -e " ${GREEN}[ffmpeg-all-batch]${NOCOLOR} ${CYAN}running${NOCOLOR} ffmpeg-all-batch\n"
 rm -fv loop.txt
 touch loop.txt
 for filename in ./*mp4*; do echo ffmpeg-batch-process -f "$filename" -t $watermark_text; done >> all.txt
@@ -62,6 +62,6 @@ for filename in ./*mp4*; do echo ffmpeg-batch-process -f "$filename" -t $waterma
 # for filename in ./*jpeg*; do echo ffmpeg-batch-process -f "$filename" -t $watermark_text; done >> all.txt
 # for filename in ./*png*; do echo ffmpeg-batch-process -f "$filename" -t $watermark_text; done >> all.txt
 cat all.txt
-echo -e " ${GREEN}[ffmpeg-mv]${NOCOLOR} ${CYAN}running${NOCOLOR} move commands\n"
+echo -e " ${GREEN}[ffmpeg-all-batch]${NOCOLOR} ${CYAN}running${NOCOLOR} batch commands\n"
 bash all.txt
 rm all.txt
