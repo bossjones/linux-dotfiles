@@ -60,10 +60,12 @@ touch all.txt
 echo -e " ${GREEN}[ffmpeg-all-batch]${NOCOLOR} ${CYAN}rename all invalid file names${NOCOLOR}\n"
 # find . -depth 1 -name "*\(*" -exec sh -c 'f="{}"; mv -- "$f" "$(uuidgen).$(basename -- $f | cut -d"." -f2)"' \;
 find . -depth 1 -name "*\(*" -exec sh -c 'f="{}"; mv -fv -- "$f" "$(uuidgen).$(basename -- "${f}" | cut -d"." -f2)"' \;
-for filename in ./*mp4*; do echo ffmpeg-batch-process -f "$filename" -t $watermark_text; done >> all.txt
-# for filename in ./*jpg*; do echo ffmpeg-batch-process -f "$filename" -t $watermark_text; done >> all.txt
-# for filename in ./*jpeg*; do echo ffmpeg-batch-process -f "$filename" -t $watermark_text; done >> all.txt
-# for filename in ./*png*; do echo ffmpeg-batch-process -f "$filename" -t $watermark_text; done >> all.txt
+
+[ "$(ls *.mp4 | tr " " '\r' | wc -l | awk '{print $1}')" -gt "0" ] && for filename in ./*mp4*; do echo ffmpeg-batch-process -f "$filename" -t $watermark_text; done >> all.txt
+[ "$(ls *.jpg | tr " " '\r' | wc -l | awk '{print $1}')" -gt "0" ] && for filename in ./*jpg*; do echo ffmpeg-batch-process -f "$filename" -t $watermark_text; done >> all.txt
+[ "$(ls *.jpeg | tr " " '\r' | wc -l | awk '{print $1}')" -gt "0" ] && for filename in ./*jpeg*; do echo ffmpeg-batch-process -f "$filename" -t $watermark_text; done >> all.txt
+[ "$(ls *.png | tr " " '\r' | wc -l | awk '{print $1}')" -gt "0" ] && for filename in ./*png*; do echo ffmpeg-batch-process -f "$filename" -t $watermark_text; done >> all.txt
+[ "$(ls *.MOV | tr " " '\r' | wc -l | awk '{print $1}')" -gt "0" ] && for filename in ./*MOV*; do echo ffmpeg-batch-process -f "$filename" -t $watermark_text; done >> all.txt
 cat all.txt
 echo -e " ${GREEN}[ffmpeg-all-batch]${NOCOLOR} ${CYAN}running${NOCOLOR} batch commands\n"
 bash all.txt
