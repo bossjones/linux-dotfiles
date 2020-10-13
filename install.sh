@@ -19,6 +19,10 @@ if [[ "${_TRAVIS_CI}x" == "x" ]]; then
   # NOTE: 6/3/2018 newly added
   # Ask for the administrator password upfront.
   sudo -v
+elif [[ "${_GITHUB_CI}x" == "x" ]]; then
+  # NOTE: 6/3/2018 newly added
+  # Ask for the administrator password upfront.
+  sudo -v
 fi
 
 # Keep-alive: update existing `sudo` time stamp until the script has finished.
