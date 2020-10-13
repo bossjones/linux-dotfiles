@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -x
+
 # https://stackoverflow.com/questions/5014823/how-to-profile-a-bash-shell-script-slow-startup
 profile_it_start () {
   PS4='+ $(date "+%s.%N")\011 '
