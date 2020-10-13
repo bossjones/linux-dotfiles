@@ -53,6 +53,7 @@ jobs:
           _USER: runner
           _GROUP: staff
           _GITHUB_CI: 1
+          _TRAVIS_CI: 0
         run: |
           date -u
           mkdir build
@@ -80,11 +81,13 @@ jobs:
           _USER: runner
           _GROUP: staff
           _GITHUB_CI: 1
+          _TRAVIS_CI: 0
         run: |
           source .venv/bin/activate
           _USER=runner
           _GROUP=staff
           _GITHUB_CI=1
+          _TRAVIS_CI=0
           echo $_USER
           echo $_GROUP
           cp -a $(pwd) ~/.dotfiles
@@ -101,6 +104,7 @@ jobs:
           _USER: runner
           _GROUP: staff
           _GITHUB_CI: 1
+          _TRAVIS_CI: 0
         run: |
           date -u
           # zsh -c 'echo "Build completed in $(printf "%0.2f" $(($[$(date +%s)-$(cat build/stamp)]/$((60.))))) minutes"'
