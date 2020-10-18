@@ -12,6 +12,7 @@
       private: no
     - name: "bossjones__group"
       prompt: "Group we want to run as."
+      default: "staff"
       private: no
   tags:
     - homebrew
@@ -19,9 +20,9 @@
   environment:
     SHELL: /bin/bash
     LD_LIBRARY_PATH: /usr/local/lib
-  vars:
-    bossjones__user: "{{boss__user}}"
-    bossjones__group: "{{boss_group}}"
+  # vars:
+  #   bossjones__user: "{{boss__user}}"
+  #   bossjones__group: "staff"
   # pre_tasks:
   #   # This is necessary since we want to enable sudo when running the Homebrew
   #   # install script but don't want to run it as root. Yeah, I know.
