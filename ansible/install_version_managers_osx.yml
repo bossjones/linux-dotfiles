@@ -93,7 +93,7 @@
         - coreutils
         - bats
         - bash-completion2
-        - moreutils
+        # - moreutils
         - findutils
         # - { name: gnu-sed, install_options: "with-default-names" }
         # - { name: grep, install_options: "with-default-names" }
@@ -242,7 +242,7 @@
         - pyenv-virtualenvwrapper
         # - pyenv-pip-migrate
 
-    - name: "Create directory:~/{{ bossjones__user }}/.pyenv"
+    - name: "Create directory: ~/{{ bossjones__user }}/.pyenv"
       file:
         path: "~{{ bossjones__user }}/.pyenv"
         state: directory
