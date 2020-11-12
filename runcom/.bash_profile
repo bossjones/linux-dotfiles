@@ -182,3 +182,4 @@ dl-mp3(){
     /usr/local/bin/youtube-dl -o "$(uuidgen).%(ext)s" --extract-audio --audio-format mp3 "${1}"
 }
 
+[ -f "$HOME/.cargo/bin" ] && export PATH="$HOME/.cargo/bin:$PATH"
