@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
 
-
 # https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
 # set -euox pipefail
-set -e
+# set -e
 
 # NOTE: Scaling up an image to have padded space between top and bottom is call letterboxing.
 # NOTE: Scaling up an image to have padded space between left and right is call pillarboxing.
@@ -29,6 +28,42 @@ export LIGHTPURPLE='\033[1;35m'
 export LIGHTCYAN='\033[1;36m'
 export WHITE='\033[1;37m'
 
-_url=$1
-echo -e " ${BLUE}[open-browser-generic]${NOCOLOR} cmd=/usr/local/bin/open-browser.py \"${_url}\""
-/usr/local/bin/open-browser.py "${_url}"
+# SOURCE: https://coderwall.com/p/--eiqg/exponential-backoff-in-bash
+# Retries a command a with backoff.
+#
+# The retry count is given by ATTEMPTS (default 5), the
+# initial backoff timeout is given by TIMEOUT in seconds
+# (default 1.)
+#
+# Successive backoffs double the timeout.
+#
+# Beware of set -e killing your whole script!
+# function with_backoff {
+max_attempts=${ATTEMPTS-5}
+timeout=${TIMEOUT-1}
+attempt=0
+exitCode=0
+
+while [[ $attempt < $max_attempts ]]
+do
+  "$@"
+  exitCode=$?
+
+  if [[ $exitCode == 0 ]]
+  then
+    break
+  fi
+
+  echo -e "${RED}[exponential_backoff]${NOCOLOR} Failure! Retrying in $timeout.." 1>&2
+  sleep $timeout
+  attempt=$(( attempt + 1 ))
+  timeout=$(( timeout * 2 ))
+done
+
+if [[ $exitCode != 0 ]]
+then
+  echo -e "${RED}[exponential_backoff]${NOCOLOR} You've failed me for the last time! ($@)" 1>&2
+fi
+
+exit $exitCode
+# }
