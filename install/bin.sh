@@ -11,6 +11,7 @@ chmod +x $(PWD)/bin/aspectpad
 chmod +x $(PWD)/bin/autocaption
 chmod +x $(PWD)/bin/autotrim
 chmod +x $(PWD)/bin/smartcrop
+chmod +x $(PWD)/bin/open-browser-generic
 
 
 ln -sfv $(PWD)/bin/fzf* ~/bin/
@@ -23,3 +24,4 @@ ln -sfv $(PWD)/bin/aspectpad ~/bin/
 ln -sfv $(PWD)/bin/autocaption ~/bin/
 ln -sfv $(PWD)/bin/autotrim ~/bin/
 ln -sfv $(PWD)/bin/smartcrop ~/bin/
+ln -sfv $(PWD)/bin/open-browser-generic ~/bin/
