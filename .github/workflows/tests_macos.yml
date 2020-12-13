@@ -96,7 +96,8 @@ jobs:
           make sed-travis
           cat ~/.dotfiles/ansible/provision.sh
           source ~/.dotfiles/install.sh
-          "/bin/bash -l -c 'pyenv versions'"
+          brew install bash || true
+          bash -l -c 'pyenv versions'
       # - name: Upload coverage to Codecov
       #   uses: codecov/codecov-action@v1
       - name: Finish build
