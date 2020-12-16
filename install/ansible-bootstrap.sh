@@ -27,16 +27,16 @@ else
   sudo apt-get autoremove -y && \
   sudo apt-get update -yqq && \
   sudo apt-get install -yqq software-properties-common \
-                     python-software-properties && \
+                    python-software-properties && \
   sudo apt-get install -yqq build-essential \
-                     libssl-dev \
-                     libreadline-dev \
-                     wget curl \
-                     openssh-server && \
+                    libssl-dev \
+                    libreadline-dev \
+                    wget curl \
+                    openssh-server && \
   sudo apt-get install -yqq python-setuptools \
-                     perl pkg-config \
-                     python python-pip \
-                     python-dev && \
+                    perl pkg-config \
+                    python python-pip \
+                    python-dev && \
   sudo pip install ansible && \
   sudo mkdir -p /etc/ansible && \
   sudo touch /etc/ansible/hosts && \
