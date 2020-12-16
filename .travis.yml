@@ -43,29 +43,29 @@ env:
 matrix:
   include:
   # ORIGINAL WORKING VERSION
-  - name: "High Sierra (10.13) and xcode9.3"
-    os: osx
-    sudo: required
-    language: objective-c
-    # 10.13 (see https://docs.travis-ci.com/user/osx-ci-environment/#OS-X-Version)
-    osx_image: xcode9.3
-    xcode_sdk: macosx10.13
-    # env: MY_RUBY_VERSION=""
+  # - name: "High Sierra (10.13) and xcode9.3"
+  #   os: osx
+  #   sudo: required
+  #   language: objective-c
+  #   # 10.13 (see https://docs.travis-ci.com/user/osx-ci-environment/#OS-X-Version)
+  #   osx_image: xcode9.3
+  #   xcode_sdk: macosx10.13
+  #   # env: MY_RUBY_VERSION=""
 
-  - name: "High Sierra (10.13) and xcode9.4"
-    os: osx
-    sudo: required
-    language: objective-c
-    osx_image: xcode9.4
-    xcode_sdk: macosx10.13
+  # - name: "High Sierra (10.13) and xcode9.4"
+  #   os: osx
+  #   sudo: required
+  #   language: objective-c
+  #   osx_image: xcode9.4
+  #   xcode_sdk: macosx10.13
 
 
-  - name: "High Sierra (10.13) and xcode9.4"
-    os: osx
-    sudo: required
-    language: objective-c
-    osx_image: xcode9.4
-    xcode_sdk: macosx10.13
+  # - name: "High Sierra (10.13) and xcode9.4"
+  #   os: osx
+  #   sudo: required
+  #   language: objective-c
+  #   osx_image: xcode9.4
+  #   xcode_sdk: macosx10.13
 
   - name: "Mojave (10.14) and xcode9.4"
     os: osx
@@ -73,6 +73,13 @@ matrix:
     language: objective-c
     # osx_image: xcode9.4
     xcode_sdk: macosx10.14
+
+  - name: "catalina (10.15) and xcode11.6"
+    os: osx
+    sudo: required
+    language: objective-c
+    # osx_image: xcode11.6
+    xcode_sdk: macosx10.15
 
 # # SOURCE: https://github.com/geerlingguy/mac-dev-playbook/blob/df25444b3f08e1c5a2c7b941d0a49850514f9d98/.travis.yml
 # sudo: required
@@ -94,8 +101,8 @@ install:
   - sudo easy_install pip
 
   # Install Ansible.
-  - sudo pip install ansible
-  - sudo pip install mitogen
+  - sudo pip install ansible --ignore-installed PyYAML
+  - sudo pip install mitogen --ignore-installed PyYAML
   - sudo python -c 'import sys; print "\n".join(sys.path)' | grep site-packages
 
   # Add ansible.cfg to pick up roles path.

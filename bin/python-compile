@@ -1,0 +1,161 @@
+#!/usr/bin/env bash
+
+
+# https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
+# set -euox pipefail
+set -e
+
+# https://gist.github.com/jonsuh/3c89c004888dfc7352be
+# ----------------------------------
+# Colors
+# ----------------------------------
+export NOCOLOR='\033[0m'
+export RED='\033[0;31m'
+export GREEN='\033[0;32m'
+export ORANGE='\033[0;33m'
+export BLUE='\033[0;34m'
+export MAD_BLUE='\e[34m'
+export PURPLE='\033[0;35m'
+export CYAN='\033[0;36m'
+export LIGHTGRAY='\033[0;37m'
+export DARKGRAY='\033[1;30m'
+export LIGHTRED='\033[1;31m'
+export LIGHTGREEN='\033[1;32m'
+export YELLOW='\033[1;33m'
+export LIGHTBLUE='\033[1;34m'
+export LIGHTPURPLE='\033[1;35m'
+export LIGHTCYAN='\033[1;36m'
+export WHITE='\033[1;37m'
+
+if [[ x"$1" = x"" ]]; then
+    echo -e " ${RED}[python-compile]${NOCOLOR} missing python major version, eg '3'"
+    exit 1
+fi
+
+if [[ x"$2" = x"" ]]; then
+    echo -e " ${RED}[python-compile]${NOCOLOR} missing python minor version, eg '6'"
+    exit 1
+fi
+
+if [[ x"$3" = x"" ]]; then
+    echo -e " ${RED}[python-compile]${NOCOLOR} missing python patch version, eg '12'"
+    exit 1
+fi
+
+export _PY_VER_MAJOR="$1"
+export _PY_VER_MINOR="$2"
+export _PY_VER_MICRO="$3"
+
+export PATH="/usr/local/opt/tcl-tk/bin:$PATH"
+export PATH="/usr/local/opt/bzip2/bin:$PATH"
+export PATH="/usr/local/opt/ncurses/bin:$PATH"
+export PATH="/usr/local/opt/openssl@1.1/bin:$PATH"
+# SOURCE: https://github.com/jiansoung/issues-list/issues/13
+# Fixes: zipimport.ZipImportError: can't decompress data; zlib not available
+
+
+export LDFLAGS="${LDFLAGS} -L/usr/local/opt/tcl-tk/lib"
+export CPPFLAGS="${CPPFLAGS} -I/usr/local/opt/tcl-tk/include"
+export LDFLAGS="${LDFLAGS} -L/usr/local/opt/zlib/lib"
+export CPPFLAGS="${CPPFLAGS} -I/usr/local/opt/zlib/include"
+export LDFLAGS="${LDFLAGS} -L/usr/local/opt/sqlite/lib"
+export CPPFLAGS="${CPPFLAGS} -I/usr/local/opt/sqlite/include"
+export LDFLAGS="${LDFLAGS} -L/usr/local/opt/libffi/lib"
+export CPPFLAGS="${CPPFLAGS} -I/usr/local/opt/libffi/include"
+export LDFLAGS="${LDFLAGS} -L/usr/local/opt/bzip2/lib"
+export CPPFLAGS="${CPPFLAGS} -I/usr/local/opt/bzip2/include"
+export LDFLAGS="${LDFLAGS} -L/usr/local/opt/ncurses/lib"
+export CPPFLAGS="${CPPFLAGS} -I/usr/local/opt/ncurses/include"
+export LDFLAGS="${LDFLAGS} -L/usr/local/opt/openssl@1.1/lib"
+export CPPFLAGS="${CPPFLAGS} -I/usr/local/opt/openssl@1.1/include"
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH} /usr/local/opt/zlib/lib/pkgconfig"
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH} /usr/local/opt/sqlite/lib/pkgconfig"
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH} /usr/local/opt/tcl-tk/lib/pkgconfig"
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH} /usr/local/opt/libffi/lib/pkgconfig"
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH} /usr/local/opt/ncurses/lib/pkgconfig"
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH} /usr/local/opt/openssl@1.1/lib/pkgconfig"
+
+# depends_on "pkg-config" => :build
+# depends_on "gdbm"
+# depends_on "openssl@1.1"
+# depends_on "readline"
+# depends_on "sqlite"
+# depends_on "xz"
+# depends_on "tcl-tk"  # as apple's one is shiiiiite
+
+# uses_from_macos "bzip2"
+# uses_from_macos "libffi"
+# uses_from_macos "ncurses"
+# uses_from_macos "unzip"
+# uses_from_macos "zlib"
+
+# export PROFILE_TASK='-m test.regrtest --pgo \
+#       test_array \
+#       test_base64 \
+#       test_binascii \
+#       test_binhex \
+#       test_binop \
+#       test_bytes \
+#       test_c_locale_coercion \
+#       test_class \
+#       test_cmath \
+#       test_codecs \
+#       test_compile \
+#       test_complex \
+#       test_csv \
+#       test_decimal \
+#       test_dict \
+#       test_float \
+#       test_fstring \
+#       test_hashlib \
+#       test_io \
+#       test_iter \
+#       test_json \
+#       test_long \
+#       test_math \
+#       test_memoryview \
+#       test_pickle \
+#       test_re \
+#       test_set \
+#       test_slice \
+#       test_struct \
+#       test_threading \
+#       test_time \
+#       test_traceback \
+#       test_unicode \
+# '
+# function compile_python() {
+#     if [ ! -d "${PYENV_ROOT}/versions/${_PY_VER_MAJOR}.${_PY_VER_MINOR}.${_PY_VER_MICRO}" ]; then
+#     # Control will enter here if $DIRECTORY exists.
+#     env PYTHON_CONFIGURE_OPTS="--enable-shared --enable-optimizations --enable-ipv6 --with-dtrace --enable-loadable-sqlite-extensions --with-openssl=/usr/local/opt/openssl@1.1" pyenv install -v ${_PY_VER_MAJOR}.${_PY_VER_MINOR}.${_PY_VER_MICRO}
+#     else
+#     echo " [python-compile](compile_python) python version ${_PY_VER_MAJOR}.${_PY_VER_MINOR}.${_PY_VER_MICRO} already installed, skipping"
+#     fi
+# }
+
+# alias compile_pyenv_env='LDFLAGS="${LDFLAGS}" CPPFLAGS="${CPPFLAGS}" PKG_CONFIG_PATH="${PKG_CONFIG_PATH}" pyenv'
+
+# echo "----------------------"
+# echo "Verify pyenv compile env vars"
+# echo "----------------------"
+# echo "LDFLAGS: ${LDFLAGS}"
+# echo "CPPFLAGS: ${CPPFLAGS}"
+# echo "PKG_CONFIG_PATH: ${PKG_CONFIG_PATH}"
+# echo "alias compile_pyenv_env: $(type compile_pyenv_env)"
+# echo "----------------------"
+
+# function ultron_create_venv() {
+#     echo "pyenv virtualenv ${_PY_VER_MAJOR}.${_PY_VER_MINOR}.${_PY_VER_MICRO} ultron8_venv${_PY_VER_MAJOR}${_PY_VER_MINOR}${_PY_VER_MICRO}"
+
+#     pyenv virtualenv ${_PY_VER_MAJOR}.${_PY_VER_MINOR}.${_PY_VER_MICRO} ultron8_venv${_PY_VER_MAJOR}${_PY_VER_MINOR}${_PY_VER_MICRO}
+# }
+
+source ~/.dotfiles/contrib/set-python-env.sh
+
+
+if [ ! -d "${PYENV_ROOT}/versions/${_PY_VER_MAJOR}.${_PY_VER_MINOR}.${_PY_VER_MICRO}" ]; then
+    # Control will enter here if $DIRECTORY exists.
+    env PYTHON_CONFIGURE_OPTS="--enable-shared --enable-optimizations --enable-ipv6 --with-dtrace --enable-loadable-sqlite-extensions --with-openssl=/usr/local/opt/openssl@1.1" pyenv install -v ${_PY_VER_MAJOR}.${_PY_VER_MINOR}.${_PY_VER_MICRO}
+else
+    echo " [python-compile](compile_python) python version ${_PY_VER_MAJOR}.${_PY_VER_MINOR}.${_PY_VER_MICRO} already installed, skipping"
+  fi

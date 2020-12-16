@@ -36,10 +36,10 @@ export BLUE
 
 # verify that certain variables have been defined off the bat
 check_defined = \
-    $(foreach 1,$1,$(__check_defined))
+		$(foreach 1,$1,$(__check_defined))
 __check_defined = \
-    $(if $(value $1),, \
-      $(error Undefined $1$(if $(value 2), ($(strip $2)))))
+		$(if $(value $1),, \
+			$(error Undefined $1$(if $(value 2), ($(strip $2)))))
 
 all: $(OS)
 
@@ -294,4 +294,6 @@ vscode_install:
 
 npm_install:
 	npm install -g vtop whereami figlet-cli get-port-cli getmac speed-test spoof wireless-tools yaml-lint pathogen-pm gtop npm diff-so-fancy docker-enter jsonlint pure-prompt
-	
+
+bin_install:
+	bash $(PWD)/install/bin.sh

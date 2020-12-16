@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -x
+
 # https://stackoverflow.com/questions/5014823/how-to-profile-a-bash-shell-script-slow-startup
 profile_it_start () {
   PS4='+ $(date "+%s.%N")\011 '
@@ -14,6 +16,10 @@ profile_it_stop () {
 
 # OVERRIDES: Use relative directory if travis
 if [[ "${_TRAVIS_CI}x" == "x" ]]; then
+  # NOTE: 6/3/2018 newly added
+  # Ask for the administrator password upfront.
+  sudo -v
+elif [[ "${_GITHUB_CI}x" == "x" ]]; then
   # NOTE: 6/3/2018 newly added
   # Ask for the administrator password upfront.
   sudo -v

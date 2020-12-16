@@ -12,6 +12,7 @@
       private: no
     - name: "bossjones__group"
       prompt: "Group we want to run as."
+      default: "staff"
       private: no
   tags:
     - homebrew
@@ -19,9 +20,9 @@
   environment:
     SHELL: /bin/bash
     LD_LIBRARY_PATH: /usr/local/lib
-  vars:
-    bossjones__user: "{{boss__user}}"
-    bossjones__group: "{{boss_group}}"
+  # vars:
+  #   bossjones__user: "{{boss__user}}"
+  #   bossjones__group: "staff"
   # pre_tasks:
   #   # This is necessary since we want to enable sudo when running the Homebrew
   #   # install script but don't want to run it as root. Yeah, I know.
@@ -93,7 +94,7 @@
         - coreutils
         - bats
         - bash-completion2
-        - moreutils
+        # - moreutils
         - findutils
         # - { name: gnu-sed, install_options: "with-default-names" }
         # - { name: grep, install_options: "with-default-names" }
@@ -242,7 +243,7 @@
         - pyenv-virtualenvwrapper
         # - pyenv-pip-migrate
 
-    - name: "Create directory:~/{{ bossjones__user }}/.pyenv"
+    - name: "Create directory: ~/{{ bossjones__user }}/.pyenv"
       file:
         path: "~{{ bossjones__user }}/.pyenv"
         state: directory
@@ -589,7 +590,7 @@
       # async: 60
       # poll: 10
 
-      # Finally, it’s time to make all Python versions and special virtualenvs work with each other.
+      # Finally, it's time to make all Python versions and special virtualenvs work with each other.
       # The above command establishes the PATH priority so scripts can be accessed in the right order without activating any virtualenv.
       # pyenv global 3.6.0 2.7.13 jupyter3 ipython2 tools3 tools2
     # - name: pyenv global 3.7.8 2.7.16 jupyter3 ipython2 tools3 tools2

@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+pushd ~/Downloads
+
+# /usr/local/bin/youtube-dl --extract-audio --audio-format mp3 "https://www.youtube.com/watch?v=2Xe7OAFljOA&list=PLVtEgs4mOkSiJ2Zd9hR9rJ1pars7TfCgc"
+# /usr/local/bin/youtube-dl --extract-audio --audio-format mp3 "https://www.youtube.com/watch?v=4e_aRCsTh2k&list=PLVtEgs4mOkSiJ2Zd9hR9rJ1pars7TfCgc&index=2"
+# /usr/local/bin/youtube-dl --extract-audio --audio-format mp3 "https://www.youtube.com/watch?v=oPLoj5FqvnE"
+# /usr/local/bin/youtube-dl --extract-audio --audio-format mp3 "https://www.youtube.com/watch?v=X2QjpzvfKxI&list=PLVtEgs4mOkSiJ2Zd9hR9rJ1pars7TfCgc&index=4"
+# /usr/local/bin/youtube-dl --extract-audio --audio-format mp3 "https://www.youtube.com/playlist?list=PLVtEgs4mOkSiJ2Zd9hR9rJ1pars7TfCgc"
+/usr/local/bin/youtube-dl --extract-audio --audio-format mp3 "https://www.youtube.com/watch?v=O9q_Z4xXTkU&list=PLVtEgs4mOkSiJ2Zd9hR9rJ1pars7TfCgc&index=5"
+/usr/local/bin/youtube-dl --extract-audio --audio-format mp3 "https://www.youtube.com/watch?v=FYqmQPklI_0&list=PLVtEgs4mOkSiJ2Zd9hR9rJ1pars7TfCgc&index=7"
+/usr/local/bin/youtube-dl --extract-audio --audio-format mp3 "https://www.youtube.com/watch?v=8YmRdkrQXk4&list=PLVtEgs4mOkSiJ2Zd9hR9rJ1pars7TfCgc&index=8"
+/usr/local/bin/youtube-dl --extract-audio --audio-format mp3 "https://www.youtube.com/watch?v=2hx4UQQogxc&list=PLVtEgs4mOkSiJ2Zd9hR9rJ1pars7TfCgc&index=9"
+/usr/local/bin/youtube-dl --extract-audio --audio-format mp3 "https://www.youtube.com/watch?v=P6JtX8WdFiI&list=PLVtEgs4mOkSiJ2Zd9hR9rJ1pars7TfCgc&index=10"
+/usr/local/bin/youtube-dl --extract-audio --audio-format mp3 "https://www.youtube.com/watch?v=-I-YY5p0uq8&list=PLVtEgs4mOkSiJ2Zd9hR9rJ1pars7TfCgc&index=11"
+/usr/local/bin/youtube-dl --extract-audio --audio-format mp3 "https://www.youtube.com/watch?v=37FhMnV-sxc&list=PLVtEgs4mOkSiJ2Zd9hR9rJ1pars7TfCgc&index=15"
+/usr/local/bin/youtube-dl --extract-audio --audio-format mp3 "https://www.youtube.com/watch?v=DOJ9CC4FTYA&list=PLVtEgs4mOkSiJ2Zd9hR9rJ1pars7TfCgc&index=16"
+/usr/local/bin/youtube-dl --extract-audio --audio-format mp3 "https://www.youtube.com/watch?v=pn1VGytzXus&list=PLVtEgs4mOkSiJ2Zd9hR9rJ1pars7TfCgc&index=17"
+/usr/local/bin/youtube-dl --extract-audio --audio-format mp3 "https://www.youtube.com/watch?v=DOBZscys8vY&list=PLVtEgs4mOkSiJ2Zd9hR9rJ1pars7TfCgc&index=18"
+/usr/local/bin/youtube-dl --extract-audio --audio-format mp3 "https://www.youtube.com/watch?v=dnou1mcbumM&list=PLVtEgs4mOkSiJ2Zd9hR9rJ1pars7TfCgc&index=20"
+/usr/local/bin/youtube-dl --extract-audio --audio-format mp3 "https://www.youtube.com/watch?v=_ReIH2fglE0&list=PLVtEgs4mOkSiJ2Zd9hR9rJ1pars7TfCgc&index=23"
+/usr/local/bin/youtube-dl --extract-audio --audio-format mp3 "https://www.youtube.com/watch?v=LjxulQ1bEWg&list=PLVtEgs4mOkSiJ2Zd9hR9rJ1pars7TfCgc&index=28"
+/usr/local/bin/youtube-dl --extract-audio --audio-format mp3 "https://www.youtube.com/watch?v=V6EpIABAKKo&list=PLVtEgs4mOkSiJ2Zd9hR9rJ1pars7TfCgc&index=27"
+/usr/local/bin/youtube-dl --extract-audio --audio-format mp3 "https://www.youtube.com/watch?v=l_lblj8Cq0o&list=PLVtEgs4mOkSiJ2Zd9hR9rJ1pars7TfCgc&index=31"
+/usr/local/bin/youtube-dl --extract-audio --audio-format mp3 "https://www.youtube.com/watch?v=jTMoEuO-fuk&list=PLVtEgs4mOkSiJ2Zd9hR9rJ1pars7TfCgc&index=32"
+# /usr/local/bin/youtube-dl --extract-audio --audio-format mp3 ""
+popd
