@@ -6,7 +6,7 @@ export LESS='--quit-if-one-screen --ignore-case --status-column --LONG-PROMPT --
 # --ignore-case or -i: Cause search in less to ignore case unless an uppercase letter is present in the search pattern.
 # --status-column or -J: Display a status column on the left to indicate lines that match current search or indicate the first unread line after moving a full page.
 # --LONG-PROMPT or -M: Prompt more verbosely.
-# --RAW-CONTROL-CHARS or -R: Cause ANSI “color” escape sequences to be displayed in their raw form. This is for the color display explained later in the next section.
+# --RAW-CONTROL-CHARS or -R: Cause ANSI "color" escape sequences to be displayed in their raw form. This is for the color display explained later in the next section.
 # --HILITE-UNREAD or -W: Highlight the first unread line after scrolling the screen for more than one lines.
 # --tabs=4 or -x4: Display a tab as 4-character width, since most modern text files assume 4-character width for a tab. However, you can still change this to your preference if, for example, you frequently read Linux kernel source code which uses 8-character width for a tab.
 # --no-init or -X: Disable sending the termcap initialization and deinitialization strings to the terminal. The purpose here is to prevent clearing screen after exiting. If you do not want this feature and want to remove it, please keep in mind that --quit-if-one-screen also relies on this option to work properly. For a workaround, please check out here.

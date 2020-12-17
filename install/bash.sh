@@ -13,7 +13,7 @@ else
   while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 fi
 
-brew install bash
+brew install bash || true
 
 if [[ "${_TRAVIS_CI}" == "1" ]]; then
     echo "TravisCI: skipping chsh -s /usr/local/bin/bash"

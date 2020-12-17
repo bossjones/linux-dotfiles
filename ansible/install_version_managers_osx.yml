@@ -14,6 +14,10 @@
       prompt: "Group we want to run as."
       default: "staff"
       private: no
+    - name: "configure_sudoers"
+      prompt: "Should we overwrite sudoers?"
+      default: "false"
+      private: no
   tags:
     - homebrew
   # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
@@ -210,7 +214,7 @@
   environment:
     SHELL: /bin/bash
     PYENV_ROOT: "$HOME/.pyenv"
-    WORKON_HOME: "~/.virtualenvs"
+    WORKON_HOME: "~/.pyenv/versions"
     PROJECT_HOME: "~/dev"
     PYTHON_CONFIGURE_OPTS: "--enable-shared"
   vars:
@@ -394,7 +398,8 @@
     SHELL: /bin/bash
     PYENV_ROOT: "$HOME/.pyenv"
     # PYENV_VERSION: "3.5.2"
-    WORKON_HOME: "~/.virtualenvs"
+    # WORKON_HOME: "~/.virtualenvs"
+    WORKON_HOME: "~/.pyenv/versions"
     PROJECT_HOME: "~/dev"
     # NOTE: To get virtualenvwrapper to create a virtual environment using pyvenv instead of virtualenv, set the PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV environment variable.
     PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV: true
@@ -718,8 +723,8 @@
       file: dest=/tmp/.fonts state=directory
 
     - name: clone powerline-fonts
-      git: repo=https://github.com/powerline/fonts
-           dest=/tmp/.fonts/powerline
+      git:  repo=https://github.com/powerline/fonts
+            dest=/tmp/.fonts/powerline
 
     - name: preparing to install powerline-fonts
       debug: msg="preparing to install"
@@ -866,7 +871,7 @@
           dest="~{{ bossjones__user }}/.bash_it"
           update=no
           depth=1
-      become: "{{ bossjones__user }}"
+      become: "yes"
       become_user: "{{ bossjones__user }}"
 
     - name: "Register home directory for {{ bossjones__user }}"
@@ -874,7 +879,7 @@
         echo $HOME
       changed_when: False
       register: linux_user_home
-      become: "{{ bossjones__user }}"
+      become: "yes"
       become_user: "{{ bossjones__user }}"
 
     - name: "Register current login shell for {{ bossjones__user }}"
@@ -882,7 +887,7 @@
         echo $SHELL
       changed_when: False
       register: linux_user_shell
-      become: "{{ bossjones__user }}"
+      become: "yes"
       become_user: "{{ bossjones__user }}"
 
     - name: Set facts
@@ -901,7 +906,7 @@
         repo: "{{ boss__bash_it_repository }}"
         dest: "{{ boss__bash_it_user_home }}/.bash_it"
         version: "{{ boss__bash_it_version }}"
-      become: "{{ bossjones__user }}"
+      become: "yes"
 
     - name: "change shell to bash for {{ bossjones__user }}"
       command: "chsh -s /bin/bash {{ bossjones__user }}"
@@ -951,6 +956,6 @@
       become_user: "{{ bossjones__user }}"
 
     - name: clone base16-iterm2
-      git: repo=https://github.com/chriskempson/base16-iterm2
-           dest=~{{ bossjones__user }}/dev/base16-iterm2
+      git:  repo=https://github.com/chriskempson/base16-iterm2
+            dest=~{{ bossjones__user }}/dev/base16-iterm2
 

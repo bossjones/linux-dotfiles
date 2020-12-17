@@ -120,7 +120,7 @@ export PATH="/usr/local/sbin:$PATH"
 
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
-export WORKON_HOME=~/.virtualenvs
+export WORKON_HOME=~/.pyenv/versions
 export PROJECT_HOME=~/dev
 eval "$(pyenv init -)"
 pyenv virtualenvwrapper_lazy
