@@ -2,6 +2,23 @@
 
 which brew || /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
+# # System-wide .bashrc file for interactive bash(1) shells.
+# if [ -z "$PS1" ]; then
+#    return
+# fi
+
+# PS1='\h:\W \u\$ '
+# # Make bash check its window size after a process completes
+# shopt -s checkwinsize
+
+# [ -r "/etc/bashrc_$TERM_PROGRAM" ] && . "/etc/bashrc_$TERM_PROGRAM"
+
+
+export PATH="/usr/local/bin:$PATH"
+export PATH="/usr/local/sbin:$PATH"
+
+
+
 brew install fzf || true
 brew install jq || true
 brew install moreutils || true
@@ -23,6 +40,7 @@ brew install readline || true
 brew install sqlite3 || true
 brew install xz || true
 brew install zlib || true
+brew install python || true
 
 # Need to activate python3 first
 
@@ -47,11 +65,19 @@ git clone https://github.com/massongit/pyenv-pip-update.git /Users/${_USER}/.pye
 git clone https://github.com/pyenv/pyenv-which-ext.git /Users/${_USER}/.pyenv/plugins/pyenv-which-ext || true
 git clone https://github.com/jawshooah/pyenv-default-packages.git /Users/${_USER}/.pyenv/plugins/pyenv-default-packages || true
 
-pyenv init - > ~/pyenv_temp
-pyenv virtualenv-init - > ~/pyenv_venv_init
-source ~/pyenv_temp
-source ~/pyenv_venv_init
+
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+export WORKON_HOME=~/.pyenv/versions
 export PROJECT_HOME=~/dev
+eval "$(pyenv init -)"
+pyenv virtualenvwrapper_lazy
+
+# pyenv init - > ~/pyenv_temp
+# pyenv virtualenv-init - > ~/pyenv_venv_init
+# source ~/pyenv_temp
+# source ~/pyenv_venv_init
+# export PROJECT_HOME=~/dev
 
 # NOTE: THIS IS COMMENTED OUT ON PURPOSE WHEN SETTING UP
 #pyenv virtualenvwrapper_lazy
