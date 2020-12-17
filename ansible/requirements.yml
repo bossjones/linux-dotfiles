@@ -56,11 +56,11 @@
   name: elliotweiser.osx-command-line-tools
 
 - src: https://github.com/bossjones/ansible-role-homebrew
-  version: b23527b428575e63dfa1ee8701b7951b6fe13160
+  version: master
   name: geerlingguy.homebrew
 
 - src: https://github.com/bossjones/ansible-role-mas
-  version: 88ed24986090e124582467ad78c04e99328ce125
+  version: master
   name: geerlingguy.mas
 
 # - name: geerlingguy.homebrew
