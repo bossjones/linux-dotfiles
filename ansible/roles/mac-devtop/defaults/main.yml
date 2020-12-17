@@ -26,7 +26,7 @@ homebrew_installed_packages:
   - hub
   - iftop
   - iperf
-  - jenv
+  # - jenv
   - libevent
   - mcrypt
   - mtr
@@ -54,7 +54,7 @@ homebrew_installed_packages:
   - unrar
   - vim
   - watch
-  - weechat
+  # - weechat
   - wget
   - wrk
   - youtube-dl
@@ -63,52 +63,53 @@ homebrew_installed_packages:
 
 homebrew_taps:
   - homebrew/core
-  - homebrew/cask
+  # - homebrew/cask
   - facebook/fb
   - homebrew/bundle
   - homebrew/completions
   - homebrew/dupes
-  - homebrew/php
+  # - homebrew/php
   - homebrew/science
   - homebrew/services
   - homebrew/versions
   - homebrew/cask-fonts
+  - homebrew/cask-versions
+
 
 homebrew_cask_appdir: /Applications
 homebrew_cask_apps:
   # - docker
   - dropbox
   # - firefox
-  - google-chrome
+  # - google-chrome
   - handbrake
   - iterm2
   - licecap
-  - limechat
+  # - limechat
   - macvim
   - sequel-pro
-  - skitch
-  - slack
-  - transmit
-  - vagrant
-  - alfred
-  - dash
-  - evernote
-  - firefox
+  # - skitch
+  # - slack
+  # - transmit
+  # - vagrant
+  # - alfred
+  # - dash
+  # - evernote
+  # - firefox
   - font-inconsolata-for-powerline
-  - google-chrome
-  - grandperspective
-  - iterm2
-  - keepassx
-  - menumeters
-  - picasa
-  - smcfancontrol
-  - spotify
+  # - google-chrome
+  # - grandperspective
+  # - keepassx
+  # - menumeters
+  # - picasa
+  # - smcfancontrol
+  # - spotify
   - sublime-text3
-  - vagrant
-  - virtualbox
-  - vlc
-  - xquartz
-  - visual-studio-code
+  # - vagrant
+  # - virtualbox
+  # - vlc
+  # - xquartz
+  # - visual-studio-code
 
 # See `geerlingguy.mas` role documentation for usage instructions.
 mas_installed_apps: []

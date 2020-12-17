@@ -3,8 +3,8 @@
 unamestr=$(uname)
 
 if [[ $unamestr == "Darwin" ]]; then
-   cd ~/
-   if [[ "${SKIP_DOTFILES_PREREQ}x" == "x" ]]; then
+  cd ~/
+  if [[ "${SKIP_DOTFILES_PREREQ}x" == "x" ]]; then
     sudo easy_install pip
     sudo pip install ansible
     echo '[defaults]'>> ansible.cfg; \
@@ -14,8 +14,8 @@ if [[ $unamestr == "Darwin" ]]; then
     echo -e '[local]\nlocalhost ansible_connection=local' | sudo tee -a /etc/ansible/hosts > /dev/null
     sudo chown -R $(id -u):$(id -g) /etc/ansible/
     mkdir ~/dev; \
-   fi
-   cd ~/dev
+fi
+cd ~/dev
 # debian, ubuntu, mint etc.
 elif [[ $unamestr == "Linux"  && -f $(which apt-get) ]]; then
     sudo apt-get update -yqq && \

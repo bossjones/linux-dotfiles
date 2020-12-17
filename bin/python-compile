@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+brew install pyenv || true
+brew install pyenv-virtualenv || true
+brew install pyenv-virtualenvwrapper || true
 
 # https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
 # set -euox pipefail
@@ -42,9 +45,21 @@ if [[ x"$3" = x"" ]]; then
     exit 1
 fi
 
-export _PY_VER_MAJOR="$1"
-export _PY_VER_MINOR="$2"
-export _PY_VER_MICRO="$3"
+echo "Python major version?"
+
+read _PY_VER_MAJOR
+
+echo "Python minor version?"
+
+read _PY_VER_MINOR
+
+echo "Python patch version?"
+
+read _PY_VER_MICRO
+
+export _PY_VER_MAJOR
+export _PY_VER_MINOR
+export _PY_VER_MICRO
 
 export PATH="/usr/local/opt/tcl-tk/bin:$PATH"
 export PATH="/usr/local/opt/bzip2/bin:$PATH"

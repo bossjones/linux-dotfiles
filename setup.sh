@@ -1,53 +1,122 @@
 #!/usr/bin/env bash
 
-# SOURCE: https://github.com/bndabbs/dotfiles/blob/master/setup.sh
+which brew || /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-params="-sf"
+brew install fzf || true
+brew install jq || true
+brew install moreutils || true
+brew install pyenv || true
+brew install pyenv-virtualenv || true
+brew install pyenv-virtualenvwrapper || true
+# brew install python@2 || true
+brew install rbenv || true
+brew install the_silver_searcher || true
+brew install tmux || true
+brew install tree || true
+brew install vim || true
+brew install direnv || true
+brew install zsh || true
+brew install mas || true
+brew install fzf || true
+brew install jq || true
+brew install moreutils || true
+brew install pyenv || true
+brew install pyenv-virtualenv || true
+brew install pyenv-virtualenvwrapper || true
+# brew install python@2 || true
+brew install rbenv || true
+brew install the_silver_searcher || true
+brew install tmux || true
+brew install tree || true
+brew install vim || true
+brew install direnv || true
+brew install zsh || true
 
-while getopts "vib" args; do
-    case $args in
-        v)
-            params="$params -v"
-            ;;
-        i)
-            params="$params -i"
-            ;;
-        b)
-            params="$params -b"
-            ;;
-    esac
-done
+brew install openssl || true
+brew install readline || true
+brew install sqlite3 || true
+brew install xz || true
+brew install zlib || true
 
-# Store where the script was called from so we can reference it later
-script_home="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+# Need to activate python3 first
 
-# Update bash-it if it's already installed or download it if it's not
-if [ -d $HOME/.bash_it ]; then
-  cd $HOME/.bash_it
-  git pull
-else
-  git clone --depth=1 https://github.com/Bash-it/bash-it.git $HOME/.bash_it
-fi
+export _USER=$(whoami)
+export _GROUP=staff
+# export _GITHUB_CI=1
+# export _TRAVIS_CI=0
 
-# Add our custom aliases to bash-it
-ln $params $script_home/custom.aliases.bash $HOME/.bash_it/aliases/custom.aliases.bash
+mkdir -p /Users/${_USER}/.pyenv/{plugins,versions}
 
-# Add Dustin's syntax highlights for Bro
-for i in ftdetect syntax; do
-    if [ ! -f $HOME/.vim/$i/bro.vim ]; then
-        curl -fLo $HOME/.vim/$i/bro.vim --create-dirs \
-        https://raw.githubusercontent.com/mephux/bro.vim/master/$i/bro.vim
-    fi
-done
+export WORKON_HOME=/Users/${_USER}/.pyenv/versions
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
 
-# Add solarized colors for vim if not present
-if [ ! -f $HOME/.vim/colors/solarized.vim ]; then
-    curl -fLo $HOME/.vim/colors/solarized.vim --create-dirs \
-    https://raw.githubusercontent.com/altercation/vim-colors-solarized/master/colors/solarized.vim
-fi
+git clone https://github.com/pyenv/pyenv-virtualenvwrapper /Users/${_USER}/.pyenv/plugins/pyenv-virtualenvwrapper || true
+git clone https://github.com/pyenv/pyenv-pip-rehash /Users/${_USER}/.pyenv/plugins/pyenv-pip-rehash || true
+git clone https://github.com/pyenv/pyenv-update /Users/${_USER}/.pyenv/plugins/pyenv-update || true
+git clone https://github.com/pyenv/pyenv-pip-migrate /Users/${_USER}/.pyenv/plugins/pyenv-pip-migrate || true
+git clone https://github.com/pyenv/pyenv-doctor.git /Users/${_USER}/.pyenv/plugins/pyenv-doctor || true
+git clone https://github.com/massongit/pyenv-pip-update.git /Users/${_USER}/.pyenv/plugins/pyenv-pip-update || true
+git clone https://github.com/pyenv/pyenv-which-ext.git /Users/${_USER}/.pyenv/plugins/pyenv-which-ext || true
+git clone https://github.com/jawshooah/pyenv-default-packages.git /Users/${_USER}/.pyenv/plugins/pyenv-default-packages || true
 
-# Symlink all of our dotfiles to the home directory
-for i in .vimrc .dircolors .bashrc .bash_profile .tmux.conf;
-do
-  ln $params $script_home/$i $HOME/$i
-done
+pyenv init - > ~/pyenv_temp
+pyenv virtualenv-init - > ~/pyenv_venv_init
+source ~/pyenv_temp
+source ~/pyenv_venv_init
+export PROJECT_HOME=~/dev
+
+# NOTE: THIS IS COMMENTED OUT ON PURPOSE WHEN SETTING UP
+#pyenv virtualenvwrapper_lazy
+
+
+echo "Install poetry"
+
+pip install poetry==1.0
+python3 -m venv .venv
+source .venv/bin/activate
+pip install ansible | tee -a depslog
+pip install mitogen | tee -a depslog
+
+echo "Install dependencies"
+date -u
+mkdir build
+date +%s > build/stamp
+python -c 'import sys; print("\n".join(sys.path))' | grep site-packages | tee -a depslog
+
+date -u
+echo "----====Deps====----"
+
+mv ansible.cfg-travis ansible.cfg
+cat ansible.cfg
+
+# Add a hosts file.
+sudo mkdir -p /etc/ansible
+sudo touch /etc/ansible/hosts
+echo -e '[local]\nlocalhost ansible_connection=local' | sudo tee /usr/local/etc/ansible/hosts > /dev/null
+
+# zsh -c 'echo "Completed installation of dependencies in $(printf "%0.2f" $(($[$(date +%s)-$(cat build/stamp)]/$((60.))))) minutes"'
+
+echo "Run tests"
+cp -a $(pwd) ~/.dotfiles
+ls -lta ~/.dotfiles
+cd ~/.dotfiles
+
+# NOTE: we skip this when we install locally
+make sed-local-macos
+cat ~/.dotfiles/ansible/provision.sh
+source ~/.dotfiles/install.sh
+brew install bash || true
+bash -l -c 'pyenv versions'
+
+
+echo "Finish build"
+date -u
+# zsh -c 'echo "Build completed in $(printf "%0.2f" $(($[$(date +%s)-$(cat build/stamp)]/$((60.))))) minutes"'
+cd ~/.dotfiles
+make bin_install
+cd ~/.dotfiles/test/fixtures
+brew install ffmpeg || true
+brew install gawk || true
+brew install gsed || true
+ffmpeg-all-batch -t "@reactionmemesTV"

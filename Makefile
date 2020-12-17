@@ -128,6 +128,9 @@ test:
 sed-travis:
 	bash ./sed-travis.sh
 
+sed-local-macos:
+	bash ./sed-local-macos.sh
+
 test: shellcheck
 
 # if this session isn't interactive, then we don't want to allocate a
