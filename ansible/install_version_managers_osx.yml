@@ -871,7 +871,7 @@
           dest="~{{ bossjones__user }}/.bash_it"
           update=no
           depth=1
-      become: "{{ bossjones__user }}"
+      become: "yes"
       become_user: "{{ bossjones__user }}"
 
     - name: "Register home directory for {{ bossjones__user }}"
@@ -879,7 +879,7 @@
         echo $HOME
       changed_when: False
       register: linux_user_home
-      become: "{{ bossjones__user }}"
+      become: "yes"
       become_user: "{{ bossjones__user }}"
 
     - name: "Register current login shell for {{ bossjones__user }}"
@@ -887,7 +887,7 @@
         echo $SHELL
       changed_when: False
       register: linux_user_shell
-      become: "{{ bossjones__user }}"
+      become: "yes"
       become_user: "{{ bossjones__user }}"
 
     - name: Set facts
@@ -906,7 +906,7 @@
         repo: "{{ boss__bash_it_repository }}"
         dest: "{{ boss__bash_it_user_home }}/.bash_it"
         version: "{{ boss__bash_it_version }}"
-      become: "{{ bossjones__user }}"
+      become: "yes"
 
     - name: "change shell to bash for {{ bossjones__user }}"
       command: "chsh -s /bin/bash {{ bossjones__user }}"

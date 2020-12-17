@@ -19,6 +19,7 @@ export PATH="/usr/local/sbin:$PATH"
 
 
 
+brew install wget || true
 brew install fzf || true
 brew install jq || true
 brew install moreutils || true

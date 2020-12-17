@@ -729,7 +729,7 @@
         repo: "{{ boss__bash_it_repository }}"
         dest: "{{ boss__bash_it_user_home }}/.bash_it"
         version: "{{ boss__bash_it_version }}"
-      become: "{{ bossjones__user }}"
+      become: "yes"
 
     - name: "change shell to bash for {{ bossjones__user }}"
       command: "chsh -s /bin/bash {{ bossjones__user }}"
