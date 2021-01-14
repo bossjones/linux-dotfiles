@@ -60,6 +60,7 @@ homebrew_installed_packages:
   - youtube-dl
   - zsh
   - fpp
+  - libmagic
 
 homebrew_taps:
   - homebrew/core
@@ -110,6 +111,8 @@ homebrew_cask_apps:
   # - vlc
   # - xquartz
   # - visual-studio-code
+  # INFO: https://github.com/ryanoasis/nerd-fonts#option-4-homebrew-fonts
+  - font-hack-nerd-font
 
 # See `geerlingguy.mas` role documentation for usage instructions.
 mas_installed_apps: []
