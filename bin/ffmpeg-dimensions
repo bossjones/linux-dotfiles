@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+# NOTE: https://unix.stackexchange.com/questions/9496/looping-through-files-with-spaces-in-the-names
+
+OIFS="$IFS"
+IFS=$'\n'
+
 # https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
 # set -euox pipefail
 set -e
@@ -50,19 +55,7 @@ export input_file="${filename_val}"
 export full_path_input_file="$(pwd)/${input_file}"
 tmpfile=$(mktemp /tmp/abc-script.XXXXXX)
 
-# https://superuser.com/questions/809820/scale-dimensions-overlay-by-video-size-with-ffmpeg
-# https://openwritings.net/pg/ffmpeg/ffmpeg-add-logo-video
-# https://github.com/koalaman/shellcheck/wiki/SC2155
-# rm dimensions_info.txt || true
-cat << EOF > "${tmpfile}"
+echo -e "$(echo "$(ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=s=x:p=0 ${full_path_input_file})" | $awk_bin 'BEGIN {FS="x"} {print int($1/4)"x"int($2/4)}') ${full_path_input_file}"
 
-dimensions=\$(echo "\$(ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=s=x:p=0 ${full_path_input_file})" | $awk_bin 'BEGIN {FS="x"} {print int(\$1/4)"x"int(\$2/4)}' | tee /tmp/dimensions.txt)
 
-echo -e "\$(\head -1 /tmp/dimensions.txt) ${full_path_input_file}"
-
-rm /tmp/dimensions.txt
-EOF
-
-bash "${tmpfile}"
-
-rm "$tmpfile"
+IFS="$OIFS"
