@@ -36,7 +36,7 @@ export sed_bin="$(which gsed)"
 
 export delete_orig=false
 
-while getopts ":hf:s:e:a:" opt; do
+while getopts ":hf:s:e:a:t:" opt; do
   case ${opt} in
     h ) # process option h
       ;;
@@ -52,6 +52,9 @@ while getopts ":hf:s:e:a:" opt; do
     a ) # process option a
       audio_filename_val=$OPTARG
       ;;
+    t ) # process option t
+      text_val=$OPTARG
+    ;;
     \? )
       echo "Invalid option: $OPTARG" 1>&2
       echo "Example: ffmpeg-img-and-audio -f 'IMG_0148.PNG' -a 'Wiz Khalifa - See You Again (feat. Charlie Puth).mp3' -s 0 -e 15"
@@ -66,6 +69,11 @@ done
 # if end val isn't set, add 15 as default
 if [[ "${end_val}x" == "x" ]]; then
   end_val=$((start_val + 15))
+fi
+
+# if end val isn't set, add 15 as default
+if [[ "${text_val}x" == "x" ]]; then
+  text_val='@iamprofessorEX'
 fi
 
 export input_file="${filename_val}"
@@ -145,6 +153,54 @@ echo -e " ${YELLOW}[ffmpeg-img-and-audio]${NOCOLOR} ffmpeg -stream_loop 1 -i \"$
 # ###############################################################
 # add audio and convert to mp4
 ffmpeg -y -stream_loop 15 -i "${full_path_img_input_file}" -i "${audio_filename_val}" -codec:v libx264 -tune stillimage -vf "pad=ceil(iw/2)*2:ceil(ih/2)*2:color=white" -codec:a aac -b:a 192k -pix_fmt yuv420p -ss ${start_val} -t ${end_val} "$full_path_output_file"
+
 # ###############################################################
+# FIXME: In the near future, get the watermarking working again specifically for this script. 1/24/2021
+# cp -a "$full_path_output_file" "temp_$full_path_output_file"
+
+# # ffmpeg-watermark -f "$full_path_output_file" -t "@iamprofessorEX"
+# # ###############################################################
+# # watermark
+# # ###############################################################
+# #
+# export font_location='/Volumes/Macintosh HD/System/Library/Fonts/Helvetica.ttc'
+# # export input_file="${filename_val}"
+# # export full_path_input_file="$(pwd)/${filename_val}"
+# # export full_path_output_file="watermark-$(uuidgen).mp4"
+# export watermark_text=${text_val}
+# export font_location='/Volumes/Macintosh HD/System/Library/Fonts/Helvetica.ttc'
+
+# tmpfile=$(mktemp /tmp/abc-script.XXXXXX)
+# echo -e " ${BLUE}[ffmpeg-watermark]${NOCOLOR} tmpfile=${tmpfile}"
+
+
+# # https://superuser.com/questions/809820/scale-watermark-overlay-by-video-size-with-ffmpeg
+# # https://openwritings.net/pg/ffmpeg/ffmpeg-add-logo-video
+# # https://github.com/koalaman/shellcheck/wiki/SC2155
+# cat << EOF > "${tmpfile}"
+# dimensions=\$(echo "\$(ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=s=x:p=0 temp_${full_path_output_file})" | $awk_bin 'BEGIN {FS="x"} {print int(\$1/4)"x"int(\$2/4)}' | tee /tmp/dimensions.txt)
+
+# echo -e " ${BLUE}[ffmpeg-watermark]${NOCOLOR} dimensions=\$(\head -1 /tmp/dimensions.txt)"
+
+# echo -e " ${BLUE}[ffmpeg-watermark]${NOCOLOR} dimensions=\$(\head -1 /tmp/dimensions.txt | cut -d"x" -f1):-1"
+
+# echo -e " ${GREEN}[ffmpeg-watermark]${NOCOLOR} ${CYAN}watermark${NOCOLOR} video/img ${YELLOW}full_path_output_file:temp_${full_path_output_file}${NOCOLOR} writing out ${YELLOW}file:temp_${full_path_output_file}${NOCOLOR}"
+
+# ffmpeg -y -hide_banner -loglevel warning -i temp_${full_path_output_file} -vf drawtext="fontfile=$font_location: \
+# text='${watermark_text}': fontcolor=white: fontsize=14: box=1: boxcolor=black@0.5: \
+# boxborderw=5: x=(w-text_w)-10: y=(h-text_h)-10" -c:a aac -q:a 128k ${full_path_output_file} 2>&1 > /dev/null
+
+# rm temp_${full_path_output_file}
+# rm /tmp/dimensions.txt
+# EOF
+
+# echo -e " ${BLUE}[ffmpeg-watermark]${NOCOLOR} cat ${tmpfile}"
+# cat "${tmpfile}"
+
+# bash  "${tmpfile}"
+
+# rm "$tmpfile"
+# ###############################################################
+
 
 IFS="$OIFS"
