@@ -28,6 +28,8 @@ IFS=$'\n'
 
 
 export input_file="${1}"
+export normalize_input_file=$(python3 -c "import pathlib;p=pathlib.Path('${input_file}');print(p)")
+export input_file="${normalize_input_file}"
 parent_dir="$(dirname -- "$input_file")"
 
 filename=$(basename -- "$input_file")
