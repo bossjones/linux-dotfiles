@@ -1,0 +1,93 @@
+#!/usr/bin/env bash
+
+# https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
+# set -euox pipefail
+set -e
+# set -x
+
+check_if_we_need_to_loop() {
+    local filename_val=$1
+
+    video_duration=$(ffmpeg-duration -f "${filename_val}")
+
+    export loop_video_flag=false
+    if [ "15" -gt "$video_duration" ]; then
+        export loop_video_flag=true
+    fi
+}
+
+# NOTE: https://unix.stackexchange.com/questions/9496/looping-through-files-with-spaces-in-the-names
+# SOURCE: https://stackoverflow.com/questions/965053/extract-filename-and-extension-in-bash
+
+OIFS="$IFS"
+IFS=$'\n'
+
+# https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
+# set -euox pipefail
+# set -e
+
+
+export input_file="${1}"
+export full_path_img_input_file="$(realpath -- $(pwd)/${input_file})"
+
+filename=$(basename -- "$input_file")
+extension="${filename##*.}"
+filename="${filename%.*}"
+filename="$(realpath -- ${filename})"
+
+
+echo "input_file=$input_file"
+echo "full_path_img_input_file=$full_path_img_input_file"
+echo "filename=$filename"
+echo "extension=$extension"
+# echo "full_path_output_file=$full_path_output_file"
+export fname_common="$(basename -- $filename.${extension})"
+echo "fname_common=$fname_common"
+# echo "input_file=$input_file"
+# echo "input_file=$input_file"
+# echo "input_file=$input_file"
+
+# input_file=00013-story-farming.mp4
+# full_path_img_input_file=/Users/malcolm/Downloads/to_schedule_on_professorex/iCloud Photos/quotes/00013-story-farming.mp4
+# filename=/Users/malcolm/Downloads/to_schedule_on_professorex/iCloud Photos/quotes/00013-story-farming
+# extension=mp4
+# fname_common=00013-story-farming.mp4
+# basefname=00013-story-farming.mp4
+
+
+
+basefname=$(basename -- "$filename.${extension}")
+echo "basefname=$basefname"
+
+export outputname="cropped-$basefname"
+export full_path_img_output_file="$(realpath -- $(pwd)/${outputname})"
+
+echo "outputname=${outputname}"
+echo "full_path_img_output_file=${full_path_img_output_file}"
+
+echo -e " ${YELLOW}[ffmpeg-crop-story]${NOCOLOR} loop_video_flag=${loop_video_flag}, looping .... ${YELLOW}cmd: ffmpeg -y -i \"${full_path_img_input_file}\" -vf scale=\"'if(gt(iw,ih),-1,299):if(gt(iw,ih),299,-1)', crop=299:299:exact=1\" \"${full_path_img_output_file}\"${NOCOLOR}"
+
+# SOURCE: https://gist.github.com/TimothyRHuertas/b22e1a252447ab97aa0f8de7c65f96b8
+#Given a video of any aspect ratio this script will extract center cropped thumbnails at 299x299.
+#Useful for gathering image training data.
+#Assumes ffmpeg 3.3.2
+#If you get an error about exact that means you are using an older version of ffmpeg
+#Simply remove the :exact=1.
+#This will make it work, but may cause the output size to be off by a pixel
+#Script assumes you are downsampling.
+# ffmpeg -y -i "${full_path_img_input_file}" -vf scale="'if(gt(iw,ih),-1,299):if(gt(iw,ih),299,-1)', crop=299:299:exact=1" "${full_path_img_output_file}"
+
+
+
+# ASPECT_RATIO=`echo '18.5 / 9' | bc -l`
+ASPECT_RATIO=`echo '1' | bc -l`
+OUTPUT_WIDTH=1080
+OUTPUT_HEIGHT=`echo "$OUTPUT_WIDTH / $ASPECT_RATIO" | bc -l`
+PATH_TO_VID="${full_path_img_input_file}"
+PATH_TO_OUT_DIR=out
+
+SCALE="'if(gte($ASPECT_RATIO, iw/ih), $OUTPUT_WIDTH, -1):if(gte($ASPECT_RATIO, iw/ih), -1, $OUTPUT_HEIGHT)', crop=$OUTPUT_WIDTH:$OUTPUT_HEIGHT:exact=1"
+ffmpeg -i "$PATH_TO_VID" -y -q 0 -vf scale="$SCALE" "${full_path_img_output_file}"
+
+IFS="$OIFS"
+

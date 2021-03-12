@@ -49,6 +49,7 @@ echo "extension=$extension"
 echo "filename_mov=$filename_mov"
 echo "filename_mp4=$filename_mp4"
 echo "parent_dir=$parent_dir"
+echo "normalize_input_file=$normalize_input_file"
 
 ffmpeg -y -i "${parent_dir}/${filename_mov}" -vcodec h264 -acodec aac "${parent_dir}/${filename_mp4}"
 
