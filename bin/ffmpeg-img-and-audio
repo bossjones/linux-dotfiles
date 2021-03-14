@@ -3,6 +3,8 @@
 # NOTE: https://unix.stackexchange.com/questions/9496/looping-through-files-with-spaces-in-the-names
 # SOURCE: https://stackoverflow.com/questions/965053/extract-filename-and-extension-in-bash
 
+# USAGE: ffmpeg-img-and-audio -f 'IMG_0148.PNG' -a 'Wiz Khalifa - See You Again (feat. Charlie Puth).mp3' -s 0 -e 15
+
 OIFS="$IFS"
 IFS=$'\n'
 
@@ -95,7 +97,7 @@ echo -e " ${YELLOW}[ffmpeg-img-and-audio]${NOCOLOR} DEBUG end_val=${YELLOW}${end
 echo -e " ${YELLOW}[ffmpeg-img-and-audio]${NOCOLOR} DEBUG full_path_output_file=${YELLOW}${full_path_output_file}${NOCOLOR}"
 
 
-echo -e " ${YELLOW}[ffmpeg-img-and-audio]${NOCOLOR} ffmpeg -stream_loop 1 -i \"${full_path_img_input_file}\" -i \"${audio_filename_val}\" -codec:v libx264 -tune stillimage -codec:a aac -b:a 192k -pix_fmt yuv420p -shortest -ss ${start_val} -t ${end_val} \"$full_path_output_file\"\n\n"
+echo -e " ${YELLOW}[ffmpeg-img-and-audio]${NOCOLOR} ffmpeg -hide_banner -loglevel error -stream_loop 1 -i \"${full_path_img_input_file}\" -i \"${audio_filename_val}\" -codec:v libx264 -tune stillimage -codec:a aac -b:a 192k -pix_fmt yuv420p -shortest -ss ${start_val} -t ${end_val} \"$full_path_output_file\"\n\n"
 
 # https://ffmpeg.org/ffmpeg.html#toc-Main-options
 # -codec[:stream_specifier] codec (input/output,per-stream)
@@ -152,7 +154,7 @@ echo -e " ${YELLOW}[ffmpeg-img-and-audio]${NOCOLOR} ffmpeg -stream_loop 1 -i \"$
 
 # ###############################################################
 # add audio and convert to mp4
-ffmpeg -y -stream_loop 15 -i "${full_path_img_input_file}" -i "${audio_filename_val}" -codec:v libx264 -tune stillimage -vf "pad=ceil(iw/2)*2:ceil(ih/2)*2:color=white" -codec:a aac -b:a 192k -pix_fmt yuv420p -ss ${start_val} -t ${end_val} "$full_path_output_file"
+ffmpeg -hide_banner -loglevel error -y -stream_loop 15 -i "${full_path_img_input_file}" -i "${audio_filename_val}" -codec:v libx264 -tune stillimage -vf "pad=ceil(iw/2)*2:ceil(ih/2)*2:color=white" -codec:a aac -b:a 192k -pix_fmt yuv420p -ss ${start_val} -t ${end_val} "$full_path_output_file"
 
 # ###############################################################
 # FIXME: In the near future, get the watermarking working again specifically for this script. 1/24/2021

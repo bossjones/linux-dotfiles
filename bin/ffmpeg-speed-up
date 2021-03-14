@@ -36,7 +36,7 @@ export sed_bin="$(which gsed)"
 
 export delete_orig=false
 
-while getopts ":hf:s:e:" opt; do
+while getopts ":hf:s:" opt; do
   case ${opt} in
     h ) # process option h
       ;;
@@ -44,10 +44,7 @@ while getopts ":hf:s:e:" opt; do
       filename_val=$OPTARG
       ;;
     s ) # process option s
-      start_val=$OPTARG
-      ;;
-    e ) # process option f
-      end_val=$OPTARG
+      speed_val=$OPTARG
       ;;
     \? )
       echo "Invalid option: $OPTARG" 1>&2
@@ -67,11 +64,22 @@ filename=$(basename -- "$input_file")
 extension="${filename##*.}"
 filename="${filename%.*}"
 
-export full_path_output_file="[C]${filename}.${extension}"
+export full_path_output_file="[S]${filename}.${extension}"
 
 
-echo -e " ${YELLOW}[ffmpeg-trim-mp3]${NOCOLOR} ffmpeg -hide_banner -loglevel error -ss ${start_val} -t ${end_val} -i ${full_path_input_file} -acodec copy ${full_path_output_file}"
+if [[ "${speed_val}x" == "x" ]]; then
+  speed_val=1.15
+fi
 
-ffmpeg -hide_banner -loglevel error -ss ${start_val} -t ${end_val} -i "${full_path_input_file}" -acodec copy "${full_path_output_file}"
+
+echo -e " ${YELLOW}[ffmpeg-trim-mp3]${NOCOLOR} ffmpeg -y -i \"${full_path_input_file}\" -filter_complex \"[0:v]setpts=0.5*PTS[v];[0:a]atempo=${speed_val}[a]\" -map \"[v]\" -map \"[a]\" \"${full_path_output_file}\""
+
+
+# ffmpeg -i "${full_path_input_file}" -filter:a "atempo=${speed_val},atempo=${speed_val}" -vn  "${full_path_output_file}"
+
+ffmpeg -y -i "${full_path_input_file}" -filter_complex "[0:v]setpts=0.5*PTS[v];[0:a]atempo=${speed_val}[a]" -map "[v]" -map "[a]" "${full_path_output_file}"
+
+# rename back to original
+# mv -fv "${full_path_output_file}" "${full_path_input_file}"
 
 IFS="$OIFS"
