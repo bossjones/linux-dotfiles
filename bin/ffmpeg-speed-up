@@ -68,7 +68,7 @@ export full_path_output_file="[S]${filename}.${extension}"
 
 
 if [[ "${speed_val}x" == "x" ]]; then
-  speed_val=1.15
+  speed_val=1.10
 fi
 
 
