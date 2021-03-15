@@ -65,6 +65,7 @@ extension="${filename##*.}"
 filename="${filename%.*}"
 
 export full_path_output_file="[S]${filename}.${extension}"
+export full_path_loop_input_file="loop-${filename}.${extension}"
 
 
 if [[ "${speed_val}x" == "x" ]]; then
@@ -77,9 +78,13 @@ echo -e " ${YELLOW}[ffmpeg-trim-mp3]${NOCOLOR} ffmpeg -y -i \"${full_path_input_
 
 # ffmpeg -i "${full_path_input_file}" -filter:a "atempo=${speed_val},atempo=${speed_val}" -vn  "${full_path_output_file}"
 
+ffmpeg-loop-one "${full_path_input_file}"
+
+mv -fv "${full_path_loop_input_file}" "${full_path_input_file}"
+
 ffmpeg -y -i "${full_path_input_file}" -filter_complex "[0:v]setpts=0.5*PTS[v];[0:a]atempo=${speed_val}[a]" -map "[v]" -map "[a]" "${full_path_output_file}"
 
+mv -fv "${full_path_output_file}" "${full_path_input_file}"
 # rename back to original
-# mv -fv "${full_path_output_file}" "${full_path_input_file}"
 
 IFS="$OIFS"
