@@ -4,9 +4,6 @@
 # set -euox pipefail
 set -e
 
-OIFS="$IFS"
-IFS=$'\n'
-
 # https://gist.github.com/jonsuh/3c89c004888dfc7352be
 # ----------------------------------
 # Colors
@@ -112,8 +109,12 @@ echo -e " ${BLUE}[ffmpeg-watermark]${NOCOLOR} tmpfile=${tmpfile}"
 # https://superuser.com/questions/809820/scale-watermark-overlay-by-video-size-with-ffmpeg
 # https://openwritings.net/pg/ffmpeg/ffmpeg-add-logo-video
 # https://github.com/koalaman/shellcheck/wiki/SC2155
+# SOURCE: https://stackoverflow.com/questions/39591675/ffmpeg-add-semi-transparent-watermarkpng-with-different-size
+# SOURCE: https://stackoverflow.com/questions/39591675/ffmpeg-add-semi-transparent-watermarkpng-with-different-size
+# SOURCE: https://stackoverflow.com/questions/39591675/ffmpeg-add-semi-transparent-watermarkpng-with-different-size
+# SOURCE: https://stackoverflow.com/questions/39591675/ffmpeg-add-semi-transparent-watermarkpng-with-different-size
 cat << EOF > "${tmpfile}"
-dimensions=\$(echo "\$(ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=s=x:p=0 \"${full_path_input_file}\")" | $awk_bin 'BEGIN {FS="x"} {print int(\$1/4)"x"int(\$2/4)}' | tee /tmp/dimensions.txt)
+dimensions=\$(echo "\$(ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=s=x:p=0 ${full_path_input_file})" | $awk_bin 'BEGIN {FS="x"} {print int(\$1/4)"x"int(\$2/4)}' | tee /tmp/dimensions.txt)
 
 echo -e " ${BLUE}[ffmpeg-watermark]${NOCOLOR} dimensions=\$(\head -1 /tmp/dimensions.txt)"
 
@@ -121,9 +122,15 @@ echo -e " ${BLUE}[ffmpeg-watermark]${NOCOLOR} dimensions=\$(\head -1 /tmp/dimens
 
 echo -e " ${GREEN}[ffmpeg-watermark]${NOCOLOR} ${CYAN}watermark${NOCOLOR} video/img ${YELLOW}full_path_input_file:${full_path_input_file}${NOCOLOR} writing out ${YELLOW}file:${full_path_output_file}${NOCOLOR}"
 
-ffmpeg -hide_banner -loglevel warning -i "${full_path_input_file}" -vf drawtext="fontfile=$font_location: \
-text='${watermark_text}': fontcolor=white: fontsize=14: box=1: boxcolor=black@0.5: \
-boxborderw=5: x=(w-text_w)-10: y=(h-text_h)-10" -c:a aac -q:a 128k ${full_path_output_file} 2>&1 > /dev/null
+ffmpeg -y \
+-i ${full_path_input_file} \
+-i "~/watermark.png" \
+-filter_complex "\
+[1][0]scale2ref=h=ow/mdar:w=iw/4[#A logo][bird];\
+[#A logo]format=argb,colorchannelmixer=aa=0.5[#B logo transparent];\
+[bird][#B logo transparent]overlay\
+=(main_w-w)-(main_w*0.1):(main_h-h)-(main_h*0.1)" \
+-c:v libx264 -an ${full_path_output_file}
 
 rm /tmp/dimensions.txt
 EOF
@@ -134,5 +141,3 @@ cat "${tmpfile}"
 bash  "${tmpfile}"
 
 rm "$tmpfile"
-
-IFS="$OIFS"

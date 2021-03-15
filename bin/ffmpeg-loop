@@ -76,7 +76,7 @@ echo -e " ${BLUE}[ffmpeg-loop]${NOCOLOR} tmpfile=${tmpfile}"
 
 cat << EOF > "${tmpfile}"
 echo -e " ${GREEN}[ffmpeg-loop]${NOCOLOR} ${CYAN}looping${NOCOLOR} video ${YELLOW}full_path_input_file:${full_path_input_file}${NOCOLOR} writing out ${YELLOW}file:${full_path_output_file}${NOCOLOR}"
-ffmpeg -hide_banner -loglevel warning -f concat -safe 0 -i <(for i in {1..4}; do printf "file '%s'\n" ${full_path_input_file}; done) -c copy ${full_path_output_file}
+ffmpeg -y -hide_banner -loglevel warning -f concat -safe 0 -i <(for i in {1..4}; do printf "file '%s'\n" ${full_path_input_file}; done) -c copy ${full_path_output_file}
 EOF
 
 echo -e " ${BLUE}[ffmpeg-loop]${NOCOLOR} cat ${tmpfile}"

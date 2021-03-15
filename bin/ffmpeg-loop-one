@@ -1,0 +1,77 @@
+#!/usr/bin/env bash
+
+# https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
+# set -euox pipefail
+set -e
+# set -x
+
+check_if_we_need_to_loop() {
+    local filename_val=$1
+
+    # if [[ "$verbose" = "true" ]]; then
+    #   echo -e " ${GREEN}[ffmpeg-batch-process]${NOCOLOR} ${YELLOW}verbose mode detected${NOCOLOR}"
+    #   PS4='(${BASH_SOURCE}:${LINENO}): ${FUNCNAME[0]} - [${SHLVL},${BASH_SUBSHELL}, $?]'
+    # fi
+
+
+    # # Step 1. Get duration of video to determine if we need to loop it.
+    # echo -e " ${GREEN}[ffmpeg-batch-process]${NOCOLOR} ${YELLOW}checking if file needs to be looped first..${NOCOLOR}"
+
+    video_duration=$(ffmpeg-duration -f "${filename_val}")
+
+    export loop_video_flag=false
+    if [ "15" -gt "$video_duration" ]; then
+        export loop_video_flag=true
+    fi
+}
+
+# NOTE: https://unix.stackexchange.com/questions/9496/looping-through-files-with-spaces-in-the-names
+# SOURCE: https://stackoverflow.com/questions/965053/extract-filename-and-extension-in-bash
+
+OIFS="$IFS"
+IFS=$'\n'
+
+# https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
+# set -euox pipefail
+# set -e
+
+
+export input_file="${1}"
+export full_path_img_input_file="$(realpath -- $(pwd)/${input_file})"
+
+filename=$(basename -- "$input_file")
+extension="${filename##*.}"
+filename="${filename%.*}"
+filename="$(realpath -- ${filename})"
+
+# export full_path_output_file="meme_${filename}.mp4"
+
+# export full_path_output_file="[L]${filename}.${extension}"
+
+echo "input_file=$input_file"
+echo "full_path_img_input_file=$full_path_img_input_file"
+echo "filename=$filename"
+echo "extension=$extension"
+# echo "full_path_output_file=$full_path_output_file"
+export fname_common="$(basename -- $filename.${extension})"
+echo "fname_common=$fname_common"
+# echo "input_file=$input_file"
+# echo "input_file=$input_file"
+# echo "input_file=$input_file"
+
+basefname=$(basename -- "$filename.${extension}")
+echo "basefname=$basefname"
+
+check_if_we_need_to_loop "${basefname}"
+
+if [ "$loop_video_flag" = true ] ; then
+    echo -e " ${YELLOW}[ffmpeg-loop-one]${NOCOLOR} loop_video_flag=${loop_video_flag}, looping .... ${YELLOW}cmd: ffmpeg-loop -f $input_file -c $fname_common${NOCOLOR}"
+    ffmpeg-loop -f $basefname -c $fname_common
+    export input_file="loop-$fname_common"
+    export full_path_input_file="${input_file}.${extension}"
+    echo -e " ${YELLOW}[ffmpeg-loop-one] verify variable${NOCOLOR} ${GREEN}full_path_input_file=${full_path_input_file}${NOCOLOR}"
+    echo -e " ${YELLOW}[ffmpeg-loop-one] running${NOCOLOR} ${GREEN}ls -lta $input_file${NOCOLOR}\n"
+    ls -lta $input_file
+fi
+
+IFS="$OIFS"

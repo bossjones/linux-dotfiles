@@ -398,7 +398,6 @@
     SHELL: /bin/bash
     PYENV_ROOT: "$HOME/.pyenv"
     # PYENV_VERSION: "3.5.2"
-    # WORKON_HOME: "~/.virtualenvs"
     WORKON_HOME: "~/.pyenv/versions"
     PROJECT_HOME: "~/dev"
     # NOTE: To get virtualenvwrapper to create a virtual environment using pyvenv instead of virtualenv, set the PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV environment variable.
@@ -661,40 +660,6 @@
 #       become: yes
 #       become_user: "{{ bossjones__user }}"
 
-# # NOTE: This works, just might not be the right time for zsh yet
-# # Install oh-my-zsh
-# - hosts: localhost
-#   gather_facts: True
-#   become: yes
-#   vars_prompt:
-#     - name: "bossjones__user"
-#       prompt: "User we want to run as."
-#       private: no
-#     - name: "bossjones__group"
-#       prompt: "Group we want to run as."
-#       private: no
-#   tags:
-#     - zsh
-#   vars:
-#     ansible_ssh_user: "{{ bossjones__user }}"
-#     zsh_user: "{{ bossjones__user }}"
-#     zsh_antigen_bundles_extras:
-#       - nvm
-#       - joel-porquet/zsh-dircolors-solarized
-#       - virtualenvwrapper
-#       - npm
-#       - cswl/zsh-rbenv
-#     zsh_autosuggestions_bind_key: "^U"
-#   roles:
-#     - viasite-ansible.zsh
-#
-# # TODO: Figure out if we want to enable this
-# # # Switch to ZSH shell
-# # if test -t 1; then
-# # exec zsh
-# # fi
-
-
 # ####################################################################################################
 # # POWERLINE SETUP
 ####################################################################################################
@@ -751,13 +716,13 @@
 
     # # - name: Install Fonts
     # #   shell: ~{{ bossjones__user }}/powerlinefonts/install.sh chdir=~/{{ bossjones__user }}/powerlinefonts
-    # #   when: fontCloned|success
+    # #   when: fontCloned is success
     # #   become: yes
     # #   become_user: "{{ bossjones__user }}"
 
     # - name: Install Fonts
     #   shell: ~{{ bossjones__user }}/powerlinefonts/install.sh
-    #   when: fontCloned|success
+    #   when: fontCloned is success
     #   become: yes
     #   become_user: "{{ bossjones__user }}"
 
@@ -798,37 +763,6 @@
         - powerline
         - nass600.powerline
 
-# # ####################################################################################################
-# # # CHEATSHEETS SETUP
-# ####################################################################################################
-# - hosts: localhost
-#   gather_facts: True
-#   vars_prompt:
-#     - name: "bossjones__user"
-#       prompt: "User we want to run as."
-#       private: no
-#     - name: "bossjones__group"
-#       prompt: "Group we want to run as."
-#       private: no
-#   tags:
-#     - cheat
-#   vars:
-#     bossjones__user: "{{boss__user}}"
-#     bossjones__group: "{{boss_group}}"
-#     cheatsheet_update: yes
-#   become: yes
-#   become_user: "{{ bossjones__user }}"
-#   # become_method: sudo
-#   # SOURCE: https://docs.ansible.com/ansible/latest/playbooks_environment.html
-#   environment:
-#     SHELL: /bin/bash
-#   tasks:
-#     - name: Clone pyenv-doctor
-#       git:
-#         repo: https://github.com/bossjones/boss-cheatsheets
-#         dest: "~{{ bossjones__user }}/.cheat"
-#         version: "master"
-#         update: "{{ cheatsheet_update }}"
 
 # ####################################################################################################
 # # BASH-IT SETUP

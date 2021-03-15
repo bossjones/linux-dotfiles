@@ -60,13 +60,14 @@ homebrew_installed_packages:
   - youtube-dl
   - zsh
   - fpp
+  - libmagic
 
 homebrew_taps:
   - homebrew/core
   # - homebrew/cask
   - facebook/fb
   - homebrew/bundle
-  - homebrew/completions
+  # - homebrew/completions
   - homebrew/dupes
   # - homebrew/php
   - homebrew/science
@@ -79,11 +80,11 @@ homebrew_taps:
 homebrew_cask_appdir: /Applications
 homebrew_cask_apps:
   # - docker
-  - dropbox
+  # - dropbox
   # - firefox
   # - google-chrome
   - handbrake
-  - iterm2
+  # - iterm2
   - licecap
   # - limechat
   - macvim
@@ -110,6 +111,8 @@ homebrew_cask_apps:
   # - vlc
   # - xquartz
   # - visual-studio-code
+  # INFO: https://github.com/ryanoasis/nerd-fonts#option-4-homebrew-fonts
+  - font-hack-nerd-font
 
 # See `geerlingguy.mas` role documentation for usage instructions.
 mas_installed_apps: []
