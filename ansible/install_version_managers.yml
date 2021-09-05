@@ -359,7 +359,7 @@
 
     - name: Install Fonts
       shell: /home/{{bossjones__user}}/powerlinefonts/install.sh chdir=/home/{{bossjones__user}}/powerlinefonts
-      when: fontCloned|success
+      when: fontCloned is success
       become: yes
       become_user: vagrant
 
@@ -460,7 +460,7 @@
           dest="/home/{{bossjones__user}}/.bash_it"
           update=no
           depth=1
-      become: "{{bossjones__user}}"
+      become: "yes"
       become_user: "{{bossjones__user}}"
 
     - name: Register home directory for {{ bossjones__user }}
