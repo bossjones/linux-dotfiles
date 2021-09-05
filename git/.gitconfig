@@ -19,7 +19,7 @@
 
 [alias]
   amend = commit --amend --reuse-message=HEAD
-  br = branch
+  br = branch --sort=-committerdate --format='%(if)%(HEAD)%(then)* %(color:red bold)%(refname:short)%(color:reset)%(else)  %(refname:short)%(end) - %(color:yellow)%(objectname:short)%(color:reset) %(color:green)(%(committerdate:relative))%(color:reset) %(contents:subject) %(color:blue)'
   ci = commit
   co = checkout
   contrib = shortlog --summary --numbered

@@ -54,7 +54,7 @@ cd -
 
 export _USER=$(whoami)
 export _GROUP=staff
-export CHECK_ONLY=1
+export CHECK_ONLY=0
 # export _GITHUB_CI=1
 # export _TRAVIS_CI=0
 

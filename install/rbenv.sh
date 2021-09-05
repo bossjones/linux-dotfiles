@@ -13,6 +13,7 @@ else
   while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 fi
 
+export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
 export DOTFILES_BREW_PREFIX_RBENV=`brew --prefix rbenv`
 set-config "DOTFILES_BREW_PREFIX_RBENV" "$DOTFILES_BREW_PREFIX_RBENV" "$DOTFILES_CACHE"
 
